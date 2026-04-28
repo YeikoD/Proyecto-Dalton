@@ -181,7 +181,7 @@ namespace ProyectoDalton.Interfaz
                 StartCoroutine(SequencePauseInstant());
             }
             
-            LogN.Info("<color=yellow>Sistema:</color> Regresando al Menú Principal.");
+            LogN.Info("SYS: Regresando al Menú Principal");
         }
 
         private IEnumerator SequencePauseInstant()
@@ -233,7 +233,7 @@ namespace ProyectoDalton.Interfaz
             _menuHandle?.RemoveFromClassList("menu-handle--hidden");
             
             ConsolaUI.Mostrar();
-            LogN.Info("<color=green>Sistema:</color> Simulación reanudada.");
+            LogN.Info("SYS: Simulación reanudada");
             yield break;
         }
 
@@ -243,7 +243,7 @@ namespace ProyectoDalton.Interfaz
             ActualizarVisibilidadBotones(false, instantaneo: true);
 
             ConsolaUI.Mostrar();
-            LogN.Info("<color=cyan>Sistema:</color> Iniciando motores de simulación molecular...");
+            LogN.Info("SYS: Iniciando motores de simulación molecular...");
             
             while (ConsolaUI.EstaOcupada) yield return null;
             yield return new WaitForSecondsRealtime(0.3f); 
@@ -260,7 +260,7 @@ namespace ProyectoDalton.Interfaz
             LogN.Carga("Cargando Datos...", 1.5f);
             while (ConsolaUI.EstaOcupada) yield return null;
 
-            LogN.Info("<color=green>Éxito:</color> Visualizador Dalton listo. Pulsa TAB para ver los elementos.");
+            LogN.Info("SYS: Visualizador Dalton listo. Pulsa TAB para ver los elementos");
             yield return new WaitForSecondsRealtime(0.2f);
 
             GameManager.Instancia?.SetEstadoBloqueoMenu(false);
@@ -272,13 +272,13 @@ namespace ProyectoDalton.Interfaz
             var todos = Object.FindObjectsByType<ProyectoDalton.Atomos.BillboardAtomo>(FindObjectsSortMode.None);
             foreach (var b in todos) Destroy(b.gameObject);
 
-            if (todos.Length > 0) LogN.Info($"<color=orange>Limpieza:</color> {todos.Length} elementos eliminados.");
+            if (todos.Length > 0) LogN.Info($"LIMPIEZA: {todos.Length} elementos eliminados");
             else LogN.Info("Limpieza: No hay elementos.");
         }
 
         private void SalirDelSimulador()
         {
-            LogN.Info("<color=red>Sistema:</color> Cerrando simulador...");
+            LogN.Info("SYS: Cerrando simulador...");
             Application.Quit();
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;

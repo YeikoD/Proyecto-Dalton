@@ -49,13 +49,13 @@ namespace ProyectoDalton.Entorno
             // Si es un compuesto químico real (elementos diferentes), lanzamos la notificación
             if (info.esCompuesto)
             {
-                ProyectoDalton.Interfaz.LogN.Info($"Se formó un compuesto: {info.formula} ({info.masaTotal:F1}u).");
+                ProyectoDalton.Interfaz.LogN.Info($"! COMPUESTO: {info.formula} ({info.masaTotal:F1} u)");
                 OnCompuestoFormado?.Invoke(info);
             }
             else
             {
                 // Si son del mismo elemento, es cohesión (Dalton)
-                ProyectoDalton.Interfaz.LogN.Info($"Cohesión molecular: {info.formula} ({info.masaTotal:F1}u).");
+                ProyectoDalton.Interfaz.LogN.Info($"! COHESIÓN: {info.formula} ({info.masaTotal:F1} u)");
                 OnCohesionFormada?.Invoke(info);
             }
         }
@@ -65,7 +65,7 @@ namespace ProyectoDalton.Entorno
             // Opcional: Podrías disparar un efecto visual diferente aquí (como un flash azul o gris)
             // Por ahora, notificamos la ruptura
             string tipo = info.esCompuesto ? "Compuesto disuelto" : "Cohesión rota";
-            ProyectoDalton.Interfaz.LogN.Info($"{tipo}: {info.formula} ha perdido un componente.");
+            ProyectoDalton.Interfaz.LogN.Info($"! ESTRUCTURA ROTA: {info.formula} desvinculado");
             
             OnEstructuraRota?.Invoke(info);
         }

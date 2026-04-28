@@ -317,7 +317,7 @@ namespace ProyectoDalton.Atomos
                     scriptArrastre.ObtenerInformacionCompuesto() : 
                     new ArrastrarAtomo.InformacionCompuesto { masaTotal = datos.masaAtomica, esCompuesto = false };
 
-                ProyectoDalton.Interfaz.LogN.Info($"Elemento seleccionado: {datos.nombreElemento} ({datos.simbolo}) | Masa: {info.masaTotal:F1}u");
+                ProyectoDalton.Interfaz.LogN.Info($"+ {datos.nombreElemento} ({datos.simbolo}) seleccionado | MASA: {info.masaTotal:F1} u");
                 
                 // Disparamos el evento con toda la matemática calculada
                 OnAtomoSeleccionado?.Invoke(datos, info);
@@ -328,7 +328,7 @@ namespace ProyectoDalton.Atomos
         {
             if (seleccionado)
             {
-                ProyectoDalton.Interfaz.LogN.Info("Elemento deseleccionado.");
+                ProyectoDalton.Interfaz.LogN.Info($"- Elemento deseleccionado");
                 OnAtomoDeseleccionado?.Invoke();
             }
             

@@ -164,7 +164,7 @@ namespace ProyectoDalton.Atomos
                     // Si el usuario intenta alejar el átomo más de 2.5 veces su radio, se rompe el enlace
                     if (distanciaAlPadre > radioAtomo * 2.5f)
                     {
-                        ProyectoDalton.Interfaz.LogN.Info($"<color=orange>Enlace roto:</color> {billboardScript.datos.nombreElemento} se ha separado.");
+                        ProyectoDalton.Interfaz.LogN.Info($"- {billboardScript.datos.nombreElemento} desvinculado");
                         
                         // Capturamos la info de la estructura ANTES de separar por completo (opcional) o DESPUÉS
                         // Usualmente la ruptura se comunica para saber qué quedó solo
@@ -426,7 +426,7 @@ namespace ProyectoDalton.Atomos
                 subordinadoRoot = rootThis;
             }
 
-            ProyectoDalton.Interfaz.LogN.Info($"<color=cyan>Enlace:</color> {subordinadoRoot.billboardScript.datos.nombreElemento} se une a {dominanteRoot.billboardScript.datos.nombreElemento}");
+            ProyectoDalton.Interfaz.LogN.Info($"+ {subordinadoRoot.billboardScript.datos.nombreElemento} vinculado | MASA: {subordinadoRoot.ObtenerMasaTotal():F1} u");
             
             Vector3 dir = (subordinadoLocal.transform.position - dominanteLocal.transform.position).normalized;
             if (dir == Vector3.zero) dir = Vector3.up;
@@ -493,7 +493,7 @@ namespace ProyectoDalton.Atomos
             if (ajustarAGrilla)
             {
                 Vector3 pos = transform.position;
-                ProyectoDalton.Interfaz.LogN.Info($"Posición fijada: [{pos.x:F1}, {pos.z:F1}]");
+                ProyectoDalton.Interfaz.LogN.Info($"LOC: {pos.x:F1}, {pos.z:F1}");
             }
         }
 

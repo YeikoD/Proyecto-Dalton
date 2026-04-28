@@ -40,7 +40,12 @@
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
-    <ui:VisualElement name="ConsolaRaiz" class="console-container panel-base panel-accent-left panel--hidden">
+    <ui:VisualElement name="ConsolaRaiz" class="console-container panel-base panel--hidden">
+        <ui:VisualElement class="console__header">
+            <ui:Label text="REGISTRO DE EVENTOS" class="console__titulo"/>
+            <ui:Label text="• EN VIVO" class="console__status"/>
+        </ui:VisualElement>
+        <ui:VisualElement class="console__separador"/>
         <ui:ScrollView name="ContenedorMensajes" class="console-scroll"/>
     </ui:VisualElement>
     <ui:VisualElement name="MenuRaiz" class="menu-derecho panel-base panel--hidden-right">

@@ -18,6 +18,10 @@
     --size-h1: 20px;
     --size-h2: 18px;
     --size-h3: 16px;
+    --opacity-common: 0.5;
+    --opacity-subtle: 0.25;
+    --font-size-common: 14px;
+    --color-text-secondary: rgba(255, 255, 255, 0.9);
     -unity-font-definition: var(--font-secondary);
 }
 
@@ -91,10 +95,39 @@
 
 .console-container {
     position: absolute;
-    bottom: 10px;
-    left: 10px;
-    width: 315px;
-    height: 157px;
+    bottom: 20px;
+    left: 20px;
+    width: 400px;
+    height: 180px;
+    padding: 12px;
+}
+
+.console__header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.console__titulo {
+    font-size: 13px;
+    color: rgb(157, 193, 215);
+    -unity-font-style: bold;
+    -unity-font-definition: var(--font-secondary);
+    letter-spacing: 1px;
+}
+
+.console__status {
+    font-size: 10px;
+    color: rgb(157, 193, 215);
+    -unity-font-definition: var(--font-secondary);
+    opacity: 0.8;
+}
+
+.console__separador {
+    height: 1px;
+    background-color: var(--color-border-light);
+    margin-bottom: 8px;
 }
 
 .console-scroll {
@@ -192,7 +225,7 @@
     top: 20px;
     width: 325px;
     padding: 17px;
-    min-height: 340px;
+    min-height: 600px;
     display: flex;
 }
 
@@ -217,19 +250,26 @@
 
 .tooltip__nombre {
     font-size: 24px;
-    margin-bottom: 2px;
+    margin: 0;
+    margin-bottom: -2px;
     -unity-font-style: bold;
     -unity-font-definition: var(--font-secondary);
 }
 
 .tooltip__masa {
-    font-size: 14px;
-    opacity: 0.4;
+    font-size: var(--font-size-common);
+    color: var(--color-text-secondary);
+    opacity: var(--opacity-common);
+    margin: 0;
+    margin-bottom: 0;
 }
 
 .tooltip__simbolo-identidad {
-    font-size: 14px;
-    opacity: 0.4;
+    font-size: var(--font-size-common);
+    color: var(--color-text-secondary);
+    opacity: var(--opacity-common);
+    margin: 0;
+    margin-bottom: -2px;
 }
 
 .tooltip__info-basica {
@@ -239,7 +279,7 @@
 .tooltip__subtitulo-container {
     flex-direction: row;
     align-items: center;
-    margin-top: 15px;
+    margin-top: 25px;
     margin-bottom: 8px;
 }
 
@@ -271,7 +311,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
-    margin-bottom: 6px;
+    margin-bottom: 16px;
 }
 
 .tooltip__dato-icono {
@@ -297,27 +337,28 @@
 
 .tooltip__dato-dinamico {
     margin-bottom: 0;
-    font-size: 14px;
+    font-size: var(--font-size-common);
+    color: var(--color-text-secondary);
     white-space: normal;
     flex-shrink: 1;
-    opacity: 0.4;
+    opacity: var(--opacity-common);
 }
 
 
 .tooltip__descripcion {
     padding-top: 5px;
     white-space: normal;
-    font-size: 14px;
-    color: rgba(255, 255, 255, 0.9);
-    opacity: 0.4;
+    font-size: var(--font-size-common);
+    color: var(--color-text-secondary);
+    opacity: var(--opacity-common);
 }
 
 .tooltip__nota {
     padding-top: 5px;
     white-space: normal;
-    font-size: 14px;
-    color: rgba(255, 255, 255, 0.9);
-    opacity: 0.4;
+    font-size: var(--font-size-common);
+    color: var(--color-text-secondary);
+    opacity: var(--opacity-common);
 }
 
 /* --- Footer: Clasificación --- */
@@ -338,7 +379,7 @@
     margin-right: 10px;
     background-image: url("project:/Assets/Interfaz/Iconos/decoracion/LogoSimulador_icono.png");
     -unity-background-scale-mode: scale-to-fit;
-    opacity: 0.4;
+    opacity: var(--opacity-common);
 }
 
 .tooltip__footer-info {
@@ -357,7 +398,7 @@
 .tooltip__footer-subtitulo {
     font-size: 14px;
     color: white;
-    opacity: 0.3;
+    opacity: var(--opacity-subtle);
     -unity-font-style: normal;
     margin: 0;
     padding: 0;
@@ -422,9 +463,11 @@
 .console-label {
     margin-bottom: 4px;
     white-space: normal;
-    font-size: 14px;
-    -unity-font-style: bold;
-    -unity-font-definition: var(--font-primary);
+    font-size: var(--font-size-common);
+    color: var(--color-text-secondary);
+    opacity: 1.0;
+    -unity-font-style: normal;
+    -unity-font-definition: var(--font-secondary);
 }
 
 .console-label--important {
@@ -459,7 +502,7 @@
     height: 24px;
     background-color: transparent;
     border-width: 0;
-    opacity: 0.4;
+    opacity: var(--opacity-common);
     background-image: url("project:/Assets/Interfaz/Iconos/settings_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.png");
     transition-property: opacity, rotate, scale;
     transition-duration: 0.4s;

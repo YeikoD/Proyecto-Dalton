@@ -55,7 +55,7 @@ namespace ProyectoDalton.Interfaz
             // La consola ahora permanece oculta hasta que el Menú Principal o un evento la active.
 
             // Mensaje de sistema
-            Escribir(new DatosMensaje("Consola de diagnóstico activa.", TipoLog.Normal));
+            Escribir(new DatosMensaje("SYS: Consola de diagnóstico activa", TipoLog.Normal));
 
             // Suscribirse a los eventos de entorno
             ProyectoDalton.Entorno.ControlEntorno.OnVisualFusionDisparado += ActivarEfectoFusion;
@@ -137,6 +137,7 @@ namespace ProyectoDalton.Interfaz
 
         private IEnumerator EjecutarMensaje(DatosMensaje datos)
         {
+            string timestamp = System.DateTime.Now.ToString("HH:mm:ss");
             Label nuevoLabel = new Label("");
             nuevoLabel.AddToClassList("console-label");
             nuevoLabel.AddToClassList("text-base");
@@ -169,7 +170,7 @@ namespace ProyectoDalton.Interfaz
                 if (caracteresAEscribir > indiceUltimoCaracter)
                 {
                     indiceUltimoCaracter = Mathf.Min(caracteresAEscribir, datos.texto.Length);
-                    nuevoLabel.text = datos.texto.Substring(0, indiceUltimoCaracter);
+                    nuevoLabel.text = $"<color=#ffffff33>{timestamp}</color>  <color=#ffffff66>{datos.texto.Substring(0, indiceUltimoCaracter)}</color>";
                     HacerScrollAlFinal();
                 }
                 
@@ -186,14 +187,14 @@ namespace ProyectoDalton.Interfaz
                 while (tiempoPasado < datos.duracionEspecial)
                 {
                     puntos = (puntos + 1) % 4;
-                    nuevoLabel.text = textoBase + new string('.', puntos);
+                    nuevoLabel.text = $"<color=#ffffff33>{timestamp}</color>  <color=#ffffff66>{textoBase}{new string('.', puntos)}</color>";
                     
                     float intervaloPuntos = 0.5f;
                     yield return new WaitForSeconds(intervaloPuntos);
                     tiempoPasado += intervaloPuntos;
                 }
                 // Al terminar, dejamos los 3 puntos fijos
-                nuevoLabel.text = textoBase + "... [OK]";
+                nuevoLabel.text = $"<color=#ffffff33>{timestamp}</color>  <color=#ffffff66>{textoBase}... [OK]</color>";
             }
         }
 

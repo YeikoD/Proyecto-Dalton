@@ -238,7 +238,7 @@ namespace ProyectoDalton.Interfaz
             }
 
             if (cantidadBorrados > 0)
-                LogN.Info($"<color=red>Limpieza:</color> Se han eliminado {cantidadBorrados} átomos de {datos.nombreElemento}.");
+                LogN.Info($"LIMPIEZA: {cantidadBorrados} átomos de {datos.nombreElemento} eliminados");
         }
 
         private int ManejarSolicitudNumero(DatosAtomoSO datos)
@@ -267,7 +267,7 @@ namespace ProyectoDalton.Interfaz
                 // Actualizamos el estado visual del botón
                 if (nuevoContador >= MAX_ATOMOS_POR_TIPO)
                 {
-                    LogN.Alerta($"LÍMITE ALCANZADO: {datos.nombreElemento} (20/20). Botón bloqueado.");
+                    LogN.Alerta($"! LÍMITE: {datos.nombreElemento} (20/20)");
                     registro.button.style.opacity = 0.3f;
                     registro.button.pickingMode = PickingMode.Ignore;
                 }
@@ -276,7 +276,7 @@ namespace ProyectoDalton.Interfaz
                     if (presente)
                     {
                         int restantes = MAX_ATOMOS_POR_TIPO - nuevoContador;
-                        LogN.Info($"{datos.nombreElemento}: {nuevoContador}/20. Espacio restante: {restantes}.");
+                        LogN.Info($"SYS: {datos.nombreElemento} {nuevoContador}/20 | LIBRE: {restantes}");
                     }
                     
                     registro.button.style.opacity = 1.0f;
@@ -289,7 +289,7 @@ namespace ProyectoDalton.Interfaz
         {
             if (datos.prefabAtomo == null)
             {
-                LogN.Info($"<color=red>Error:</color> El elemento {datos.nombreElemento} no tiene un prefab asignado.");
+                LogN.Info($"ERR: {datos.nombreElemento} sin prefab");
                 return;
             }
 
@@ -328,7 +328,7 @@ namespace ProyectoDalton.Interfaz
                 arrastre.Lanzar(cam.transform.forward * fuerzaLanzamiento);
             }
 
-            LogN.Info($"Simulando {datos.nombreElemento} ({datos.simbolo})");
+            LogN.Info($"SIM: {datos.nombreElemento} ({datos.simbolo}) instanciado");
             
             // Cerramos el menú para apreciar la simulación
             AlternarMenu();
