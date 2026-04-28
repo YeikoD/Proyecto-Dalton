@@ -274,7 +274,7 @@ MonoBehaviour:
     m_Bits: 8
   usarInercia: 1
   agilidadBase: 15
-  velocidadAcercamiento: 3
+  velocidadAcercamiento: 2
 --- !u!114 &2850971328914130726
 MonoBehaviour:
   m_ObjectHideFlags: 0

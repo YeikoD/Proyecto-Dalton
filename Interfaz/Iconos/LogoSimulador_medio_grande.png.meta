@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 42551ed282561e9409ebef872ee180cd
+guid: 16a3ba01e00bd2243aed81895180ba5e
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -69,7 +69,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 128
+    maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
@@ -97,13 +97,35 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: icon_gold_def_0
+      name: LogoSimulador_medio_grande_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1067
-        height: 1064
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7ade2b43262c02c44abf869d9400bec3
+      internalID: -1071193692
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LogoSimulador_medio_grande_1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 512
+        height: 512
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -112,8 +134,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4e3535a8560500142adc832e44155257
-      internalID: 2004717911
+      spriteID: bb398adbd0ef810468bf55796d9184c3
+      internalID: 96181130
       vertices: []
       indices: 
       edges: []
@@ -122,7 +144,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 0a1f1da8273cf5242913404fadb43761
+    spriteID: dbcee4c6369820d4788be811b146a6c6
     internalID: 0
     vertices: []
     indices: 
@@ -132,7 +154,8 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      icon_gold_def_0: 2004717911
+      LogoSimulador_medio_grande_0: -1071193692
+      LogoSimulador_medio_grande_1: 96181130
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

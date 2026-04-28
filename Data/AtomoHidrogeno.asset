@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec4f3c61fa633164ba1a70969d63c856, type: 3}
+  m_Name: AtomoHidrogeno
+  m_EditorClassIdentifier: Assembly-CSharp::ProyectoDalton.Atomos.DatosAtomoSO
+  nombreElemento: "Hidr\xF3geno"
+  esElemento: 0
+  descripcionTeorica: "El elemento m\xE1s liviano y simple en la lista de Dalton.
+    Sirve como la unidad base para el sistema de pesos at\xF3micos relativos. Es
+    una sustancia fundamental que Dalton consideraba el \"ladrillo\" m\xE1s peque\xF1o
+    de la materia."
+  nota: "Dalton utiliz\xF3 el hidr\xF3geno como el est\xE1ndar de su teor\xEDa: le
+    asign\xF3 arbitrariamente el valor de $1u$. En sus experimentos, observ\xF3 que
+    siempre se combinaba en proporciones peque\xF1as y fijas, lo que lo llev\xF3
+    a concluir que todos los \xE1tomos de hidr\xF3geno son id\xE9nticos entre s\xED."
+  simbolo: H
+  icono: {fileID: -1453408323, guid: 32d0efeb71824b04cbdecc4ed7d3c433, type: 3}
+  masaAtomica: 1
+  prefabAtomo: {fileID: 3868101738974255312, guid: dce2020bbd86409449030e0fa524eb44, type: 3}
+  largoSubrayado: 0.1
+  offsetVerticalCodo: -0.16
+  alturaLineaVertical: -0.03
+  anchoLinea: 0.015
+  colorLinea: {r: 1, g: 1, b: 1, a: 1}
+  colorTextoMenu: {r: 0.9372549, g: 0.0627451, b: 0.10987555, a: 1}
+  inerciaBillboard: 0.85
+  distanciaMaxima: 20

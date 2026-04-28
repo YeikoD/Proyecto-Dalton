@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using ProyectoDalton.Entorno;
 
 namespace ProyectoDalton.Camara
 {
@@ -11,9 +12,8 @@ namespace ProyectoDalton.Camara
         public bool moverConBordesPantalla = false;
         public float grosorBorde = 15f;
 
-        [Header("Límites del Mapa (Collider / Esfera)")]
-        [Tooltip("Arrastra aquí tu Esfera/Nebulosa (debe tener un SphereCollider). La cámara no podrá salir de ella.")]
-        public Collider limiteFisico;
+        [Header("Límites del Mapa (Centralizado)")]
+        [Tooltip("Los límites se leen desde ControlEntorno.")]
         public bool usarLimitesMatematicos = true;
         public float limiteMinX = -50f;
         public float limiteMaxX = 50f;
@@ -57,6 +57,9 @@ namespace ProyectoDalton.Camara
         void Update()
         {
             if (Keyboard.current == null || Mouse.current == null) return;
+
+            // Si la cámara está bloqueada por el GameManager, no procesamos movimiento ni rotación
+            if (ProyectoDalton.Core.GameManager.Instancia != null && ProyectoDalton.Core.GameManager.Instancia.BloquearCamara) return;
 
             ManejarMovimiento();
             ManejarRotacionEInclinacion();
@@ -131,9 +134,11 @@ namespace ProyectoDalton.Camara
             }
 
             // 3. Limitar Movimiento (Esfera o Caja Fuerte)
-            if (limiteFisico != null)
+            Collider limiteGlobal = ControlEntorno.Instancia != null ? ControlEntorno.Instancia.limiteFisico : null;
+
+            if (limiteGlobal != null)
             {
-                if (limiteFisico is SphereCollider esfera)
+                if (limiteGlobal is SphereCollider esfera)
                 {
                     Vector3 centroEsfera = esfera.transform.TransformPoint(esfera.center);
                     float radioRealEsfera = esfera.radius * Mathf.Max(esfera.transform.lossyScale.x, esfera.transform.lossyScale.y, esfera.transform.lossyScale.z);
@@ -149,7 +154,7 @@ namespace ProyectoDalton.Camara
                 }
                 else
                 {
-                    posicionObjetivo = limiteFisico.ClosestPoint(posicionObjetivo);
+                    posicionObjetivo = limiteGlobal.ClosestPoint(posicionObjetivo);
                 }
             }
             else if (usarLimitesMatematicos)

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System;
 using TMPro;
 
 namespace ProyectoDalton.Atomos
@@ -53,7 +54,26 @@ namespace ProyectoDalton.Atomos
         private LineRenderer lr;
 
         // Selección global: solo un átomo puede estar "seleccionado" a la vez
+        // Selección global: solo un átomo puede estar "seleccionado" a la vez
         private static BillboardAtomo atomoSeleccionadoActual;
+
+        // --- EVENTOS (BAJO ACOPLAMIENTO) ---
+        public static event Action<DatosAtomoSO, ArrastrarAtomo.InformacionCompuesto> OnAtomoSeleccionado;
+        public static event Action OnAtomoDeseleccionado;
+        public static event Action<DatosAtomoSO, bool> OnAtomoPresenciaCambiada; // bool: true=creado, false=destruido
+        public static event Func<DatosAtomoSO, int> OnSolicitarNumeroInstancia;
+
+        /// <summary>
+        /// Deselecciona cualquier átomo que esté activo actualmente.
+        /// Útil para limpiar la interfaz al abrir menús superiores.
+        /// </summary>
+        public static void DeseleccionarTodo()
+        {
+            if (atomoSeleccionadoActual != null)
+            {
+                atomoSeleccionadoActual.Deseleccionar();
+            }
+        }
 
         void Start()
         {
@@ -61,12 +81,22 @@ namespace ProyectoDalton.Atomos
             camaraPrincipal = Camera.main;
             lr = GetComponent<LineRenderer>();
 
+            // Suscribirse a cambios en la estructura para refrescar la UI en vivo
+            ArrastrarAtomo.OnEstructuraCambiada += RefrescarUI;
+
             // Si modoDebug=false aplicamos la config del SO (modo producción).
             // Si modoDebug=true se usan los valores del propio script para ajuste en vivo.
             if (!modoDebug && datos != null)
             {
-                // Notificamos al menú para el control de límites y recibimos el número de instancia
-                int miNumero = ProyectoDalton.Interfaz.MenuAtomosUI.NotificarPresenciaAtomo(datos, true);
+                // Notificamos a través de eventos (quien escuche, que responda con el número)
+                int miNumero = 0;
+                if (OnSolicitarNumeroInstancia != null)
+                {
+                    miNumero = OnSolicitarNumeroInstancia.Invoke(datos);
+                }
+                
+                // Notificamos que hemos nacido
+                OnAtomoPresenciaCambiada?.Invoke(datos, true);
 
                 if (textoNombre != null) 
                 {
@@ -224,9 +254,16 @@ namespace ProyectoDalton.Atomos
                 return;
             }
 
-            // Prioridad 1: Selección y Hover (debe ir antes del early return de arrastre para captar el click inicial)
+            // Prioridad 1: Selección y Hover
             if (Mouse.current != null)
             {
+                // Si el input está bloqueado por el GameManager (ej. menú de pausa), no permitimos interactuar
+                if (ProyectoDalton.Core.GameManager.Instancia != null && ProyectoDalton.Core.GameManager.Instancia.BloquearInput)
+                {
+                    enHover = false;
+                    return;
+                }
+
                 Ray rayo = camaraPrincipal.ScreenPointToRay(Mouse.current.position.ReadValue());
                 bool ratonEncima = Physics.Raycast(rayo, out RaycastHit hit) && hit.collider.gameObject == this.gameObject;
                 enHover = ratonEncima;
@@ -276,9 +313,14 @@ namespace ProyectoDalton.Atomos
             // Log a la consola y mostrar detalle UI
             if (datos != null)
             {
-                float masaTotal = scriptArrastre != null ? scriptArrastre.ObtenerMasaTotal() : datos.masaAtomica;
-                ProyectoDalton.Interfaz.LogN.Info($"Elemento seleccionado: {datos.nombreElemento} ({datos.simbolo}) | Masa Total: {masaTotal:F1}u");
-                ProyectoDalton.Interfaz.DetalleAtomoUI.Mostrar(datos, masaTotal);
+                ArrastrarAtomo.InformacionCompuesto info = scriptArrastre != null ? 
+                    scriptArrastre.ObtenerInformacionCompuesto() : 
+                    new ArrastrarAtomo.InformacionCompuesto { masaTotal = datos.masaAtomica, esCompuesto = false };
+
+                ProyectoDalton.Interfaz.LogN.Info($"Elemento seleccionado: {datos.nombreElemento} ({datos.simbolo}) | Masa: {info.masaTotal:F1}u");
+                
+                // Disparamos el evento con toda la matemática calculada
+                OnAtomoSeleccionado?.Invoke(datos, info);
             }
         }
 
@@ -287,7 +329,7 @@ namespace ProyectoDalton.Atomos
             if (seleccionado)
             {
                 ProyectoDalton.Interfaz.LogN.Info("Elemento deseleccionado.");
-                ProyectoDalton.Interfaz.DetalleAtomoUI.Ocultar();
+                OnAtomoDeseleccionado?.Invoke();
             }
             
             seleccionado = false;
@@ -304,17 +346,35 @@ namespace ProyectoDalton.Atomos
                 lr.enabled = mostrar;
         }
 
+        private void RefrescarUI()
+        {
+            // Solo si este átomo es el que el usuario está viendo en el panel de detalles
+            if (seleccionado)
+            {
+                // Re-calculamos y disparamos el evento (esto actualizará la masa y fórmula en vivo)
+                if (datos != null)
+                {
+                    ArrastrarAtomo.InformacionCompuesto info = scriptArrastre != null ? 
+                        scriptArrastre.ObtenerInformacionCompuesto() : 
+                        new ArrastrarAtomo.InformacionCompuesto { masaTotal = datos.masaAtomica, esCompuesto = false };
+
+                    OnAtomoSeleccionado?.Invoke(datos, info);
+                }
+            }
+        }
+
         void OnDisable()
         {
             Deseleccionar();
+            ArrastrarAtomo.OnEstructuraCambiada -= RefrescarUI;
         }
 
         void OnDestroy()
         {
-            // Notificamos al menú que el átomo ya no existe para liberar el límite
+            // Notificamos que nos vamos
             if (!modoDebug && datos != null)
             {
-                ProyectoDalton.Interfaz.MenuAtomosUI.NotificarPresenciaAtomo(datos, false);
+                OnAtomoPresenciaCambiada?.Invoke(datos, false);
             }
         }
     }

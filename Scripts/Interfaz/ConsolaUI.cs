@@ -37,6 +37,7 @@ namespace ProyectoDalton.Interfaz
         private Queue<Label> _labelsEnPantalla = new Queue<Label>();
         private Queue<DatosMensaje> _colaMensajes = new Queue<DatosMensaje>();
         private bool _estaProcesandoCola = false;
+        private Coroutine _rutinaFusion;
 
         private void Awake()
         {
@@ -51,17 +52,58 @@ namespace ProyectoDalton.Interfaz
             
             if (_contenedorMensajes == null) return;
 
-            // Animación de entrada:
-            var consolaRaiz = root.Q<VisualElement>("ConsolaRaiz");
-            if (consolaRaiz != null)
-            {
-                consolaRaiz.AddToClassList("panel--hidden");
-                // Corrección: el método correcto es StartingIn(long)
-                consolaRaiz.schedule.Execute(() => consolaRaiz.RemoveFromClassList("panel--hidden")).StartingIn(50);
-            }
+            // La consola ahora permanece oculta hasta que el Menú Principal o un evento la active.
 
             // Mensaje de sistema
             Escribir(new DatosMensaje("Consola de diagnóstico activa.", TipoLog.Normal));
+
+            // Suscribirse a los eventos de entorno
+            ProyectoDalton.Entorno.ControlEntorno.OnVisualFusionDisparado += ActivarEfectoFusion;
+            ProyectoDalton.Entorno.ControlEntorno.OnEstructuraRota += ActivarEfectoRuptura;
+        }
+
+        private void OnDisable()
+        {
+            ProyectoDalton.Entorno.ControlEntorno.OnVisualFusionDisparado -= ActivarEfectoFusion;
+            ProyectoDalton.Entorno.ControlEntorno.OnEstructuraRota -= ActivarEfectoRuptura;
+        }
+
+        private void ActivarEfectoFusion(float duracion)
+        {
+            if (_rutinaFusion != null) StopCoroutine(_rutinaFusion);
+            LimpiarEfectosBorde();
+            _rutinaFusion = StartCoroutine(SecuenciaColorBorde(duracion, "fusion"));
+        }
+
+        private void ActivarEfectoRuptura(ProyectoDalton.Atomos.ArrastrarAtomo.InformacionCompuesto info)
+        {
+            if (_rutinaFusion != null) StopCoroutine(_rutinaFusion);
+            LimpiarEfectosBorde();
+            _rutinaFusion = StartCoroutine(SecuenciaColorBorde(2.0f, "ruptura"));
+        }
+
+        private void LimpiarEfectosBorde()
+        {
+            var consolaRaiz = GetComponent<UIDocument>().rootVisualElement.Q<VisualElement>("ConsolaRaiz");
+            if (consolaRaiz == null) return;
+            consolaRaiz.RemoveFromClassList("panel-base--fusion");
+            consolaRaiz.RemoveFromClassList("panel-accent-left--fusion");
+            consolaRaiz.RemoveFromClassList("panel-base--ruptura");
+            consolaRaiz.RemoveFromClassList("panel-accent-left--ruptura");
+        }
+
+        private IEnumerator SecuenciaColorBorde(float duracion, string tipo)
+        {
+            var consolaRaiz = GetComponent<UIDocument>().rootVisualElement.Q<VisualElement>("ConsolaRaiz");
+            if (consolaRaiz == null) yield break;
+
+            consolaRaiz.AddToClassList($"panel-base--{tipo}");
+            consolaRaiz.AddToClassList($"panel-accent-left--{tipo}");
+            
+            yield return new WaitForSeconds(duracion);
+            
+            consolaRaiz.RemoveFromClassList($"panel-base--{tipo}");
+            consolaRaiz.RemoveFromClassList($"panel-accent-left--{tipo}");
         }
 
         private void Update()
@@ -181,6 +223,8 @@ namespace ProyectoDalton.Interfaz
             bool estaVisible = !consolaRaiz.ClassListContains("panel--hidden");
             _instancia.SetVisibilidad(!estaVisible);
         }
+
+        public static bool EstaOcupada => _instancia != null && (_instancia._estaProcesandoCola || _instancia._colaMensajes.Count > 0);
 
         private void HacerScrollAlFinal()
         {

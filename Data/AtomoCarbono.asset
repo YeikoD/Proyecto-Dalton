@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec4f3c61fa633164ba1a70969d63c856, type: 3}
+  m_Name: AtomoCarbono
+  m_EditorClassIdentifier: Assembly-CSharp::ProyectoDalton.Atomos.DatosAtomoSO
+  nombreElemento: Carbono
+  esElemento: 0
+  descripcionTeorica: "Dalton lo consideraba un elemento fundamental de la naturaleza,
+    presente tanto en el grafito como en los diamantes. Seg\xFAn sus tablas de 1803,
+    el carbono es un \xE1tomo m\xE1s pesado y denso que el hidr\xF3geno, pero capaz
+    de unirse a \xE9l para formar compuestos gaseosos."
+  nota: "Dalton observ\xF3 que el carbono se combinaba con el ox\xEDgeno en dos proporciones
+    distintas (lo que hoy conocemos como CO y CO2), lo que le sirvi\xF3 de base para
+    formular la \"Ley de las Proporciones M\xFAltiples\". Originalmente, le asign\xF3
+    un peso relativo de 5u (aunque hoy sabemos que es 12u)."
+  simbolo: C
+  icono: {fileID: -1453408323, guid: 32d0efeb71824b04cbdecc4ed7d3c433, type: 3}
+  masaAtomica: 5
+  prefabAtomo: {fileID: 8332970333699297103, guid: f7c079345c65a9345aa5a205917c08f2, type: 3}
+  largoSubrayado: 0.1
+  offsetVerticalCodo: -0.16
+  alturaLineaVertical: -0.03
+  anchoLinea: 0.015
+  colorLinea: {r: 1, g: 1, b: 1, a: 1}
+  colorTextoMenu: {r: 0.1981132, g: 0.1981132, b: 0.1981132, a: 1}
+  inerciaBillboard: 0.85
+  distanciaMaxima: 20

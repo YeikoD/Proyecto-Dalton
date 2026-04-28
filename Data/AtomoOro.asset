@@ -24,7 +24,7 @@ MonoBehaviour:
   simbolo: G
   icono: {fileID: 2004717911, guid: 42551ed282561e9409ebef872ee180cd, type: 3}
   masaAtomica: 190
-  prefabAtomo: {fileID: 8386054590509990941, guid: 0937432087bfefa4e87b7381b0ac3a97, type: 3}
+  prefabAtomo: {fileID: 8553815792507419622, guid: 404751a63b53f73478fdd8f8f1b33d47, type: 3}
   largoSubrayado: 0.1
   offsetVerticalCodo: -0.16
   alturaLineaVertical: -0.03

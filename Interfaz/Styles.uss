@@ -2,7 +2,10 @@
     --color-bg-panel: rgba(0, 0, 0, 0.7);
     --color-border-light: rgba(0, 50, 110, 0.5);
     --color-accent-blue: rgb(0, 50, 110);
-    --color-accent-gold: rgb(255, 200, 0);
+    --color-accent-secondary: #7D1C34;
+    --color-accent-secondary-alt: #9E2D47;
+    --color-accent-tertiary: #398084;
+    --color-accent-tertiary-alt: #4CA6AB;
     --color-text-main: rgb(220, 220, 220);
     --spacing-main: 10px;
     --radius-main: 0;
@@ -35,6 +38,36 @@
     border-left-width: 4px;
     border-left-color: var(--color-accent-blue);
 }
+
+.panel-base--fusion {
+    border-color: var(--color-accent-tertiary) !important;
+}
+
+.panel-accent-left--fusion {
+    border-left-color: var(--color-accent-tertiary) !important;
+}
+
+.panel-accent-bottom--fusion {
+    border-bottom-color: var(--color-accent-tertiary) !important;
+}
+
+.panel-base--ruptura {
+    border-color: var(--color-accent-secondary) !important;
+}
+
+.panel-accent-left--ruptura {
+    border-left-color: var(--color-accent-secondary) !important;
+}
+
+.panel-accent-bottom--ruptura {
+    border-bottom-color: var(--color-accent-secondary) !important;
+}
+
+.panel-accent-bottom {
+    border-bottom-width: 4px;
+    border-bottom-color: var(--color-accent-blue);
+}
+
 
 .text-base {
     color: var(--color-text-main);
@@ -70,7 +103,7 @@
     right: 10px;
     top: 10px;
     bottom: 10px;
-    width: 294px;
+    width: 360px;
 }
 
 .menu-handle {
@@ -91,7 +124,6 @@
 
 .menu-handle:hover {
     background-color: var(--color-accent-blue);
-    cursor: link;
 }
 
 .menu-handle--hidden {
@@ -122,11 +154,10 @@
     font-size: 16px;
     -unity-font-style: bold;
     padding: 5px;
-    cursor: link;
 }
 
 .boton-cerrar:hover {
-    color: var(--color-accent-gold);
+    color: var(--color-accent-secondary);
 }
 
 .tooltip-panel {
@@ -158,7 +189,7 @@
 }
 
 .tooltip__nombre {
-    font-size: 18px;
+    font-size: 17px;
     margin-bottom: 2px;
 }
 
@@ -183,6 +214,18 @@
     opacity: 0.9;
 }
 
+.tooltip__formula {
+    font-size: 14px;
+    margin-top: 2px;
+}
+
+.tooltip__composicion {
+    font-size: 11px;
+    -unity-font-style: normal;
+    color: rgba(255, 255, 255, 0.4);
+    margin-top: 2px;
+}
+
 .tooltip__descripcion {
     padding-top: 5px;
     white-space: normal;
@@ -197,6 +240,29 @@
     color: rgba(255, 255, 255, 0.6);
 }
 
+.boton-atomo__borrar {
+    width: 26px;
+    height: 26px;
+    background-color: rgba(125, 28, 52, 0.4);
+    color: rgba(255, 255, 255, 0.8);
+    border-radius: 13px;
+    border-width: 1px;
+    border-color: rgba(125, 28, 52, 0.3);
+    -unity-text-align: middle-center;
+    -unity-font-style: bold;
+    font-size: 14px;
+    transition-property: background-color, border-color, scale;
+    transition-duration: 0.2s;
+    margin-left: 10px;
+}
+
+.boton-atomo__borrar:hover {
+    background-color: var(--color-accent-secondary);
+    border-color: var(--color-accent-secondary-alt);
+    color: white;
+    scale: 1.15;
+}
+
 .boton-atomo {
     flex-direction: row;
     align-items: center;
@@ -207,7 +273,6 @@
     border-left-color: transparent;
     transition-property: background-color, border-left-color, translate;
     transition-duration: 0.3s;
-    cursor: link;
 }
 
 .boton-atomo:hover {
@@ -220,26 +285,283 @@
     width: 56px;
     height: 56px;
     margin-right: 15px;
+    flex-shrink: 0;
 }
 
 .boton-atomo__texto {
     flex-grow: 1;
     font-size: 13px;
     letter-spacing: 1px;
-    text-transform: uppercase;
     opacity: 0.8;
 }
 
 .console-label {
     margin-bottom: 4px;
     white-space: normal;
+    font-size: 14px;
+    -unity-font-style: bold;
+    -unity-font-definition: url("project:/Assets/Interfaz/Fuentes/Montserrat-VariableFont_wght.ttf");
 }
 
 .console-label--important {
-    color: var(--color-accent-gold);
+    color: var(--color-accent-tertiary);
 }
 
 .border-light {
     position: absolute;
     border-radius: 1px;
+}
+
+/* --- MENÚ PRINCIPAL --- */
+.menu-principal-pantalla {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: transparent;
+    justify-content: center;
+    align-items: center;
+    transition-property: opacity, scale;
+    transition-duration: 0.3s;
+    transition-timing-function: ease-in-out;
+}
+
+.boton-ajustes {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 24px;
+    height: 24px;
+    background-color: transparent;
+    border-width: 0;
+    opacity: 0.4;
+    background-image: url("project:/Assets/Interfaz/Iconos/settings_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.png");
+    transition-property: opacity, rotate, scale;
+    transition-duration: 0.4s;
+}
+
+.boton-ajustes--hidden {
+    opacity: 0;
+    scale: 0;
+}
+
+.boton-ajustes:hover {
+    opacity: 1;
+    rotate: 45deg;
+    scale: 1.1;
+}
+
+.menu-principal--hidden {
+    opacity: 0;
+    scale: 1.1;
+}
+
+.menu-principal__contenedor {
+    align-items: center;
+}
+
+.titulo-logo {
+    width: 1000px;
+    height: 333px;
+    margin-bottom: 20px;
+    background-image: url("project:/Assets/Interfaz/Iconos/LogoSimulador_medio_grande.png");
+    -unity-background-scale-mode: scale-to-fit;
+    transition-property: opacity, scale;
+    transition-duration: 2s;
+    transition-timing-function: ease-out;
+}
+
+.titulo-logo--hidden {
+    opacity: 0;
+    scale: 0.8;
+}
+
+.cuadro-informacion {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    align-items: flex-end;
+    padding-right: 15px;
+    border-right-width: 2px;
+    border-right-color: var(--color-accent-blue);
+    transition-property: opacity;
+    transition-duration: 0.8s;
+}
+
+.cuadro-informacion--hidden {
+    opacity: 0;
+}
+
+.info-label {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 3px;
+    margin-bottom: 2px;
+    -unity-font-style: bold;
+    -unity-font-definition: url("project:/Assets/Interfaz/Fuentes/Montserrat-VariableFont_wght.ttf");
+}
+
+.info-label--bold {
+    font-size: 18px;
+    -unity-font-style: bold;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 5px;
+    transition-property: opacity;
+    transition-duration: 0.2s;
+}
+
+.boton-iniciar {
+    width: 322px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    background-color: transparent;
+    border-width: 2px;
+    border-color: var(--color-accent-blue);
+    color: white;
+    font-size: 14px;
+    letter-spacing: 3px;
+    transition-property: background-color, border-color, scale, translate, opacity;
+    transition-duration: 0.5s;
+}
+
+.boton-iniciar--hidden {
+    opacity: 0;
+    scale: 0.8;
+}
+
+.boton-iniciar:hover {
+    background-color: var(--color-border-light);
+    border-color: var(--color-accent-blue);
+    scale: 1.05;
+    translate: 0 -5px;
+}
+
+.boton-iniciar:active {
+    scale: 0.95;
+}
+
+.boton-salir {
+    margin-top: 15px;
+    border-color: rgba(125, 28, 52, 0.3);
+    font-size: 11px;
+    letter-spacing: 2px;
+    height: 40px;
+}
+
+.boton-salir:hover {
+    background-color: var(--color-accent-secondary);
+    border-color: var(--color-accent-secondary-alt);
+    color: white;
+}
+
+.boton-limpiar {
+    margin-top: 10px;
+    border-color: rgba(255, 152, 0, 0.2);
+}
+
+.boton-limpiar:hover {
+    background-color: rgba(255, 152, 0, 0.15);
+    border-color: #ff9800;
+}
+
+.logos-contenedor {
+    position: absolute;
+    bottom: 10px;
+    right: -20px;
+    flex-direction: row;
+    align-items: center;
+    transition-property: opacity;
+    transition-duration: 1s;
+}
+
+.logos-contenedor--hidden {
+    opacity: 0;
+}
+
+.logo-icon {
+    width: 100px;
+    height: 50px;
+    opacity: 0.5;
+    transition-property: opacity, scale;
+    transition-duration: 0.3s;
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.logo-icon:hover {
+    opacity: 1;
+    scale: 1.05;
+}
+
+.logo-compania {
+    background-image: url("project:/Assets/Interfaz/IMG/logo_yeiko_pequeno.png");
+}
+
+.texto-creditos {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 3px;
+    -unity-font-style: bold;
+    -unity-font-definition: url("project:/Assets/Interfaz/Fuentes/Montserrat-VariableFont_wght.ttf");
+    border-left-width: 2px;
+    border-left-color: var(--color-accent-blue);
+    padding-left: 10px;
+    transition-property: color, border-left-color, opacity;
+    transition-duration: 0.3s;
+}
+
+.texto-creditos--hidden {
+    opacity: 0;
+}
+
+.texto-creditos:hover {
+    color: white;
+    border-left-color: white;
+}
+
+/* --- NOTIFICACIÓN SUPERIOR --- */
+.notificacion-panel {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    translate: -50% 0;
+    width: 450px;
+    align-items: center;
+    padding: 15px 25px;
+    transition-property: translate, opacity, border-color, border-bottom-color;
+    transition-duration: 0.6s, 0.6s, 0.5s, 0.5s;
+    transition-timing-function: ease-out-bounce, ease-out-bounce, ease-out-back, ease-out-back;
+}
+
+.notificacion--hidden {
+    opacity: 0;
+    translate: -50% -100px;
+}
+
+.notificacion__titulo {
+    font-size: 16px;
+    color: var(--color-accent-secondary-alt);
+    letter-spacing: 4px;
+    margin-bottom: 5px;
+    transition-property: color;
+    transition-duration: 0.3s;
+}
+
+.notificacion__titulo--fusion {
+    color: var(--color-accent-tertiary-alt) !important;
+}
+
+.notificacion__titulo--ruptura {
+    color: var(--color-accent-secondary-alt) !important;
+}
+
+.notificacion__mensaje {
+    font-size: 13px;
+    color: white;
+    opacity: 0.8;
+    white-space: normal;
+    -unity-text-align: middle-center;
 }

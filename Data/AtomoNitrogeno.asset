@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec4f3c61fa633164ba1a70969d63c856, type: 3}
+  m_Name: AtomoNitrogeno
+  m_EditorClassIdentifier: Assembly-CSharp::ProyectoDalton.Atomos.DatosAtomoSO
+  nombreElemento: "Nitr\xF3geno"
+  esElemento: 0
+  descripcionTeorica: "Dalton lo identific\xF3 como un componente esencial de la
+    atm\xF3sfera (lo llamaba \"gas azote\"). Es un \xE1tomo que tiende a formar uniones
+    muy fuertes y es clave para entender c\xF3mo se organizan los gases en el aire."
+  nota: "Dalton le asign\xF3 un peso de 4.2u (aunque hoy usamos 14u). Fue fundamental
+    para sus estudios sobre la presi\xF3n de los gases, lo que lo llev\xF3 a su famosa
+    \"Ley de las Presiones Parciales\"."
+  simbolo: N
+  icono: {fileID: -1453408323, guid: 32d0efeb71824b04cbdecc4ed7d3c433, type: 3}
+  masaAtomica: 5
+  prefabAtomo: {fileID: 7643025866824191290, guid: 54a96339009ef9f4d9fca49e3c749fb7, type: 3}
+  largoSubrayado: 0.1
+  offsetVerticalCodo: -0.16
+  alturaLineaVertical: -0.03
+  anchoLinea: 0.015
+  colorLinea: {r: 1, g: 1, b: 1, a: 1}
+  colorTextoMenu: {r: 0.18431373, g: 0.6784314, b: 0.90588236, a: 1}
+  inerciaBillboard: 0.85
+  distanciaMaxima: 20

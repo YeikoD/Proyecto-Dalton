@@ -17,7 +17,54 @@ public class FondoNebulosaPro : MonoBehaviour
     void Start()
     {
         mat = GetComponent<Renderer>().material;
+        mat.SetFloat("_BlendConexion", 0f);
+        mat.SetFloat("_BlendRuptura", 0f);
         GenerarTexturaGradiente();
+
+        // Escuchar eventos globales
+        ProyectoDalton.Entorno.ControlEntorno.OnVisualFusionDisparado += IniciarTransicionConexion;
+        ProyectoDalton.Entorno.ControlEntorno.OnEstructuraRota += IniciarTransicionDesconexion;
+    }
+
+    private void IniciarTransicionConexion(float duracion)
+    {
+        StopAllCoroutines();
+        StartCoroutine(AnimarTransicion(duracion, "_BlendConexion"));
+    }
+
+    private void IniciarTransicionDesconexion(ProyectoDalton.Atomos.ArrastrarAtomo.InformacionCompuesto info)
+    {
+        StopAllCoroutines();
+        StartCoroutine(AnimarTransicion(2.0f, "_BlendRuptura"));
+    }
+
+    private System.Collections.IEnumerator AnimarTransicion(float duracionEfecto, string nombrePropiedad)
+    {
+        if (mat == null) yield break;
+
+        float tiempo = 0;
+        float mitadDuracion = duracionEfecto * 0.5f;
+
+        // Transición de salida (Blend 0 a 1)
+        while (tiempo < mitadDuracion)
+        {
+            tiempo += Time.deltaTime;
+            float t = tiempo / mitadDuracion;
+            mat.SetFloat(nombrePropiedad, t);
+            yield return null;
+        }
+
+        // Transición de vuelta (Blend 1 a 0)
+        tiempo = 0;
+        while (tiempo < mitadDuracion)
+        {
+            tiempo += Time.deltaTime;
+            float t = tiempo / mitadDuracion;
+            mat.SetFloat(nombrePropiedad, 1f - t);
+            yield return null;
+        }
+
+        mat.SetFloat(nombrePropiedad, 0f);
     }
 
     // Se ejecuta cuando cambias valores en el Inspector, permitiéndote ver cambios en vivo en Play Mode
@@ -72,6 +119,9 @@ public class FondoNebulosaPro : MonoBehaviour
 
     void OnDestroy()
     {
+        ProyectoDalton.Entorno.ControlEntorno.OnVisualFusionDisparado -= IniciarTransicionConexion;
+        ProyectoDalton.Entorno.ControlEntorno.OnEstructuraRota -= IniciarTransicionDesconexion;
+        
         // Limpiamos la textura de la memoria al destruir el objeto
         if (rampTex != null)
         {

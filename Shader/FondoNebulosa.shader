@@ -3,7 +3,12 @@ Shader "Custom/FondoNebulosa"
     Properties
     {
         [Header(Configuracion de Colores)]
-        _ColorRamp ("Textura Gradiente", 2D) = "white" {}
+        _ColorRamp ("Textura Gradiente Base (Azul)", 2D) = "white" {}
+        _ColorRampConexion ("Textura Gradiente Conexion (Teal)", 2D) = "white" {}
+        _ColorRampRuptura ("Textura Gradiente Ruptura (Roja)", 2D) = "white" {}
+        
+        _BlendConexion ("Mezcla Conexion", Range(0, 1)) = 0.0
+        _BlendRuptura ("Mezcla Ruptura", Range(0, 1)) = 0.0
         
         [Header(Parametros)]
         _Escala ("Escala de Ruido", Float) = 5.0
@@ -36,6 +41,10 @@ Shader "Custom/FondoNebulosa"
             };
 
             sampler2D _ColorRamp;
+            sampler2D _ColorRampConexion;
+            sampler2D _ColorRampRuptura;
+            float _BlendConexion;
+            float _BlendRuptura;
             float _Escala;
             float _Velocidad;
 
@@ -93,10 +102,17 @@ Shader "Custom/FondoNebulosa"
                 // Smoothstep para ganar contraste
                 finalSample = smoothstep(0.3, 0.7, finalSample);
 
-                // Mapeamos el color leyendo la textura gradiente de C#
-                fixed4 colorNebulosa = tex2D(_ColorRamp, float2(finalSample, 0.5));
+                // Mapeamos el color leyendo las tres texturas
+                fixed4 colorNormal = tex2D(_ColorRamp, float2(finalSample, 0.5));
+                fixed4 colorConexion = tex2D(_ColorRampConexion, float2(finalSample, 0.5));
+                fixed4 colorRuptura = tex2D(_ColorRampRuptura, float2(finalSample, 0.5));
                 
-                return colorNebulosa;
+                // Aplicamos las mezclas de forma aditiva/lerp
+                fixed4 finalColor = colorNormal;
+                finalColor = lerp(finalColor, colorConexion, _BlendConexion);
+                finalColor = lerp(finalColor, colorRuptura, _BlendRuptura);
+                
+                return finalColor;
             }
             ENDCG
         }

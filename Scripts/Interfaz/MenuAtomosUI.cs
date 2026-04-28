@@ -18,6 +18,7 @@ namespace ProyectoDalton.Interfaz
         private VisualElement _menuRaiz;
         private VisualElement _menuHandle;
         private ScrollView _listaContenedor;
+        private Button _botonCerrar;
         private bool _estaVisible = false;
 
         // Diccionario para rastrear cuántos átomos hay de cada tipo y su botón correspondiente
@@ -45,17 +46,68 @@ namespace ProyectoDalton.Interfaz
 
             if (_menuHandle != null)
             {
-                // El handle abre el menú al hacer clic
-                _menuHandle.RegisterCallback<ClickEvent>(evt => AlternarMenu());
+                // El handle abre el menú al hacer clic, pero solo si el input no está bloqueado
+                _menuHandle.RegisterCallback<ClickEvent>(evt => {
+                    if (ProyectoDalton.Core.GameManager.Instancia != null && ProyectoDalton.Core.GameManager.Instancia.BloquearInput) return;
+                    AlternarMenu();
+                });
             }
 
-            var botonCerrar = root.Q<Button>("BotonCerrarMenu");
-            if (botonCerrar != null)
+            _botonCerrar = root.Q<Button>("BotonCerrarMenu");
+            if (_botonCerrar != null)
             {
-                botonCerrar.RegisterCallback<ClickEvent>(evt => AlternarMenu());
+                _botonCerrar.clicked += CerrarMenu;
             }
 
             PoblarMenu();
+
+            // Suscribirse a los eventos del Átomo y Entorno
+            BillboardAtomo.OnAtomoPresenciaCambiada += ManejarPresenciaAtomo;
+            BillboardAtomo.OnSolicitarNumeroInstancia += ManejarSolicitudNumero;
+            ProyectoDalton.Entorno.ControlEntorno.OnVisualFusionDisparado += ActivarEfectoFusion;
+            ProyectoDalton.Entorno.ControlEntorno.OnEstructuraRota += ActivarEfectoRuptura;
+        }
+
+        private void OnDisable()
+        {
+            if (_botonCerrar != null)
+                _botonCerrar.clicked -= CerrarMenu;
+
+            // Desuscribirse
+            BillboardAtomo.OnAtomoPresenciaCambiada -= ManejarPresenciaAtomo;
+            BillboardAtomo.OnSolicitarNumeroInstancia -= ManejarSolicitudNumero;
+            ProyectoDalton.Entorno.ControlEntorno.OnVisualFusionDisparado -= ActivarEfectoFusion;
+            ProyectoDalton.Entorno.ControlEntorno.OnEstructuraRota -= ActivarEfectoRuptura;
+        }
+
+        private void ActivarEfectoFusion(float duracion)
+        {
+            StopAllCoroutines();
+            LimpiarEfectosBorde();
+            StartCoroutine(SecuenciaColorBorde(duracion, "fusion"));
+        }
+
+        private void ActivarEfectoRuptura(ProyectoDalton.Atomos.ArrastrarAtomo.InformacionCompuesto info)
+        {
+            StopAllCoroutines();
+            LimpiarEfectosBorde();
+            StartCoroutine(SecuenciaColorBorde(2.0f, "ruptura"));
+        }
+
+        private void LimpiarEfectosBorde()
+        {
+            if (_menuRaiz == null) return;
+            _menuRaiz.RemoveFromClassList("panel-base--fusion");
+            _menuRaiz.RemoveFromClassList("panel-base--ruptura");
+        }
+
+        private System.Collections.IEnumerator SecuenciaColorBorde(float duracion, string tipo)
+        {
+            if (_menuRaiz == null) yield break;
+
+            _menuRaiz.AddToClassList($"panel-base--{tipo}");
+            yield return new WaitForSeconds(duracion);
+            _menuRaiz.RemoveFromClassList($"panel-base--{tipo}");
         }
 
         private void Update()
@@ -63,9 +115,14 @@ namespace ProyectoDalton.Interfaz
             if (UnityEngine.InputSystem.Keyboard.current != null && 
                 UnityEngine.InputSystem.Keyboard.current.tabKey.wasPressedThisFrame)
             {
+                // Solo permitimos abrir el menú si el input no está bloqueado (ej. por un menú principal superior)
+                if (ProyectoDalton.Core.GameManager.Instancia != null && ProyectoDalton.Core.GameManager.Instancia.BloquearInput) return;
+                
                 AlternarMenu();
             }
         }
+
+        public static MenuAtomosUI Instancia => _instancia;
 
         public void AlternarMenu()
         {
@@ -85,14 +142,27 @@ namespace ProyectoDalton.Interfaz
             }
         }
 
+        /// <summary>
+        /// Cierra el menú de átomos si está abierto.
+        /// </summary>
+        public void CerrarMenu()
+        {
+            if (!_estaVisible || _menuRaiz == null) return;
+            _estaVisible = false;
+            _menuRaiz.AddToClassList("panel--hidden-right");
+            // No restauramos el handle aquí porque MenuPrincipal lo controlará
+        }
+
         private void PoblarMenu()
         {
             if (_listaContenedor == null) return;
             _listaContenedor.Clear();
+            _registroAtomos.Clear();
 
             foreach (var datos in listaAtomosBase)
             {
-                CrearBotonAtomo(datos);
+                DatosAtomoSO d = datos;
+                CrearBotonAtomo(d);
             }
         }
 
@@ -119,8 +189,19 @@ namespace ProyectoDalton.Interfaz
             nombre.AddToClassList("text-bold");
             nombre.style.color = datos.colorTextoMenu;
 
+            // --- Botón de Borrado (X) ---
+            Label btnBorrar = new Label("✕");
+            btnBorrar.AddToClassList("boton-atomo__borrar");
+            btnBorrar.tooltip = $"Eliminar todos los átomos de {datos.nombreElemento}";
+            
+            btnBorrar.RegisterCallback<ClickEvent>(evt => {
+                evt.StopPropagation(); // Evita que se instancie un nuevo átomo al borrar
+                BorrarTodosLosAtomos(datos);
+            });
+            
             boton.Add(icono);
             boton.Add(nombre);
+            boton.Add(btnBorrar);
 
             // Registramos el botón para poder bloquearlo luego
             if (!_registroAtomos.ContainsKey(datos.nombreElemento))
@@ -128,12 +209,11 @@ namespace ProyectoDalton.Interfaz
                 _registroAtomos.Add(datos.nombreElemento, (0, boton));
             }
 
-            // Evento Click
+            // Evento Click Principal (Instanciar)
             boton.RegisterCallback<ClickEvent>(evt => {
                 // Verificación de límite antes de instanciar
                 if (_registroAtomos.TryGetValue(datos.nombreElemento, out var registro) && registro.count >= MAX_ATOMOS_POR_TIPO)
                 {
-                    LogN.Info($"<color=orange>Límite alcanzado:</color> No puedes tener más de {MAX_ATOMOS_POR_TIPO} átomos de {datos.nombreElemento}.");
                     return;
                 }
                 InstanciarAtomoEnEscena(datos);
@@ -142,17 +222,47 @@ namespace ProyectoDalton.Interfaz
             _listaContenedor.Add(boton);
         }
 
-        public static int NotificarPresenciaAtomo(DatosAtomoSO datos, bool presente)
+        private void BorrarTodosLosAtomos(DatosAtomoSO datos)
         {
-            if (_instancia == null || datos == null) return 0;
+            // Buscamos todos los BillboardAtomo en la escena
+            BillboardAtomo[] todos = Object.FindObjectsByType<BillboardAtomo>(FindObjectsSortMode.None);
+            int cantidadBorrados = 0;
 
-            if (_instancia._registroAtomos.TryGetValue(datos.nombreElemento, out var registro))
+            foreach (var b in todos)
+            {
+                if (b.datos == datos)
+                {
+                    Destroy(b.gameObject);
+                    cantidadBorrados++;
+                }
+            }
+
+            if (cantidadBorrados > 0)
+                LogN.Info($"<color=red>Limpieza:</color> Se han eliminado {cantidadBorrados} átomos de {datos.nombreElemento}.");
+        }
+
+        private int ManejarSolicitudNumero(DatosAtomoSO datos)
+        {
+            if (datos == null) return 0;
+            if (_registroAtomos.TryGetValue(datos.nombreElemento, out var registro))
+            {
+                // Devolvemos el número que le tocaría (contador actual + 1)
+                return registro.count + 1;
+            }
+            return 1;
+        }
+
+        private void ManejarPresenciaAtomo(DatosAtomoSO datos, bool presente)
+        {
+            if (datos == null) return;
+
+            if (_registroAtomos.TryGetValue(datos.nombreElemento, out var registro))
             {
                 // Actualizamos el contador
                 int nuevoContador = presente ? registro.count + 1 : registro.count - 1;
                 nuevoContador = Mathf.Max(0, nuevoContador);
                 
-                _instancia._registroAtomos[datos.nombreElemento] = (nuevoContador, registro.button);
+                _registroAtomos[datos.nombreElemento] = (nuevoContador, registro.button);
 
                 // Actualizamos el estado visual del botón
                 if (nuevoContador >= MAX_ATOMOS_POR_TIPO)
@@ -172,11 +282,7 @@ namespace ProyectoDalton.Interfaz
                     registro.button.style.opacity = 1.0f;
                     registro.button.pickingMode = PickingMode.Position;
                 }
-
-                return nuevoContador;
             }
-
-            return 0;
         }
 
         private void InstanciarAtomoEnEscena(DatosAtomoSO datos)
@@ -213,17 +319,10 @@ namespace ProyectoDalton.Interfaz
                 flotacion.masaAtomica = datos.masaAtomica;
             }
 
-            // 4. Lanzamiento inicial y límites físicos
+            // 4. Lanzamiento inicial
             var arrastre = nuevoAtomo.GetComponentInChildren<ArrastrarAtomo>();
             if (arrastre != null)
             {
-                // Intentamos buscar la configuración de límites de la cámara para replicarla
-                var camRTS = cam.GetComponent<ProyectoDalton.Camara.CamaraRTS>();
-                if (camRTS != null)
-                {
-                    arrastre.limiteFisico = camRTS.limiteFisico;
-                }
-
                 // Fuerza de lanzamiento
                 float fuerzaLanzamiento = 15f; // Un poco más de fuerza para que se note
                 arrastre.Lanzar(cam.transform.forward * fuerzaLanzamiento);

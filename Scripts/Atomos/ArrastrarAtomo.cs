@@ -1,20 +1,31 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
+using ProyectoDalton.Entorno;
 
 namespace ProyectoDalton.Atomos
 {
     [RequireComponent(typeof(Collider))]
     public class ArrastrarAtomo : MonoBehaviour
     {
+        // --- ESTRUCTURA PARA EL ANÁLISIS MATEMÁTICO (DALTON) ---
+        public struct InformacionCompuesto
+        {
+            public float masaTotal;
+            public string formula;
+            public string desgloseComposicion; // Ej: "H: 2.0u (11%) | O: 16.0u (89%)"
+            public bool esCompuesto;
+        }
+
+        public static event System.Action OnEstructuraCambiada;
+        public static event System.Action<InformacionCompuesto> OnEnlaceCreado;
+        public static event System.Action<InformacionCompuesto> OnEnlaceRoto;
         [Header("Configuración de Grilla")]
         [Tooltip("Si está activo, el átomo se moverá a saltos, encajando perfectamente en los cuadros de tu suelo.")]
         public bool ajustarAGrilla = true;
         public float tamanoGrilla = 1.0f;
 
         [Header("Límites del Mapa")]
-        [Tooltip("Asigna aquí la Nebulosa (SphereCollider) para que los átomos no se escapen al lanzarlos.")]
-        public Collider limiteFisico;
         [Tooltip("Radio del átomo para que rebote antes de que la malla atraviese la pared.")]
         public float radioAtomo = 0.5f;
         [Tooltip("Altura del suelo de tu grilla. El átomo nunca bajará más que esto.")]
@@ -64,6 +75,16 @@ namespace ProyectoDalton.Atomos
             flotacionScript = GetComponentInChildren<AtomoFlotante>();
             billboardScript = GetComponentInChildren<BillboardAtomo>();
             camaraPrincipal = Camera.main;
+
+            // Auto-detectamos el radio basado en el SphereCollider y la escala
+            SphereCollider col = GetComponent<SphereCollider>();
+            if (col == null) col = GetComponentInChildren<SphereCollider>();
+            
+            if (col != null)
+            {
+                // El radio real es el radio del collider multiplicado por la escala mayor
+                radioAtomo = col.radius * Mathf.Max(transform.lossyScale.x, transform.lossyScale.z);
+            }
         }
 
         void Start()
@@ -74,6 +95,13 @@ namespace ProyectoDalton.Atomos
         void Update()
         {
             if (Mouse.current == null) return;
+
+            // Si el input está bloqueado por el GameManager, no procesamos arrastres
+            if (ProyectoDalton.Core.GameManager.Instancia != null && ProyectoDalton.Core.GameManager.Instancia.BloquearInput)
+            {
+                if (EstaSiendoArrastrado) TerminarArrastreYFijar();
+                return;
+            }
 
             // 0. IGNORAR CLIC SI ESTÁ SOBRE UI (Evita atrapar el átomo al instanciarlo desde el botón)
             if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) 
@@ -133,10 +161,20 @@ namespace ProyectoDalton.Atomos
                     if (distanciaAlPadre > radioAtomo * 2.5f)
                     {
                         ProyectoDalton.Interfaz.LogN.Info($"<color=orange>Enlace roto:</color> {billboardScript.datos.nombreElemento} se ha separado.");
+                        
+                        // Capturamos la info de la estructura ANTES de separar por completo (opcional) o DESPUÉS
+                        // Usualmente la ruptura se comunica para saber qué quedó solo
+                        InformacionCompuesto infoRuptura = ObtenerInformacionCompuesto();
+
                         transform.SetParent(null);
+                        
                         // Al soltarse, el AtomoFlotante necesita saber su nueva ancla en el mundo
                         if (flotacionScript != null)
                             flotacionScript.FijarNuevaPosicion(transform.localPosition);
+
+                        // NOTIFICAMOS QUE LA ESTRUCTURA CAMBIÓ (Ruptura)
+                        OnEstructuraCambiada?.Invoke();
+                        OnEnlaceRoto?.Invoke(infoRuptura);
                     }
                     else
                     {
@@ -213,10 +251,13 @@ namespace ProyectoDalton.Atomos
 
         private void LimitarPosicionFisica()
         {
+            // Obtenemos el límite centralizado desde el ControlEntorno
+            Collider limiteGlobal = ControlEntorno.Instancia != null ? ControlEntorno.Instancia.limiteFisico : null;
+
             // 1. Límite Esférico (Nebulosa)
-            if (limiteFisico != null)
+            if (limiteGlobal != null)
             {
-                if (limiteFisico is SphereCollider esfera)
+                if (limiteGlobal is SphereCollider esfera)
                 {
                     Vector3 centroEsfera = esfera.transform.TransformPoint(esfera.center);
                     float radioRealEsfera = esfera.radius * Mathf.Max(esfera.transform.lossyScale.x, esfera.transform.lossyScale.y, esfera.transform.lossyScale.z);
@@ -239,7 +280,7 @@ namespace ProyectoDalton.Atomos
                 }
                 else
                 {
-                    transform.position = limiteFisico.ClosestPoint(transform.position);
+                    transform.position = limiteGlobal.ClosestPoint(transform.position);
                 }
             }
 
@@ -258,7 +299,8 @@ namespace ProyectoDalton.Atomos
             }
 
             // 3. Choque entre Átomos (Teoría de Dalton)
-            Collider[] vecinos = Physics.OverlapSphere(transform.position, radioAtomo * 1.5f, capaAtomos);
+            // Aumentamos el rango de detección (3.0f) para permitir el magnetismo desde más lejos
+            Collider[] vecinos = Physics.OverlapSphere(transform.position, radioAtomo * 3.0f, capaAtomos);
             foreach (var vecino in vecinos)
             {
                 if (vecino.gameObject == this.gameObject) continue;
@@ -303,13 +345,35 @@ namespace ProyectoDalton.Atomos
                     else
                     {
                         // DALTON: Átomos diferentes se unen (Combinación Química)
-                        if (distancia < distanciaMinima * 1.05f && !EstaSiendoArrastrado && !scriptVecino.EstaSiendoArrastrado)
+                        // IMPLEMENTACIÓN DE MAGNETISMO FLUIDO
+                        float factorMagnetismo = 2.2f; // Rango de atracción (más del doble de su tamaño)
+                        float rangoAtraccion = distanciaMinima * factorMagnetismo;
+
+                        if (distancia < rangoAtraccion)
                         {
-                            UnirseA(scriptVecino, distanciaMinima);
+                            // Calculamos la fuerza basada en la cercanía (0 a 1)
+                            float tAtraccion = 1.0f - (distancia / rangoAtraccion);
+                            // Curva de atracción suave (cuadrática)
+                            tAtraccion = tAtraccion * tAtraccion;
+
+                            Vector3 puntoUnionIdeal = vecino.transform.position + (distancia > 0.001f ? direccionDesdeVecino.normalized : Vector3.up) * distanciaMinima;
+                            
+                            // Aplicamos el "imán" fluido. Si se arrastra, es más sutil para no quitar control total.
+                            float intensidad = EstaSiendoArrastrado ? 3.0f : 10.0f;
+                            transform.position = Vector3.Lerp(transform.position, puntoUnionIdeal, Time.deltaTime * tAtraccion * intensidad);
+
+                            // Si están suficientemente cerca y libres, se sellan definitivamente
+                            // Hemos subido el margen a 1.2f para que la unión sea más "generosa"
+                            if (distancia < distanciaMinima * 1.2f && !EstaSiendoArrastrado && !scriptVecino.EstaSiendoArrastrado)
+                            {
+                                UnirseA(scriptVecino, distanciaMinima);
+                            }
                         }
-                        else if (distancia < distanciaMinima)
+
+                        // Colisión de seguridad si están demasiado cerca
+                        if (distancia < distanciaMinima)
                         {
-                            Vector3 normalColision = direccionDesdeVecino.normalized;
+                            Vector3 normalColision = distancia > 0.001f ? direccionDesdeVecino.normalized : Vector3.up;
                             transform.position = vecino.transform.position + normalColision * distanciaMinima;
                         }
                     }
@@ -337,6 +401,10 @@ namespace ProyectoDalton.Atomos
             {
                 flotacionScript.FijarNuevaPosicion(transform.localPosition);
             }
+
+            // NOTIFICAMOS QUE LA ESTRUCTURA CAMBIÓ (Unión)
+            OnEstructuraCambiada?.Invoke();
+            OnEnlaceCreado?.Invoke(ObtenerInformacionCompuesto());
         }
 
         private void TerminarArrastreYFijar()
@@ -372,22 +440,73 @@ namespace ProyectoDalton.Atomos
 
         public float ObtenerMasaTotal()
         {
-            // Buscamos la raíz del compuesto (el padre de todos)
+            return ObtenerInformacionCompuesto().masaTotal;
+        }
+
+        public InformacionCompuesto ObtenerInformacionCompuesto()
+        {
+            // 1. Buscamos la raíz del compuesto
             Transform raiz = transform;
             while (raiz.parent != null && raiz.parent.GetComponent<ArrastrarAtomo>() != null)
             {
                 raiz = raiz.parent;
             }
 
-            // Sumamos las masas de todos los átomos en esta estructura
-            float masaTotal = 0;
-            AtomoFlotante[] atomos = raiz.GetComponentsInChildren<AtomoFlotante>();
-            foreach (var atomo in atomos)
+            // 2. Recolectamos todos los átomos de la estructura
+            ArrastrarAtomo[] todosLosAtomos = raiz.GetComponentsInChildren<ArrastrarAtomo>();
+            
+            float masaAcumulada = 0;
+            System.Collections.Generic.Dictionary<string, (int count, float masaTotalElemento, string simbolo)> conteoElementos = 
+                new System.Collections.Generic.Dictionary<string, (int, float, string)>();
+
+            foreach (var atomo in todosLosAtomos)
             {
-                masaTotal += atomo.masaAtomica;
+                float masaAtomo = atomo.flotacionScript != null ? atomo.flotacionScript.masaAtomica : 1.0f;
+                masaAcumulada += masaAtomo;
+                
+                // Usamos las referencias cacheadas en lugar de buscar componentes
+                var bb = atomo.billboardScript;
+                if (bb != null && bb.datos != null)
+                {
+                    string nombre = bb.datos.nombreElemento;
+                    string simbolo = bb.datos.simbolo;
+
+                    if (conteoElementos.ContainsKey(nombre))
+                    {
+                        var data = conteoElementos[nombre];
+                        conteoElementos[nombre] = (data.count + 1, data.masaTotalElemento + masaAtomo, simbolo);
+                    }
+                    else
+                    {
+                        conteoElementos.Add(nombre, (1, masaAtomo, simbolo));
+                    }
+                }
             }
 
-            return masaTotal;
+            // 3. Generar Fórmula y Desglose (Matemática de Dalton)
+            string formulaGenerada = "";
+            string desgloseText = "";
+            
+            foreach (var elem in conteoElementos)
+            {
+                // Fórmula: Simbolo + Cantidad (si es > 1)
+                formulaGenerada += elem.Value.simbolo + (elem.Value.count > 1 ? elem.Value.count.ToString() : "");
+
+                // Porcentajes: (Masa Elemento / Masa Total) * 100
+                float porcentaje = (elem.Value.masaTotalElemento / masaAcumulada) * 100f;
+                desgloseText += $"{elem.Value.simbolo}: {elem.Value.masaTotalElemento:F1}u ({porcentaje:F0}%) | ";
+            }
+
+            // Limpiamos el último separador del desglose
+            if (desgloseText.Length > 3) desgloseText = desgloseText.Substring(0, desgloseText.Length - 3);
+
+            return new InformacionCompuesto
+            {
+                masaTotal = masaAcumulada,
+                formula = formulaGenerada,
+                desgloseComposicion = desgloseText,
+                esCompuesto = conteoElementos.Count > 1
+            };
         }
 
         private Vector3 ObtenerPosicionRatonEn3D()
