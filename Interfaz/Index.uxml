@@ -5,15 +5,33 @@
             <ui:VisualElement name="SimboloBox" class="tooltip__simbolo-box"/>
             <ui:VisualElement class="tooltip__info-basica">
                 <ui:Label name="NombreElemento" text="HIDRÓGENO" class="text-base text-bold tooltip__nombre"/>
-                <ui:Label name="MasaElemento" text="Masa: 1.0u" class="text-base tooltip__masa" style="opacity: 0.6;"/>
-                <ui:Label name="FormulaQuimica" text="Fórmula: H2" class="text-base tooltip__formula" style="opacity: 0.6; display: none;"/>
-                <ui:Label name="ComposicionMasa" text="H: 100%" class="tooltip__composicion" style="display: none;"/>
+                <ui:Label name="SimboloElemento" text="Elemento: H" class="text-base tooltip__simbolo-identidad"/>
+                <ui:Label name="MasaBaseElemento" text="Masa: 1.0u" class="text-base tooltip__simbolo-identidad"/>
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:Label name="TituloTeoria" text="TEORÍA" class="tooltip__subtitulo"/>
+        <ui:VisualElement class="tooltip__subtitulo-container">
+            <ui:Label name="TituloTeoria" text="TEORÍA" class="tooltip__subtitulo"/>
+            <ui:VisualElement name="LineTeoria" class="tooltip__subtitulo-linea"/>
+        </ui:VisualElement>
         <ui:Label name="DescripcionTeorica" text="..." class="tooltip__descripcion"/>
-        <ui:Label name="TituloObservaciones" text="OBSERVACIONES" class="tooltip__subtitulo"/>
-        <ui:Label name="NotaElemento" text="..." class="tooltip__nota"/>
+        <ui:VisualElement class="tooltip__subtitulo-container">
+            <ui:Label name="TituloObservaciones" text="OBSERVACIONES" class="tooltip__subtitulo"/>
+            <ui:VisualElement name="LineObservaciones" class="tooltip__subtitulo-linea"/>
+        </ui:VisualElement>
+        <ui:VisualElement class="tooltip__info-dinamica">
+            <ui:VisualElement class="tooltip__dato-fila">
+                <ui:VisualElement class="tooltip__dato-icono icono-balance"/>
+                <ui:Label name="MasaElemento" text="Masa Total: 1.0u" class="text-base tooltip__dato-dinamico"/>
+            </ui:VisualElement>
+            <ui:VisualElement class="tooltip__dato-fila">
+                <ui:VisualElement class="tooltip__dato-icono icono-ciencia"/>
+                <ui:Label name="FormulaQuimica" text="Fórmula: H2" class="text-base tooltip__dato-dinamico"/>
+            </ui:VisualElement>
+            <ui:VisualElement class="tooltip__dato-fila">
+                <ui:VisualElement class="tooltip__dato-icono icono-composicion"/>
+                <ui:Label name="ComposicionMasa" text="H: 100%" class="text-base tooltip__dato-dinamico"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
     </ui:VisualElement>
     <ui:VisualElement name="ConsolaRaiz" class="console-container panel-base panel-accent-left panel--hidden">
         <ui:ScrollView name="ContenedorMensajes" class="console-scroll"/>
@@ -21,7 +39,7 @@
     <ui:VisualElement name="MenuRaiz" class="menu-derecho panel-base panel--hidden-right">
         <ui:VisualElement class="menu-derecho__cabecera">
             <ui:Label text="ELEMENTOS" class="text-base text-bold menu-derecho__titulo" style="-unity-font-definition: url(&quot;project://database/Assets/Interfaz/Fuentes/Roboto-VariableFont_wdth,wght.ttf?fileID=12800000&amp;guid=6cb56dc8fcb4ab9469665128883f9b26&amp;type=3#Roboto-VariableFont_wdth,wght&quot;);"/>
-            <ui:Button name="BotonCerrarMenu" text="X" class="boton-cerrar"/>
+            <ui:Button name="BotonCerrarMenu" text="X" class="boton-base boton-cerrar"/>
         </ui:VisualElement>
         <ui:ScrollView name="ListaAtomos" class="console-scroll"/>
     </ui:VisualElement>
@@ -29,13 +47,13 @@
         <ui:Label text="&lt;" class="text-base text-bold"/>
     </ui:VisualElement>
     <ui:VisualElement name="MenuPrincipalRaiz" class="menu-principal-pantalla">
-        <ui:Button name="BotonAjustes" class="boton-ajustes boton-ajustes--hidden"/>
+        <ui:Button name="BotonAjustes" class="boton-base boton-ajustes boton-ajustes--hidden"/>
         <ui:VisualElement class="menu-principal__contenedor">
             <ui:VisualElement class="titulo-logo titulo-logo--hidden"/>
-            <ui:Button name="BotonIniciar" text="INICIAR SIMULACIÓN" class="boton-iniciar boton-iniciar--hidden"/>
-            <ui:Button name="BotonVolver" text="VOLVER A LA SIMULACIÓN" class="boton-iniciar boton-iniciar--hidden"/>
-            <ui:Button name="BotonLimpiar" text="LIMPIAR ESCENA" class="boton-iniciar boton-iniciar--hidden boton-limpiar"/>
-            <ui:Button name="BotonSalir" text="SALIR DEL SIMULADOR" class="boton-iniciar boton-iniciar--hidden boton-salir"/>
+            <ui:Button name="BotonIniciar" text="INICIAR SIMULACIÓN" class="boton-base boton-iniciar boton-iniciar--hidden"/>
+            <ui:Button name="BotonVolver" text="VOLVER A LA SIMULACIÓN" class="boton-base boton-iniciar boton-iniciar--hidden"/>
+            <ui:Button name="BotonLimpiar" text="LIMPIAR ESCENA" class="boton-base boton-iniciar boton-iniciar--hidden boton-limpiar"/>
+            <ui:Button name="BotonSalir" text="SALIR DEL SIMULADOR" class="boton-base boton-iniciar boton-iniciar--hidden boton-salir"/>
         </ui:VisualElement>
         <ui:Label text="Desarrollado por Anderson Correa" class="texto-creditos texto-creditos--hidden"/>
         <ui:VisualElement class="cuadro-informacion cuadro-informacion--hidden">

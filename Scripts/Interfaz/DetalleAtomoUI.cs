@@ -12,14 +12,20 @@ namespace ProyectoDalton.Interfaz
     {
         private VisualElement _tooltipRaiz;
         private Label _labelNombre;
+        private Label _labelSimbolo;
+        private Label _labelMasaBase;
         private Label _labelMasa;
         private Label _labelDescripcion;
-        private Label _labelNota;
         private Label _labelFormula;
         private Label _labelComposicion;
         private Label _labelTituloTeoria;
         private Label _labelTituloNotas;
         private VisualElement _simboloBox;
+        private VisualElement _lineaTeoria;
+        private VisualElement _lineaNotas;
+        private VisualElement _iconoMasa;
+        private VisualElement _iconoFormula;
+        private VisualElement _iconoComposicion;
 
         private void OnEnable()
         {
@@ -28,14 +34,20 @@ namespace ProyectoDalton.Interfaz
 
             _tooltipRaiz = root.Q<VisualElement>("TooltipRaiz");
             _labelNombre = root.Q<Label>("NombreElemento");
+            _labelSimbolo = root.Q<Label>("SimboloElemento");
+            _labelMasaBase = root.Q<Label>("MasaBaseElemento");
             _labelMasa = root.Q<Label>("MasaElemento");
             _labelDescripcion = root.Q<Label>("DescripcionTeorica");
-            _labelNota = root.Q<Label>("NotaElemento");
             _labelFormula = root.Q<Label>("FormulaQuimica");
             _labelComposicion = root.Q<Label>("ComposicionMasa");
             _labelTituloTeoria = root.Q<Label>("TituloTeoria");
             _labelTituloNotas = root.Q<Label>("TituloObservaciones");
             _simboloBox = root.Q<VisualElement>("SimboloBox");
+            _lineaTeoria = root.Q<VisualElement>("LineTeoria");
+            _lineaNotas = root.Q<VisualElement>("LineObservaciones");
+            _iconoMasa = root.Q<VisualElement>(className: "icono-balance");
+            _iconoFormula = root.Q<VisualElement>(className: "icono-ciencia");
+            _iconoComposicion = root.Q<VisualElement>(className: "icono-composicion");
 
             if (_tooltipRaiz == null)
             {
@@ -97,47 +109,69 @@ namespace ProyectoDalton.Interfaz
         {
             if (_tooltipRaiz == null || datos == null) return;
 
-            // 1. Datos Básicos
+            // 1. Datos Básicos (Cabecera)
             if (_labelNombre != null) 
             {
-                string prefijo = datos.esElemento ? "ELEMENTO: " : "ATOMO: ";
-                _labelNombre.text = prefijo + datos.nombreElemento.ToUpper();
-                _labelNombre.style.color = datos.colorTextoMenu;
+                _labelNombre.text = datos.nombreElemento.ToUpper();
             }
 
+            if (_labelSimbolo != null)
+            {
+                _labelSimbolo.text = "Elemento: " + datos.simbolo;
+            }
+
+            if (_labelMasaBase != null)
+            {
+                _labelMasaBase.text = "Masa: " + datos.masaAtomica.ToString("F1") + "u";
+            }
+
+            // 2. Teoría (Desde SO)
+            if (_labelDescripcion != null) _labelDescripcion.text = datos.descripcionTeorica;
+
+            // 3. Observaciones (Datos Dinámicos del Simulador)
             if (_labelMasa != null)
             {
                 _labelMasa.text = $"Masa Total: {info.masaTotal:F1}u";
             }
 
-            // 2. Matemática de Dalton (Fórmula y Composición)
             if (_labelFormula != null)
             {
-                if (info.esCompuesto)
-                {
-                    _labelFormula.text = "Fórmula: " + info.formula;
-                    _labelFormula.style.display = DisplayStyle.Flex;
-                }
-                else
-                {
-                    _labelFormula.style.display = DisplayStyle.None;
-                }
+                _labelFormula.text = "Fórmula: " + info.formula;
+                _labelFormula.style.display = DisplayStyle.Flex;
             }
 
             if (_labelComposicion != null)
             {
-                if (info.esCompuesto)
-                {
-                    _labelComposicion.text = info.desgloseComposicion;
-                    _labelComposicion.style.display = DisplayStyle.Flex;
-                }
-                else
-                {
-                    _labelComposicion.style.display = DisplayStyle.None;
-                }
+                _labelComposicion.text = info.desgloseComposicion;
+                _labelComposicion.style.display = DisplayStyle.Flex;
             }
-            if (_labelDescripcion != null) _labelDescripcion.text = datos.descripcionTeorica;
-            if (_labelNota != null) _labelNota.text = datos.nota;
+
+            // 4. Colores Dinámicos (Identidad del Átomo)
+            Color colorIdentidad = datos.colorTextoMenu;
+            Color colorSombra = colorIdentidad;
+            colorSombra.a = 0.8f; // Sombra vibrante del color del átomo
+
+            Color colorBorde = colorIdentidad;
+            colorBorde.a = 0.15f; 
+
+            // Textos destacados (Sólidos)
+            if (_labelNombre != null) _labelNombre.style.color = colorIdentidad;
+            if (_labelTituloTeoria != null) _labelTituloTeoria.style.color = colorIdentidad;
+            if (_labelTituloNotas != null) _labelTituloNotas.style.color = colorIdentidad;
+
+            // Elementos estructurales
+            if (_lineaTeoria != null) _lineaTeoria.style.backgroundColor = colorBorde;
+            if (_lineaNotas != null) _lineaNotas.style.backgroundColor = colorBorde;
+            
+            // Tintado dinámico de iconos (para que sigan el color del átomo)
+            if (_iconoMasa != null) _iconoMasa.style.unityBackgroundImageTintColor = colorIdentidad;
+            if (_iconoFormula != null) _iconoFormula.style.unityBackgroundImageTintColor = colorIdentidad;
+            if (_iconoComposicion != null) _iconoComposicion.style.unityBackgroundImageTintColor = colorIdentidad;
+
+            _tooltipRaiz.style.borderLeftColor = colorBorde;
+            _tooltipRaiz.style.borderRightColor = colorBorde;
+            _tooltipRaiz.style.borderTopColor = colorBorde;
+            _tooltipRaiz.style.borderBottomColor = colorBorde;
 
             // Cambiar icono del box
             if (_simboloBox != null)

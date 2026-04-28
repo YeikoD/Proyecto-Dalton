@@ -58,6 +58,9 @@ namespace ProyectoDalton.Atomos
         // Esta variable la usa SmoothDamp internamente para calcular la fuerza de inercia
         private Vector3 velocidadActualFriccion;
 
+        // Edad del átomo para desempatar dominancia en compuestos
+        public float tiempoCreacion { get; private set; }
+
         /// <summary>
         /// Lanza el átomo con una fuerza inicial, aprovechando el sistema de inercia existente.
         /// </summary>
@@ -72,6 +75,7 @@ namespace ProyectoDalton.Atomos
 
         void Awake()
         {
+            tiempoCreacion = Time.time;
             flotacionScript = GetComponentInChildren<AtomoFlotante>();
             billboardScript = GetComponentInChildren<BillboardAtomo>();
             camaraPrincipal = Camera.main;
@@ -253,6 +257,7 @@ namespace ProyectoDalton.Atomos
         {
             // Obtenemos el límite centralizado desde el ControlEntorno
             Collider limiteGlobal = ControlEntorno.Instancia != null ? ControlEntorno.Instancia.limiteFisico : null;
+            Transform miRoot = transform.root;
 
             // 1. Límite Esférico (Nebulosa)
             if (limiteGlobal != null)
@@ -267,9 +272,12 @@ namespace ProyectoDalton.Atomos
 
                     if (distanciaActual > radioPermitido)
                     {
-                        // Lo empujamos de vuelta hacia adentro
+                        // Lo empujamos de vuelta hacia adentro, pero moviendo toda la estructura (root)
                         Vector3 direccionDesdeCentro = (transform.position - centroEsfera).normalized;
-                        transform.position = centroEsfera + direccionDesdeCentro * radioPermitido;
+                        Vector3 posicionDeseada = centroEsfera + direccionDesdeCentro * radioPermitido;
+                        Vector3 desplazamiento = posicionDeseada - transform.position;
+                        
+                        miRoot.position += desplazamiento;
                         
                         // Si choca contra la pared mientras resbala por inercia, se frena un poco (absorbe el impacto)
                         if (deslizandosePorInercia)
@@ -280,16 +288,20 @@ namespace ProyectoDalton.Atomos
                 }
                 else
                 {
-                    transform.position = limiteGlobal.ClosestPoint(transform.position);
+                    Vector3 puntoCercano = limiteGlobal.ClosestPoint(transform.position);
+                    if (puntoCercano != transform.position)
+                    {
+                        Vector3 desplazamiento = puntoCercano - transform.position;
+                        miRoot.position += desplazamiento;
+                    }
                 }
             }
 
             // 2. Límite de Suelo (Plano Y)
             if (transform.position.y < alturaSuelo + radioAtomo)
             {
-                Vector3 posicionCorregida = transform.position;
-                posicionCorregida.y = alturaSuelo + radioAtomo;
-                transform.position = posicionCorregida;
+                float dy = (alturaSuelo + radioAtomo) - transform.position.y;
+                miRoot.position += Vector3.up * dy;
 
                 // Si cae de golpe contra el suelo, matamos el rebote vertical
                 if (deslizandosePorInercia)
@@ -307,6 +319,9 @@ namespace ProyectoDalton.Atomos
 
                 if (vecino.TryGetComponent<ArrastrarAtomo>(out var scriptVecino))
                 {
+                    // Ignorar colisiones y magnetismo si ya pertenecen al mismo compuesto
+                    if (miRoot == scriptVecino.transform.root) continue;
+
                     // Identificamos si son del mismo elemento
                     bool mismoTipo = false;
                     if (billboardScript != null && billboardScript.datos != null && 
@@ -319,7 +334,8 @@ namespace ProyectoDalton.Atomos
                     float distancia = direccionDesdeVecino.magnitude;
                     float radioVecino = scriptVecino.radioAtomo;
                     
-                    float distanciaMinima = radioAtomo + radioVecino;
+                    // Añadimos un pequeño margen de seguridad (1%) para evitar que se queden pegados por precisión
+                    float distanciaMinima = (radioAtomo + radioVecino) * 1.01f;
 
                     if (mismoTipo)
                     {
@@ -328,13 +344,13 @@ namespace ProyectoDalton.Atomos
 
                         if (distancia < distanciaMinima * 1.05f && !EstaSiendoArrastrado && !scriptVecino.EstaSiendoArrastrado)
                         {
-                            // Ahora también se "pegan" pero manteniendo el margen de repulsión
                             UnirseA(scriptVecino, distanciaMinima);
                         }
                         else if (distancia < distanciaMinima)
                         {
                             Vector3 normalColision = distancia > 0.001f ? direccionDesdeVecino.normalized : Vector3.up;
-                            transform.position = vecino.transform.position + normalColision * distanciaMinima;
+                            Vector3 posicionDeseada = vecino.transform.position + normalColision * distanciaMinima;
+                            miRoot.position += (posicionDeseada - transform.position);
 
                             if (deslizandosePorInercia)
                             {
@@ -345,36 +361,35 @@ namespace ProyectoDalton.Atomos
                     else
                     {
                         // DALTON: Átomos diferentes se unen (Combinación Química)
-                        // IMPLEMENTACIÓN DE MAGNETISMO FLUIDO
-                        float factorMagnetismo = 2.2f; // Rango de atracción (más del doble de su tamaño)
+                        float factorMagnetismo = 2.2f;
                         float rangoAtraccion = distanciaMinima * factorMagnetismo;
 
                         if (distancia < rangoAtraccion)
                         {
-                            // Calculamos la fuerza basada en la cercanía (0 a 1)
                             float tAtraccion = 1.0f - (distancia / rangoAtraccion);
-                            // Curva de atracción suave (cuadrática)
                             tAtraccion = tAtraccion * tAtraccion;
 
-                            Vector3 puntoUnionIdeal = vecino.transform.position + (distancia > 0.001f ? direccionDesdeVecino.normalized : Vector3.up) * distanciaMinima;
+                            Vector3 normalColision = distancia > 0.001f ? direccionDesdeVecino.normalized : Vector3.up;
+                            Vector3 puntoUnionIdeal = vecino.transform.position + normalColision * distanciaMinima;
                             
-                            // Aplicamos el "imán" fluido. Si se arrastra, es más sutil para no quitar control total.
                             float intensidad = EstaSiendoArrastrado ? 3.0f : 10.0f;
-                            transform.position = Vector3.Lerp(transform.position, puntoUnionIdeal, Time.deltaTime * tAtraccion * intensidad);
+                            
+                            // Aplicamos el desplazamiento basado en Lerp al root
+                            Vector3 nuevaPos = Vector3.Lerp(transform.position, puntoUnionIdeal, Time.deltaTime * tAtraccion * intensidad);
+                            miRoot.position += (nuevaPos - transform.position);
 
-                            // Si están suficientemente cerca y libres, se sellan definitivamente
-                            // Hemos subido el margen a 1.2f para que la unión sea más "generosa"
                             if (distancia < distanciaMinima * 1.2f && !EstaSiendoArrastrado && !scriptVecino.EstaSiendoArrastrado)
                             {
                                 UnirseA(scriptVecino, distanciaMinima);
                             }
                         }
 
-                        // Colisión de seguridad si están demasiado cerca
+                        // Colisión de seguridad (Hard Collision)
                         if (distancia < distanciaMinima)
                         {
                             Vector3 normalColision = distancia > 0.001f ? direccionDesdeVecino.normalized : Vector3.up;
-                            transform.position = vecino.transform.position + normalColision * distanciaMinima;
+                            Vector3 posicionDeseada = vecino.transform.position + normalColision * distanciaMinima;
+                            miRoot.position += (posicionDeseada - transform.position);
                         }
                     }
                 }
@@ -383,28 +398,68 @@ namespace ProyectoDalton.Atomos
 
         private void UnirseA(ArrastrarAtomo otroAtomo, float distanciaDeUnion)
         {
-            if (transform.parent == otroAtomo.transform || otroAtomo.transform.parent == transform) return;
+            if (transform.root == otroAtomo.transform.root) return;
 
-            ProyectoDalton.Interfaz.LogN.Info($"<color=cyan>Enlace:</color> {billboardScript.datos.nombreElemento} + {otroAtomo.billboardScript.datos.nombreElemento}");
+            ArrastrarAtomo rootThis = transform.root.GetComponent<ArrastrarAtomo>();
+            ArrastrarAtomo rootOtro = otroAtomo.transform.root.GetComponent<ArrastrarAtomo>();
+
+            // Determinar la raíz dominante (padre)
+            float masaThis = rootThis.ObtenerMasaTotal();
+            float masaOtro = rootOtro.ObtenerMasaTotal();
+
+            bool thisIsDominant = masaThis > masaOtro || (masaThis == masaOtro && rootThis.tiempoCreacion < rootOtro.tiempoCreacion);
+
+            ArrastrarAtomo dominanteLocal, subordinadoLocal, dominanteRoot, subordinadoRoot;
             
-            Vector3 dir = (transform.position - otroAtomo.transform.position).normalized;
+            if (thisIsDominant)
+            {
+                dominanteLocal = this;
+                subordinadoLocal = otroAtomo;
+                dominanteRoot = rootThis;
+                subordinadoRoot = rootOtro;
+            }
+            else
+            {
+                dominanteLocal = otroAtomo;
+                subordinadoLocal = this;
+                dominanteRoot = rootOtro;
+                subordinadoRoot = rootThis;
+            }
+
+            ProyectoDalton.Interfaz.LogN.Info($"<color=cyan>Enlace:</color> {subordinadoRoot.billboardScript.datos.nombreElemento} se une a {dominanteRoot.billboardScript.datos.nombreElemento}");
+            
+            Vector3 dir = (subordinadoLocal.transform.position - dominanteLocal.transform.position).normalized;
             if (dir == Vector3.zero) dir = Vector3.up;
 
-            transform.position = otroAtomo.transform.position + dir * distanciaDeUnion;
-            transform.SetParent(otroAtomo.transform);
+            // Calculamos la posición donde debe quedar físicamente el átomo subordinado local
+            Vector3 targetSubordinadoPos = dominanteLocal.transform.position + dir * distanciaDeUnion;
             
-            // NO desactivamos el script, para poder detectar cuando el usuario intente "tironear"
-            deslizandosePorInercia = false;
-            velocidadActualFriccion = Vector3.zero;
+            // Movemos toda la raíz del subordinado para que el subordinado local quede en su sitio
+            Vector3 offset = targetSubordinadoPos - subordinadoLocal.transform.position;
+            subordinadoRoot.transform.position += offset;
 
-            if (flotacionScript != null)
+            // Anclamos la raíz subordinada a la local dominante
+            subordinadoRoot.transform.SetParent(dominanteLocal.transform);
+            
+            subordinadoRoot.deslizandosePorInercia = false;
+            subordinadoRoot.velocidadActualFriccion = Vector3.zero;
+
+            // Al unirse, todos los átomos de la rama subordinada deben pausar su flotación independiente
+            // para que toda la molécula se mueva orgánicamente guiada solo por la raíz dominante.
+            AtomoFlotante[] flotantesSubordinados = subordinadoRoot.GetComponentsInChildren<AtomoFlotante>();
+            foreach(var f in flotantesSubordinados) 
             {
-                flotacionScript.FijarNuevaPosicion(transform.localPosition);
+                // Al ser hijos, su posición local cambia, hay que re-anclarla
+                f.FijarNuevaPosicion(f.transform.localPosition);
+                f.PausarFlotacion(true);
             }
+
+            // Si el dominante local (no la raíz) era también hijo, ya estaba pausado. 
+            // La única raíz activa es dominanteRoot.
 
             // NOTIFICAMOS QUE LA ESTRUCTURA CAMBIÓ (Unión)
             OnEstructuraCambiada?.Invoke();
-            OnEnlaceCreado?.Invoke(ObtenerInformacionCompuesto());
+            OnEnlaceCreado?.Invoke(dominanteRoot.ObtenerInformacionCompuesto());
         }
 
         private void TerminarArrastreYFijar()
@@ -423,11 +478,15 @@ namespace ProyectoDalton.Atomos
                 transform.position = posicionFinalPrecisa;
             }
 
-            // Le avisamos al script de Flotación (vida) que esta es su nueva casa y lo despertamos
+            // Le avisamos al script de Flotación (vida) que esta es su nueva casa.
+            // SOLO despertamos si es la raíz del compuesto (no es hijo de nadie más).
             if (flotacionScript != null)
             {
                 flotacionScript.FijarNuevaPosicion(transform.localPosition);
-                flotacionScript.PausarFlotacion(false);
+                if (transform.parent == null)
+                {
+                    flotacionScript.PausarFlotacion(false);
+                }
             }
 
             // Log de posición final
@@ -494,7 +553,7 @@ namespace ProyectoDalton.Atomos
 
                 // Porcentajes: (Masa Elemento / Masa Total) * 100
                 float porcentaje = (elem.Value.masaTotalElemento / masaAcumulada) * 100f;
-                desgloseText += $"{elem.Value.simbolo}: {elem.Value.masaTotalElemento:F1}u ({porcentaje:F0}%) | ";
+                desgloseText += $"{elem.Value.simbolo}: {porcentaje:F0}% | ";
             }
 
             // Limpiamos el último separador del desglose

@@ -1,15 +1,24 @@
 :root {
-    --color-bg-panel: rgba(0, 0, 0, 0.7);
+    /* --- Colores --- */
+    --color-bg-panel: rgba(0, 0, 0, 0.25);
     --color-border-light: rgba(0, 50, 110, 0.5);
-    --color-accent-blue: rgb(0, 50, 110);
+    --color-accent-primary: rgb(0, 50, 110);
+    /* Dorado por defecto */
     --color-accent-secondary: #7D1C34;
     --color-accent-secondary-alt: #9E2D47;
     --color-accent-tertiary: #398084;
     --color-accent-tertiary-alt: #4CA6AB;
     --color-text-main: rgb(220, 220, 220);
     --spacing-main: 10px;
-    --radius-main: 0;
-    -unity-font-definition: url("project:/Assets/Interfaz/Fuentes/Roboto-VariableFont_wdth,wght.ttf");
+    --radius-main: 12px;
+    /* --- Tipografía --- */
+    --font-primary: url("project:/Assets/Interfaz/Fuentes/Montserrat-VariableFont_wght.ttf");
+    --font-secondary: url("project:/Assets/Interfaz/Fuentes/Roboto-VariableFont_wdth,wght.ttf");
+    --size-body: 12px;
+    --size-h1: 20px;
+    --size-h2: 18px;
+    --size-h3: 16px;
+    -unity-font-definition: var(--font-secondary);
 }
 
 .panel-base {
@@ -36,7 +45,7 @@
 
 .panel-accent-left {
     border-left-width: 4px;
-    border-left-color: var(--color-accent-blue);
+    border-left-color: var(--color-accent-primary);
 }
 
 .panel-base--fusion {
@@ -65,15 +74,15 @@
 
 .panel-accent-bottom {
     border-bottom-width: 4px;
-    border-bottom-color: var(--color-accent-blue);
+    border-bottom-color: var(--color-accent-primary);
 }
 
 
 .text-base {
     color: var(--color-text-main);
-    font-size: 12px;
+    font-size: var(--size-body);
     -unity-font-style: normal;
-    -unity-font-definition: url("project://database/Assets/Interfaz/Fuentes/Roboto-VariableFont_wdth,wght.ttf?fileID=12800000&guid=6cb56dc8fcb4ab9469665128883f9b26&type=3#Roboto-VariableFont_wdth,wght");
+    -unity-font-definition: var(--font-secondary);
 }
 
 .text-bold {
@@ -123,7 +132,7 @@
 }
 
 .menu-handle:hover {
-    background-color: var(--color-accent-blue);
+    background-color: var(--color-accent-primary);
 }
 
 .menu-handle--hidden {
@@ -147,7 +156,24 @@
     border-bottom-width: 0;
 }
 
-.boton-cerrar {
+.boton-base {
+    background-color: transparent;
+    border-width: 2px;
+    border-color: var(--color-accent-primary);
+    color: var(--color-text-main);
+    font-size: var(--size-body);
+    letter-spacing: 2px;
+    -unity-font-style: normal;
+    -unity-font-definition: var(--font-secondary);
+    padding: 8px 12px;
+    border-radius: var(--radius-main);
+    transition-property: background-color, border-color, opacity, scale, translate;
+    transition-duration: 0.3s;
+    cursor: pointer;
+}
+
+/* Botón cerrar (X) */
+.boton-base.boton-cerrar {
     background-color: transparent;
     border-width: 0;
     color: var(--color-text-main);
@@ -156,15 +182,16 @@
     padding: 5px;
 }
 
-.boton-cerrar:hover {
+.boton-base.boton-cerrar:hover {
     color: var(--color-accent-secondary);
 }
 
 .tooltip-panel {
     position: absolute;
-    left: 10px;
-    top: 10px;
-    width: 315px;
+    left: 20px;
+    top: 20px;
+    width: 325px;
+    padding: 17px;
     min-height: 340px;
     display: flex;
 }
@@ -189,29 +216,47 @@
 }
 
 .tooltip__nombre {
-    font-size: 17px;
+    font-size: 24px;
     margin-bottom: 2px;
+    -unity-font-style: bold;
+    -unity-font-definition: var(--font-secondary);
 }
 
 .tooltip__masa {
     font-size: 14px;
+    opacity: 0.4;
+}
+
+.tooltip__simbolo-identidad {
+    font-size: 14px;
+    opacity: 0.4;
 }
 
 .tooltip__info-basica {
     flex-grow: 1;
 }
 
-.tooltip__subtitulo {
-    font-size: 11px;
-    -unity-font-style: bold;
-    color: var(--color-accent-blue);
-    letter-spacing: 2px;
+.tooltip__subtitulo-container {
+    flex-direction: row;
+    align-items: center;
     margin-top: 15px;
-    margin-bottom: 6px;
-    padding-bottom: 2px;
-    border-bottom-width: 1px;
-    border-bottom-color: rgba(0, 50, 110, 0.4);
-    opacity: 0.9;
+    margin-bottom: 8px;
+}
+
+.tooltip__subtitulo {
+    font-size: 13px;
+    -unity-font-style: normal;
+    -unity-font-definition: var(--font-secondary);
+    color: var(--color-accent-primary);
+    letter-spacing: 2px;
+}
+
+.tooltip__subtitulo-linea {
+    flex-grow: 1;
+    height: 1px;
+    background-color: var(--color-accent-primary);
+    margin-left: 10px;
+    opacity: 0.6;
 }
 
 .tooltip__formula {
@@ -219,35 +264,70 @@
     margin-top: 2px;
 }
 
-.tooltip__composicion {
-    font-size: 11px;
-    -unity-font-style: normal;
-    color: rgba(255, 255, 255, 0.4);
-    margin-top: 2px;
+
+
+/* --- Layout de Datos con Iconos --- */
+.tooltip__dato-fila {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 6px;
 }
+
+.tooltip__dato-icono {
+    width: 29px;
+    height: 29px;
+    margin-right: 12px;
+    -unity-background-scale-mode: scale-to-fit;
+    -unity-background-image-tint-color: var(--color-accent-primary);
+    flex-shrink: 0;
+}
+
+.icono-balance {
+    background-image: url("project:/Assets/Interfaz/Iconos/decoracion/balance_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.png");
+}
+
+.icono-ciencia {
+    background-image: url("project:/Assets/Interfaz/Iconos/decoracion/bubble_chart_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.png");
+}
+
+.icono-composicion {
+    background-image: url("project:/Assets/Interfaz/Iconos/decoracion/science_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.png");
+}
+
+.tooltip__dato-dinamico {
+    margin-bottom: 0;
+    font-size: 14px;
+    white-space: normal;
+    flex-shrink: 1;
+    opacity: 0.4;
+}
+
 
 .tooltip__descripcion {
     padding-top: 5px;
     white-space: normal;
-    font-size: 15px;
-    color: rgba(255, 255, 255, 0.6);
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.9);
+    opacity: 0.4;
 }
 
 .tooltip__nota {
     padding-top: 5px;
     white-space: normal;
-    font-size: 15px;
-    color: rgba(255, 255, 255, 0.6);
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.9);
+    opacity: 0.4;
 }
 
-.boton-atomo__borrar {
+.boton-base.boton-atomo__borrar {
     width: 26px;
     height: 26px;
-    background-color: rgba(125, 28, 52, 0.4);
+    background-color: var(--color-accent-secondary);
     color: rgba(255, 255, 255, 0.8);
     border-radius: 13px;
     border-width: 1px;
-    border-color: rgba(125, 28, 52, 0.3);
+    border-color: var(--color-accent-secondary-alt);
     -unity-text-align: middle-center;
     -unity-font-style: bold;
     font-size: 14px;
@@ -256,14 +336,14 @@
     margin-left: 10px;
 }
 
-.boton-atomo__borrar:hover {
+.boton-base.boton-atomo__borrar:hover {
     background-color: var(--color-accent-secondary);
     border-color: var(--color-accent-secondary-alt);
     color: white;
     scale: 1.15;
 }
 
-.boton-atomo {
+.boton-base.boton-atomo {
     flex-direction: row;
     align-items: center;
     background-color: rgba(0, 50, 110, 0.1);
@@ -275,9 +355,9 @@
     transition-duration: 0.3s;
 }
 
-.boton-atomo:hover {
+.boton-base.boton-atomo:hover {
     background-color: rgba(0, 50, 110, 0.25);
-    border-left-color: var(--color-accent-blue);
+    border-left-color: var(--color-accent-primary);
     translate: 8px 0;
 }
 
@@ -300,7 +380,7 @@
     white-space: normal;
     font-size: 14px;
     -unity-font-style: bold;
-    -unity-font-definition: url("project:/Assets/Interfaz/Fuentes/Montserrat-VariableFont_wght.ttf");
+    -unity-font-definition: var(--font-primary);
 }
 
 .console-label--important {
@@ -327,7 +407,7 @@
     transition-timing-function: ease-in-out;
 }
 
-.boton-ajustes {
+.boton-base.boton-ajustes {
     position: absolute;
     top: 5px;
     left: 5px;
@@ -341,12 +421,12 @@
     transition-duration: 0.4s;
 }
 
-.boton-ajustes--hidden {
+.boton-base.boton-ajustes--hidden {
     opacity: 0;
     scale: 0;
 }
 
-.boton-ajustes:hover {
+.boton-base.boton-ajustes:hover {
     opacity: 1;
     rotate: 45deg;
     scale: 1.1;
@@ -384,7 +464,7 @@
     align-items: flex-end;
     padding-right: 15px;
     border-right-width: 2px;
-    border-right-color: var(--color-accent-blue);
+    border-right-color: var(--color-accent-primary);
     transition-property: opacity;
     transition-duration: 0.8s;
 }
@@ -411,13 +491,13 @@
     transition-duration: 0.2s;
 }
 
-.boton-iniciar {
+.boton-base.boton-iniciar {
     width: 322px;
     padding-top: 12px;
     padding-bottom: 12px;
     background-color: transparent;
     border-width: 2px;
-    border-color: var(--color-accent-blue);
+    border-color: var(--color-accent-primary);
     color: white;
     font-size: 14px;
     letter-spacing: 3px;
@@ -425,43 +505,43 @@
     transition-duration: 0.5s;
 }
 
-.boton-iniciar--hidden {
+.boton-base.boton-iniciar--hidden {
     opacity: 0;
     scale: 0.8;
 }
 
-.boton-iniciar:hover {
+.boton-base.boton-iniciar:hover {
     background-color: var(--color-border-light);
-    border-color: var(--color-accent-blue);
+    border-color: var(--color-accent-primary);
     scale: 1.05;
     translate: 0 -5px;
 }
 
-.boton-iniciar:active {
+.boton-base.boton-iniciar:active {
     scale: 0.95;
 }
 
-.boton-salir {
+.boton-base.boton-salir {
     margin-top: 15px;
-    border-color: rgba(125, 28, 52, 0.3);
+    border-color: var(--color-accent-secondary);
     font-size: 11px;
     letter-spacing: 2px;
     height: 40px;
 }
 
-.boton-salir:hover {
+.boton-base.boton-salir:hover {
     background-color: var(--color-accent-secondary);
     border-color: var(--color-accent-secondary-alt);
     color: white;
 }
 
-.boton-limpiar {
+.boton-base.boton-limpiar {
     margin-top: 10px;
-    border-color: rgba(255, 152, 0, 0.2);
+    border-color: var(--color-accent-tertiary);
 }
 
-.boton-limpiar:hover {
-    background-color: rgba(255, 152, 0, 0.15);
+.boton-base.boton-limpiar:hover {
+    background-color: var(--color-accent-tertiary);
     border-color: #ff9800;
 }
 
@@ -507,7 +587,7 @@
     -unity-font-style: bold;
     -unity-font-definition: url("project:/Assets/Interfaz/Fuentes/Montserrat-VariableFont_wght.ttf");
     border-left-width: 2px;
-    border-left-color: var(--color-accent-blue);
+    border-left-color: var(--color-accent-primary);
     padding-left: 10px;
     transition-property: color, border-left-color, opacity;
     transition-duration: 0.3s;

@@ -151,7 +151,11 @@ namespace ProyectoDalton.Interfaz
             _labelsEnPantalla.Enqueue(nuevoLabel);
 
             if (_labelsEnPantalla.Count > maxMensajes)
-                _contenedorMensajes.Remove(_labelsEnPantalla.Dequeue());
+            {
+                var labelAEliminar = _labelsEnPantalla.Dequeue();
+                if (labelAEliminar.parent == _contenedorMensajes)
+                    _contenedorMensajes.Remove(labelAEliminar);
+            }
 
             // 1. Escritura del texto con soporte para múltiples caracteres por frame
             float caracteresAcumulados = 0;

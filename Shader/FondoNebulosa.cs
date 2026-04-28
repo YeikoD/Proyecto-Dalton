@@ -29,13 +29,24 @@ public class FondoNebulosaPro : MonoBehaviour
     private void IniciarTransicionConexion(float duracion)
     {
         StopAllCoroutines();
+        ResetearBlends();
         StartCoroutine(AnimarTransicion(duracion, "_BlendConexion"));
     }
 
     private void IniciarTransicionDesconexion(ProyectoDalton.Atomos.ArrastrarAtomo.InformacionCompuesto info)
     {
         StopAllCoroutines();
+        ResetearBlends();
         StartCoroutine(AnimarTransicion(2.0f, "_BlendRuptura"));
+    }
+
+    private void ResetearBlends()
+    {
+        if (mat != null)
+        {
+            mat.SetFloat("_BlendConexion", 0f);
+            mat.SetFloat("_BlendRuptura", 0f);
+        }
     }
 
     private System.Collections.IEnumerator AnimarTransicion(float duracionEfecto, string nombrePropiedad)
