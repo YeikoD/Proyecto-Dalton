@@ -1,0 +1,245 @@
+:root {
+    --color-bg-panel: rgba(0, 0, 0, 0.7);
+    --color-border-light: rgba(0, 50, 110, 0.5);
+    --color-accent-blue: rgb(0, 50, 110);
+    --color-accent-gold: rgb(255, 200, 0);
+    --color-text-main: rgb(220, 220, 220);
+    --spacing-main: 10px;
+    --radius-main: 0;
+    -unity-font-definition: url("project:/Assets/Interfaz/Fuentes/Roboto-VariableFont_wdth,wght.ttf");
+}
+
+.panel-base {
+    background-color: var(--color-bg-panel);
+    border-radius: var(--radius-main);
+    padding: var(--spacing-main);
+    border-width: 1px;
+    border-color: var(--color-border-light);
+    overflow: hidden;
+    transition-property: opacity, translate;
+    transition-duration: 0.5s;
+    transition-timing-function: ease-out-back;
+}
+
+.panel--hidden {
+    opacity: 0;
+    translate: -30px 0;
+}
+
+.panel--hidden-right {
+    opacity: 0;
+    translate: 30px 0;
+}
+
+.panel-accent-left {
+    border-left-width: 4px;
+    border-left-color: var(--color-accent-blue);
+}
+
+.text-base {
+    color: var(--color-text-main);
+    font-size: 12px;
+    -unity-font-style: normal;
+    -unity-font-definition: url("project://database/Assets/Interfaz/Fuentes/Roboto-VariableFont_wdth,wght.ttf?fileID=12800000&guid=6cb56dc8fcb4ab9469665128883f9b26&type=3#Roboto-VariableFont_wdth,wght");
+}
+
+.text-bold {
+    -unity-font-style: bold;
+}
+
+.console-container {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    width: 315px;
+    height: 157px;
+}
+
+.console-scroll {
+    flex-grow: 1;
+}
+
+.console-scroll .unity-scroller {
+    width: 0;
+    opacity: 0;
+    display: none;
+}
+
+.menu-derecho {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    bottom: 10px;
+    width: 294px;
+}
+
+.menu-handle {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    width: 25px;
+    height: 50px;
+    background-color: var(--color-bg-panel);
+    border-width: 1px;
+    border-color: var(--color-border-light);
+    border-right-width: 0;
+    align-items: center;
+    justify-content: center;
+    transition-property: translate, opacity;
+    transition-duration: 0.4s;
+}
+
+.menu-handle:hover {
+    background-color: var(--color-accent-blue);
+    cursor: link;
+}
+
+.menu-handle--hidden {
+    translate: 25px 0;
+    opacity: 0;
+}
+
+.menu-derecho__cabecera {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    border-bottom-width: 1px;
+    border-bottom-color: var(--color-border-light);
+    padding-bottom: 5px;
+}
+
+.menu-derecho__titulo {
+    font-size: 14px;
+    margin-bottom: 0;
+    border-bottom-width: 0;
+}
+
+.boton-cerrar {
+    background-color: transparent;
+    border-width: 0;
+    color: var(--color-text-main);
+    font-size: 16px;
+    -unity-font-style: bold;
+    padding: 5px;
+    cursor: link;
+}
+
+.boton-cerrar:hover {
+    color: var(--color-accent-gold);
+}
+
+.tooltip-panel {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    width: 315px;
+    min-height: 340px;
+    display: flex;
+}
+
+.tooltip__cabecera {
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.tooltip__simbolo-box {
+    width: 90px;
+    height: 90px;
+    justify-content: center;
+    align-items: center;
+    margin-right: 15px;
+}
+
+.tooltip__simbolo-texto {
+    font-size: 20px;
+    color: white;
+}
+
+.tooltip__nombre {
+    font-size: 18px;
+    margin-bottom: 2px;
+}
+
+.tooltip__masa {
+    font-size: 14px;
+}
+
+.tooltip__info-basica {
+    flex-grow: 1;
+}
+
+.tooltip__subtitulo {
+    font-size: 11px;
+    -unity-font-style: bold;
+    color: var(--color-accent-blue);
+    letter-spacing: 2px;
+    margin-top: 15px;
+    margin-bottom: 6px;
+    padding-bottom: 2px;
+    border-bottom-width: 1px;
+    border-bottom-color: rgba(0, 50, 110, 0.4);
+    opacity: 0.9;
+}
+
+.tooltip__descripcion {
+    padding-top: 5px;
+    white-space: normal;
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.tooltip__nota {
+    padding-top: 5px;
+    white-space: normal;
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.boton-atomo {
+    flex-direction: row;
+    align-items: center;
+    background-color: rgba(0, 50, 110, 0.1);
+    padding: 12px;
+    margin-bottom: 6px;
+    border-left-width: 2px;
+    border-left-color: transparent;
+    transition-property: background-color, border-left-color, translate;
+    transition-duration: 0.3s;
+    cursor: link;
+}
+
+.boton-atomo:hover {
+    background-color: rgba(0, 50, 110, 0.25);
+    border-left-color: var(--color-accent-blue);
+    translate: 8px 0;
+}
+
+.boton-atomo__icono {
+    width: 56px;
+    height: 56px;
+    margin-right: 15px;
+}
+
+.boton-atomo__texto {
+    flex-grow: 1;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    opacity: 0.8;
+}
+
+.console-label {
+    margin-bottom: 4px;
+    white-space: normal;
+}
+
+.console-label--important {
+    color: var(--color-accent-gold);
+}
+
+.border-light {
+    position: absolute;
+    border-radius: 1px;
+}

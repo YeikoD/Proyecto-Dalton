@@ -1,0 +1,29 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Interfaz/Styles.uss?fileID=7433441132597879392&amp;guid=7361bee60b6da7744934742e9be2c000&amp;type=3#Styles"/>
+    <ui:VisualElement name="TooltipRaiz" class="tooltip-panel panel-base panel--hidden">
+        <ui:VisualElement class="tooltip__cabecera">
+            <ui:VisualElement name="SimboloBox" class="tooltip__simbolo-box"/>
+            <ui:VisualElement class="tooltip__info-basica">
+                <ui:Label name="NombreElemento" text="HIDRÓGENO" class="text-base text-bold tooltip__nombre"/>
+                <ui:Label name="MasaElemento" text="Masa: 1.0u" class="text-base tooltip__masa" style="opacity: 0.6;"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:Label name="TituloTeoria" text="TEORÍA" class="tooltip__subtitulo"/>
+        <ui:Label name="DescripcionTeorica" text="..." class="tooltip__descripcion"/>
+        <ui:Label name="TituloObservaciones" text="OBSERVACIONES" class="tooltip__subtitulo"/>
+        <ui:Label name="NotaElemento" text="..." class="tooltip__nota"/>
+    </ui:VisualElement>
+    <ui:VisualElement name="ConsolaRaiz" class="console-container panel-base panel-accent-left">
+        <ui:ScrollView name="ContenedorMensajes" class="console-scroll"/>
+    </ui:VisualElement>
+    <ui:VisualElement name="MenuRaiz" class="menu-derecho panel-base">
+        <ui:VisualElement class="menu-derecho__cabecera">
+            <ui:Label text="ELEMENTOS" class="text-base text-bold menu-derecho__titulo" style="-unity-font-definition: url(&quot;project://database/Assets/Interfaz/Fuentes/Roboto-VariableFont_wdth,wght.ttf?fileID=12800000&amp;guid=6cb56dc8fcb4ab9469665128883f9b26&amp;type=3#Roboto-VariableFont_wdth,wght&quot;);"/>
+            <ui:Button name="BotonCerrarMenu" text="X" class="boton-cerrar"/>
+        </ui:VisualElement>
+        <ui:ScrollView name="ListaAtomos" class="console-scroll"/>
+    </ui:VisualElement>
+    <ui:VisualElement name="MenuHandle" class="menu-handle">
+        <ui:Label text="&lt;" class="text-base text-bold"/>
+    </ui:VisualElement>
+</ui:UXML>
