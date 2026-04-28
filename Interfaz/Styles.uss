@@ -320,6 +320,50 @@
     opacity: 0.4;
 }
 
+/* --- Footer: Clasificación --- */
+.tooltip__footer {
+    flex-direction: row;
+    align-items: center;
+    margin-top: 15px;
+    padding: 9px 15px;
+    border-width: 1px;
+    border-color: var(--color-accent-primary);
+    background-color: transparent;
+    border-radius: var(--radius-main);
+}
+
+.tooltip__footer-icono {
+    width: 42px;
+    height: 42px;
+    margin-right: 10px;
+    background-image: url("project:/Assets/Interfaz/Iconos/decoracion/LogoSimulador_icono.png");
+    -unity-background-scale-mode: scale-to-fit;
+    opacity: 0.4;
+}
+
+.tooltip__footer-info {
+    flex-grow: 1;
+}
+
+.tooltip__footer-titulo {
+    font-size: 14px;
+    color: rgb(157, 193, 215);
+    opacity: 0.7;
+    -unity-font-style: bold;
+    margin: 0;
+    padding: 0;
+}
+
+.tooltip__footer-subtitulo {
+    font-size: 14px;
+    color: white;
+    opacity: 0.3;
+    -unity-font-style: normal;
+    margin: 0;
+    padding: 0;
+    margin-top: 5px;
+}
+
 .boton-base.boton-atomo__borrar {
     width: 26px;
     height: 26px;

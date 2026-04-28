@@ -26,6 +26,8 @@ namespace ProyectoDalton.Interfaz
         private VisualElement _iconoMasa;
         private VisualElement _iconoFormula;
         private VisualElement _iconoComposicion;
+        private VisualElement _footerClasificacion;
+        private VisualElement _footerIcono;
 
         private void OnEnable()
         {
@@ -48,6 +50,8 @@ namespace ProyectoDalton.Interfaz
             _iconoMasa = root.Q<VisualElement>(className: "icono-balance");
             _iconoFormula = root.Q<VisualElement>(className: "icono-ciencia");
             _iconoComposicion = root.Q<VisualElement>(className: "icono-composicion");
+            _footerClasificacion = root.Q<VisualElement>("FooterClasificacion");
+            _footerIcono = root.Q<VisualElement>(className: "tooltip__footer-icono");
 
             if (_tooltipRaiz == null)
             {
@@ -167,6 +171,17 @@ namespace ProyectoDalton.Interfaz
             if (_iconoMasa != null) _iconoMasa.style.unityBackgroundImageTintColor = colorIdentidad;
             if (_iconoFormula != null) _iconoFormula.style.unityBackgroundImageTintColor = colorIdentidad;
             if (_iconoComposicion != null) _iconoComposicion.style.unityBackgroundImageTintColor = colorIdentidad;
+            
+            // Tintado del footer (borde e icono)
+            if (_footerClasificacion != null)
+            {
+                _footerClasificacion.style.borderLeftColor = colorBorde;
+                _footerClasificacion.style.borderRightColor = colorBorde;
+                _footerClasificacion.style.borderTopColor = colorBorde;
+                _footerClasificacion.style.borderBottomColor = colorBorde;
+            }
+            
+            // if (_footerIcono != null) _footerIcono.style.unityBackgroundImageTintColor = colorIdentidad; // ELIMINADO: El usuario no quiere que cambie de color
 
             _tooltipRaiz.style.borderLeftColor = colorBorde;
             _tooltipRaiz.style.borderRightColor = colorBorde;
