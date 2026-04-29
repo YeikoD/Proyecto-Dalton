@@ -72,9 +72,7 @@ namespace ProyectoDalton.Interfaz
         {
             // Limpiamos clases previas por si acaso
             _notificacionRaiz.RemoveFromClassList("panel-base--fusion");
-            _notificacionRaiz.RemoveFromClassList("panel-accent-bottom--fusion");
             _notificacionRaiz.RemoveFromClassList("panel-base--ruptura");
-            _notificacionRaiz.RemoveFromClassList("panel-accent-bottom--ruptura");
             if (_tituloLabel != null)
             {
                 _tituloLabel.RemoveFromClassList("notificacion__titulo--fusion");
@@ -84,7 +82,6 @@ namespace ProyectoDalton.Interfaz
             // Mostramos el panel quitando la clase oculta y añadiendo los bordes de fusión
             _notificacionRaiz.RemoveFromClassList("notificacion--hidden");
             _notificacionRaiz.AddToClassList($"panel-base--{tipoEfecto}");
-            _notificacionRaiz.AddToClassList($"panel-accent-bottom--{tipoEfecto}");
             if (_tituloLabel != null) _tituloLabel.AddToClassList($"notificacion__titulo--{tipoEfecto}");
 
             // Si ya hay una rutina esperando para ocultar, la detenemos
@@ -102,7 +99,6 @@ namespace ProyectoDalton.Interfaz
             // Retrasamos un poco quitar el color para que no se vea feo mientras desaparece
             yield return new WaitForSeconds(0.6f); 
             _notificacionRaiz.RemoveFromClassList($"panel-base--{tipoEfecto}");
-            _notificacionRaiz.RemoveFromClassList($"panel-accent-bottom--{tipoEfecto}");
             if (_tituloLabel != null) _tituloLabel.RemoveFromClassList($"notificacion__titulo--{tipoEfecto}");
             
             _rutinaOcultar = null;

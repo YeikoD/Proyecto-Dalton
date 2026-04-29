@@ -9,6 +9,8 @@
     --color-accent-tertiary: #398084;
     --color-accent-tertiary-alt: #4CA6AB;
     --color-text-main: rgb(220, 220, 220);
+    --color-text-secondary: rgba(255, 255, 255, 0.9);
+    --color-text-highlight: rgb(157, 193, 215);
     --spacing-main: 10px;
     --radius-main: 12px;
     /* --- Tipografía --- */
@@ -23,13 +25,17 @@
     --font-size-common: 14px;
     --color-text-secondary: rgba(255, 255, 255, 0.9);
     -unity-font-definition: var(--font-secondary);
+
+    /* --- Bordes --- */
+    --border-width-main: 1px;
+    --border-width-heavy: 2px;
 }
 
 .panel-base {
     background-color: var(--color-bg-panel);
     border-radius: var(--radius-main);
     padding: var(--spacing-main);
-    border-width: 1px;
+    border-width: var(--border-width-main);
     border-color: var(--color-border-light);
     overflow: hidden;
     transition-property: opacity, translate;
@@ -52,29 +58,7 @@
     border-left-color: var(--color-accent-primary);
 }
 
-.panel-base--fusion {
-    border-color: var(--color-accent-tertiary) !important;
-}
 
-.panel-accent-left--fusion {
-    border-left-color: var(--color-accent-tertiary) !important;
-}
-
-.panel-accent-bottom--fusion {
-    border-bottom-color: var(--color-accent-tertiary) !important;
-}
-
-.panel-base--ruptura {
-    border-color: var(--color-accent-secondary) !important;
-}
-
-.panel-accent-left--ruptura {
-    border-left-color: var(--color-accent-secondary) !important;
-}
-
-.panel-accent-bottom--ruptura {
-    border-bottom-color: var(--color-accent-secondary) !important;
-}
 
 .panel-accent-bottom {
     border-bottom-width: 4px;
@@ -111,7 +95,7 @@
 
 .console__titulo {
     font-size: 13px;
-    color: rgb(157, 193, 215);
+    color: var(--color-text-highlight);
     -unity-font-style: bold;
     -unity-font-definition: var(--font-secondary);
     letter-spacing: 1px;
@@ -119,7 +103,7 @@
 
 .console__status {
     font-size: 10px;
-    color: rgb(157, 193, 215);
+    color: var(--color-text-highlight);
     -unity-font-definition: var(--font-secondary);
     opacity: 0.8;
 }
@@ -155,7 +139,7 @@
     width: 25px;
     height: 50px;
     background-color: var(--color-bg-panel);
-    border-width: 1px;
+    border-width: var(--border-width-main);
     border-color: var(--color-border-light);
     border-right-width: 0;
     align-items: center;
@@ -178,7 +162,7 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
-    border-bottom-width: 1px;
+    border-bottom-width: var(--border-width-main);
     border-bottom-color: var(--color-border-light);
     padding-bottom: 5px;
 }
@@ -367,7 +351,7 @@
     align-items: center;
     margin-top: 15px;
     padding: 9px 15px;
-    border-width: 1px;
+    border-width: var(--border-width-main);
     border-color: var(--color-accent-primary);
     background-color: transparent;
     border-radius: var(--radius-main);
@@ -388,7 +372,7 @@
 
 .tooltip__footer-titulo {
     font-size: 14px;
-    color: rgb(157, 193, 215);
+    color: var(--color-text-highlight);
     opacity: 0.7;
     -unity-font-style: bold;
     margin: 0;
@@ -411,7 +395,7 @@
     background-color: var(--color-accent-secondary);
     color: rgba(255, 255, 255, 0.8);
     border-radius: 13px;
-    border-width: 1px;
+    border-width: var(--border-width-main);
     border-color: var(--color-accent-secondary-alt);
     -unity-text-align: middle-center;
     -unity-font-style: bold;
@@ -550,7 +534,7 @@
     right: 25px;
     align-items: flex-end;
     padding-right: 15px;
-    border-right-width: 2px;
+    border-right-width: var(--border-width-heavy);
     border-right-color: var(--color-accent-primary);
     transition-property: opacity;
     transition-duration: 0.8s;
@@ -673,7 +657,7 @@
     letter-spacing: 3px;
     -unity-font-style: bold;
     -unity-font-definition: url("project:/Assets/Interfaz/Fuentes/Montserrat-VariableFont_wght.ttf");
-    border-left-width: 2px;
+    border-left-width: var(--border-width-heavy);
     border-left-color: var(--color-accent-primary);
     padding-left: 10px;
     transition-property: color, border-left-color, opacity;
@@ -689,46 +673,69 @@
     border-left-color: white;
 }
 
-/* --- NOTIFICACIÓN SUPERIOR --- */
+/* --- NOTIFICACIÓN LATERAL --- */
 .notificacion-panel {
     position: absolute;
     top: 20px;
-    left: 50%;
-    translate: -50% 0;
-    width: 450px;
-    align-items: center;
-    padding: 15px 25px;
-    transition-property: translate, opacity, border-color, border-bottom-color;
-    transition-duration: 0.6s, 0.6s, 0.5s, 0.5s;
-    transition-timing-function: ease-out-bounce, ease-out-bounce, ease-out-back, ease-out-back;
+    right: 20px;
+    width: 304px;
+    flex-direction: row;
+    padding: 4px 6px;
+    border-width: var(--border-width-main);
+    transition-property: translate, opacity, border-color;
+    transition-duration: 0.6s;
+    transition-timing-function: ease-out-back;
 }
 
 .notificacion--hidden {
     opacity: 0;
-    translate: -50% -100px;
+    translate: 420px 0;
+}
+
+.notificacion__icono-contenedor {
+    width: 56px;
+    justify-content: center;
+    align-items: center;
+    margin-right: 8px;
+    flex-shrink: 0;
+}
+
+.notificacion__icono {
+    width: 44px;
+    height: 44px;
+    background-image: url("project:/Assets/Interfaz/Iconos/decoracion/UI/sensors_krx_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.png");
+    -unity-background-scale-mode: scale-to-fit;
+    -unity-background-image-tint-color: var(--color-accent-primary);
+}
+
+.notificacion__contenido {
+    flex-grow: 1;
+    justify-content: center;
 }
 
 .notificacion__titulo {
-    font-size: 16px;
-    color: var(--color-accent-secondary-alt);
-    letter-spacing: 4px;
-    margin-bottom: 5px;
+    font-size: 13px;
+    color: var(--color-accent-primary);
+    letter-spacing: 2px;
+    margin-bottom: 2px;
+    -unity-font-style: bold;
     transition-property: color;
     transition-duration: 0.3s;
 }
 
-.notificacion__titulo--fusion {
-    color: var(--color-accent-tertiary-alt) !important;
+.notificacion__separador {
+    height: 1px;
+    background-color: var(--color-accent-primary);
+    margin-bottom: 3px;
+    opacity: 0.3;
 }
 
-.notificacion__titulo--ruptura {
-    color: var(--color-accent-secondary-alt) !important;
-}
+
 
 .notificacion__mensaje {
-    font-size: 13px;
-    color: white;
-    opacity: 0.8;
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    opacity: var(--opacity-common);
     white-space: normal;
-    -unity-text-align: middle-center;
+    -unity-text-align: middle-left;
 }

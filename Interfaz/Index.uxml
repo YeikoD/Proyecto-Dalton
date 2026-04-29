@@ -78,8 +78,14 @@
             <ui:VisualElement name="LogoCompania" class="logo-icon logo-compania"/>
         </ui:VisualElement>
     </ui:VisualElement>
-    <ui:VisualElement name="NotificacionRaiz" class="notificacion-panel panel-base panel-accent-bottom notificacion--hidden">
-        <ui:Label name="NotificacionTitulo" text="¡NUEVO COMPUESTO!" class="text-base text-bold notificacion__titulo"/>
-        <ui:Label name="NotificacionMensaje" text="Se ha formado una nueva estructura molecular." class="text-base notificacion__mensaje"/>
+    <ui:VisualElement name="NotificacionRaiz" class="notificacion-panel panel-base notificacion--hidden">
+        <ui:VisualElement class="notificacion__icono-contenedor">
+            <ui:VisualElement name="NotificacionIcono" class="notificacion__icono"/>
+        </ui:VisualElement>
+        <ui:VisualElement class="notificacion__contenido">
+            <ui:Label name="NotificacionTitulo" text="¡NUEVO COMPUESTO!" class="text-base text-bold notificacion__titulo"/>
+            <ui:VisualElement class="notificacion__separador"/>
+            <ui:Label name="NotificacionMensaje" text="Se ha formado una nueva estructura molecular." class="text-base notificacion__mensaje"/>
+        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

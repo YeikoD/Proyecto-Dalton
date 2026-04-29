@@ -31,6 +31,6 @@ MonoBehaviour:
   alturaLineaVertical: -0.03
   anchoLinea: 0.015
   colorLinea: {r: 1, g: 1, b: 1, a: 1}
-  colorTextoMenu: {r: 0.1981132, g: 0.1981132, b: 0.1981132, a: 1}
+  colorTextoMenu: {r: 0.2924528, g: 0.2924528, b: 0.2924528, a: 1}
   inerciaBillboard: 0.85
   distanciaMaxima: 20

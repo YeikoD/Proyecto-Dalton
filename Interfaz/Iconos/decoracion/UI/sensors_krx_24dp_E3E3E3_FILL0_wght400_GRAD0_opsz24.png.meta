@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 5bb15bcfa0877374f99501158e55a088
+guid: 8f0938e3883687f4da0fe86aebe2f5b8
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -21,7 +21,7 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
     flipGreenChannel: 0
-  isReadable: 1
+  isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
@@ -43,7 +43,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 0
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -54,7 +54,7 @@ TextureImporter:
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
-  textureType: 7
+  textureType: 8
   textureShape: 1
   singleChannelComponent: 0
   flipbookRows: 1
@@ -69,7 +69,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 512
+    maxTextureSize: 128
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
@@ -97,7 +97,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: close_small_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24_0
+      name: sensors_krx_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24_0
       rect:
         serializedVersion: 2
         x: 0
@@ -112,8 +112,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fbc29b3f87e93e848b2907ae178ea508
-      internalID: 588729210
+      spriteID: ff1dd6921fd18234f89c6387e67d8386
+      internalID: -815111937
       vertices: []
       indices: 
       edges: []
@@ -122,7 +122,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 9e16fab4e14015c439798b85ae2df935
+    spriteID: c47b1d6a59d104a4f9c58baed8006f09
     internalID: 0
     vertices: []
     indices: 
@@ -132,7 +132,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      close_small_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24_0: 588729210
+      sensors_krx_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24_0: -815111937
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
