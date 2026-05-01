@@ -100,8 +100,7 @@ namespace ProyectoDalton.Atomos
 
                 if (textoNombre != null) 
                 {
-                    string prefijo = datos.esElemento ? "ELEMENTO: " : "ATOMO: ";
-                    textoNombre.text = $"#{miNumero} {prefijo}{datos.nombreElemento.ToUpper()}";
+                    textoNombre.text = $"#{miNumero} ATOMO: {datos.nombreElemento.ToUpper()}";
                 }
 
                 largoSubrayado      = datos.largoSubrayado;
@@ -115,8 +114,7 @@ namespace ProyectoDalton.Atomos
             else if (datos != null && textoNombre != null)
             {
                 // En debug igual mostramos el nombre del SO
-                string prefijo = datos.esElemento ? "ELEMENTO: " : "ATOMO: ";
-                textoNombre.text = prefijo + datos.nombreElemento.ToUpper();
+                textoNombre.text = "ATOMO: " + datos.nombreElemento.ToUpper();
             }
 
             ConfigurarLineRenderer();

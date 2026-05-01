@@ -50,14 +50,12 @@
     </ui:VisualElement>
     <ui:VisualElement name="MenuRaiz" class="menu-derecho panel-base panel--hidden-right">
         <ui:VisualElement class="menu-derecho__cabecera">
-            <ui:Label text="ELEMENTOS" class="text-base text-bold menu-derecho__titulo" style="-unity-font-definition: url(&quot;project://database/Assets/Interfaz/Fuentes/Roboto-VariableFont_wdth,wght.ttf?fileID=12800000&amp;guid=6cb56dc8fcb4ab9469665128883f9b26&amp;type=3#Roboto-VariableFont_wdth,wght&quot;);"/>
+            <ui:Label text="SELECCIÓN DE ELEMENTOS" class="text-base text-bold menu-derecho__titulo" style="-unity-font-definition: url(&quot;project://database/Assets/Interfaz/Fuentes/Roboto-VariableFont_wdth,wght.ttf?fileID=12800000&amp;guid=6cb56dc8fcb4ab9469665128883f9b26&amp;type=3#Roboto-VariableFont_wdth,wght&quot;);"/>
             <ui:Button name="BotonCerrarMenu" text="X" class="boton-base boton-cerrar"/>
         </ui:VisualElement>
         <ui:ScrollView name="ListaAtomos" class="console-scroll"/>
     </ui:VisualElement>
-    <ui:VisualElement name="MenuHandle" class="menu-handle menu-handle--hidden">
-        <ui:Label text="&lt;" class="text-base text-bold"/>
-    </ui:VisualElement>
+
     <ui:VisualElement name="MenuPrincipalRaiz" class="menu-principal-pantalla">
         <ui:Button name="BotonAjustes" class="boton-base boton-ajustes boton-ajustes--hidden"/>
         <ui:VisualElement class="menu-principal__contenedor">
@@ -67,7 +65,7 @@
             <ui:Button name="BotonLimpiar" text="LIMPIAR ESCENA" class="boton-base boton-iniciar boton-iniciar--hidden boton-limpiar"/>
             <ui:Button name="BotonSalir" text="SALIR DEL SIMULADOR" class="boton-base boton-iniciar boton-iniciar--hidden boton-salir"/>
         </ui:VisualElement>
-        <ui:Label text="Desarrollado por Anderson Correa" class="texto-creditos texto-creditos--hidden"/>
+        <ui:Label text="Developed by Anderson Correa" class="texto-creditos texto-creditos--hidden"/>
         <ui:VisualElement class="cuadro-informacion cuadro-informacion--hidden">
             <ui:Label text="Proyecto de Química" class="info-label info-label--bold"/>
             <ui:Label text="Liceo Nº 45 - Victor Bersanelli" class="info-label"/>
@@ -87,5 +85,49 @@
             <ui:VisualElement class="notificacion__separador"/>
             <ui:Label name="NotificacionMensaje" text="Se ha formado una nueva estructura molecular." class="text-base notificacion__mensaje"/>
         </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="AjustesRaiz" class="ajustes-panel panel-base panel--hidden" style="display: none;">
+        <ui:VisualElement class="ajustes__cabecera">
+            <ui:Label text="CONFIGURACIÓN DEL SISTEMA" class="text-base text-bold ajustes__titulo"/>
+            <ui:Button name="BotonCerrarAjustes" text="X" class="boton-base boton-cerrar"/>
+        </ui:VisualElement>
+        <ui:VisualElement class="ajustes__separador"/>
+        <ui:VisualElement name="ContenedorAjustes" class="ajustes__contenido">
+            <ui:VisualElement class="ajustes__fila">
+                <ui:Label text="ESCALA DE INTERFAZ (TEXTO)" class="text-base ajustes__label"/>
+                <ui:Slider name="SliderEscalaTexto" low-value="1" high-value="1.8" value="1" class="ajustes__slider"/>
+            </ui:VisualElement>
+            <ui:VisualElement class="ajustes__fila">
+                <ui:Label text="ESCALA DE INTERFAZ (ICONOS)" class="text-base ajustes__label"/>
+                <ui:Slider name="SliderEscalaIconos" low-value="1" high-value="1.8" value="1" class="ajustes__slider"/>
+            </ui:VisualElement>
+            <!-- Más ajustes aquí en el futuro -->
+        </ui:VisualElement>
+    </ui:VisualElement>
+
+    <ui:VisualElement name="InformacionRaiz" class="informacion-panel panel-base panel--hidden" style="display: none;">
+        <ui:VisualElement class="informacion__cabecera">
+            <ui:Label text="INFORMACIÓN DEL PROYECTO" class="text-base text-bold informacion__titulo"/>
+            <ui:Button name="BotonCerrarInfo" text="X" class="boton-base boton-cerrar"/>
+        </ui:VisualElement>
+        <ui:VisualElement class="informacion__separador"/>
+        <ui:VisualElement name="ContenedorInfo" class="informacion__contenido">
+            <!-- El contenido se agregará después -->
+        </ui:VisualElement>
+    </ui:VisualElement>
+
+    <ui:VisualElement name="HotbarRaiz" class="hotbar-contenedor panel-base">
+        <ui:Button name="HotbarBotonSelector" tooltip="Selector de Átomos" class="hotbar-boton">
+            <ui:VisualElement class="hotbar__icono icono-selector"/>
+        </ui:Button>
+        <ui:Button name="HotbarBotonLimpiar" tooltip="Limpiar Escena" class="hotbar-boton">
+            <ui:VisualElement class="hotbar__icono icono-limpiar"/>
+        </ui:Button>
+        <ui:Button name="HotbarBotonInfo" tooltip="Información" class="hotbar-boton">
+            <ui:VisualElement class="hotbar__icono icono-info"/>
+        </ui:Button>
+        <ui:Button name="HotbarBotonAjustes" tooltip="Configuración" class="hotbar-boton">
+            <ui:VisualElement class="hotbar__icono icono-ajustes"/>
+        </ui:Button>
     </ui:VisualElement>
 </ui:UXML>

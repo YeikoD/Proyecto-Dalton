@@ -16,7 +16,8 @@ namespace ProyectoDalton.Interfaz
         [SerializeField] private List<DatosAtomoSO> listaAtomosBase;
         
         private VisualElement _menuRaiz;
-        private VisualElement _menuHandle;
+        private Button _botonHotbarSelector;
+        private VisualElement _hotbarRaiz;
         private ScrollView _listaContenedor;
         private Button _botonCerrar;
         private bool _estaVisible = false;
@@ -34,7 +35,7 @@ namespace ProyectoDalton.Interfaz
         {
             var root = GetComponent<UIDocument>().rootVisualElement;
             _menuRaiz = root.Q<VisualElement>("MenuRaiz");
-            _menuHandle = root.Q<VisualElement>("MenuHandle");
+            _hotbarRaiz = root.Q<VisualElement>("HotbarRaiz");
             _listaContenedor = root.Q<ScrollView>("ListaAtomos");
 
             if (_menuRaiz != null)
@@ -44,13 +45,12 @@ namespace ProyectoDalton.Interfaz
                 _estaVisible = false;
             }
 
-            if (_menuHandle != null)
+
+
+            _botonHotbarSelector = root.Q<Button>("HotbarBotonSelector");
+            if (_botonHotbarSelector != null)
             {
-                // El handle abre el menú al hacer clic, pero solo si el input no está bloqueado
-                _menuHandle.RegisterCallback<ClickEvent>(evt => {
-                    if (ProyectoDalton.Core.GameManager.Instancia != null && ProyectoDalton.Core.GameManager.Instancia.BloquearInput) return;
-                    AlternarMenu();
-                });
+                _botonHotbarSelector.RegisterCallback<ClickEvent>(evt => ManejarClickMenu());
             }
 
             _botonCerrar = root.Q<Button>("BotonCerrarMenu");
@@ -124,6 +124,12 @@ namespace ProyectoDalton.Interfaz
 
         public static MenuAtomosUI Instancia => _instancia;
 
+        private void ManejarClickMenu()
+        {
+            if (ProyectoDalton.Core.GameManager.Instancia != null && ProyectoDalton.Core.GameManager.Instancia.BloquearInput) return;
+            AlternarMenu();
+        }
+
         public void AlternarMenu()
         {
             if (_menuRaiz == null) return;
@@ -133,12 +139,10 @@ namespace ProyectoDalton.Interfaz
             if (_estaVisible)
             {
                 _menuRaiz.RemoveFromClassList("panel--hidden-right");
-                _menuHandle?.AddToClassList("menu-handle--hidden");
             }
             else
             {
                 _menuRaiz.AddToClassList("panel--hidden-right");
-                _menuHandle?.RemoveFromClassList("menu-handle--hidden");
             }
         }
 
@@ -179,29 +183,29 @@ namespace ProyectoDalton.Interfaz
             if (datos.icono != null)
             {
                 icono.style.backgroundImage = new StyleBackground(datos.icono);
+                icono.style.unityBackgroundImageTintColor = datos.colorTextoMenu;
             }
             
-            // Texto
-            string prefijo = datos.esElemento ? "ELEMENTO: " : "ATOMO: ";
-            Label nombre = new Label($"{prefijo}{datos.nombreElemento.ToUpper()}");
+            // Texto (Nombre del elemento simplificado)
+            Label nombre = new Label(datos.nombreElemento.ToUpper());
             nombre.AddToClassList("boton-atomo__texto");
             nombre.AddToClassList("text-base");
             nombre.AddToClassList("text-bold");
             nombre.style.color = datos.colorTextoMenu;
 
-            // --- Botón de Borrado (X) ---
+            // --- Botón de Borrado (X) Absoluto ---
             Label btnBorrar = new Label("✕");
             btnBorrar.AddToClassList("boton-atomo__borrar");
-            btnBorrar.tooltip = $"Eliminar todos los átomos de {datos.nombreElemento}";
+            btnBorrar.tooltip = $"Eliminar todos los {datos.nombreElemento}";
             
             btnBorrar.RegisterCallback<ClickEvent>(evt => {
-                evt.StopPropagation(); // Evita que se instancie un nuevo átomo al borrar
+                evt.StopPropagation();
                 BorrarTodosLosAtomos(datos);
             });
             
+            boton.Add(btnBorrar); // La X primero para que esté al frente (z-index)
             boton.Add(icono);
             boton.Add(nombre);
-            boton.Add(btnBorrar);
 
             // Registramos el botón para poder bloquearlo luego
             if (!_registroAtomos.ContainsKey(datos.nombreElemento))

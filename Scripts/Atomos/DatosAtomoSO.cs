@@ -11,11 +11,8 @@ namespace ProyectoDalton.Atomos
     {
         [Header("Teoría de Dalton")]
         public string nombreElemento = "Hidrógeno";
-        public bool esElemento = false;
         [TextArea(2, 4)]
         public string descripcionTeorica = "Según Dalton, los átomos de un mismo elemento son idénticos en masa y propiedades.";
-        [TextArea(2, 4)]
-        public string nota = "Nota adicional...";
 
         [Header("Propiedades Físicas")]
         public string simbolo = "H";

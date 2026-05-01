@@ -194,10 +194,12 @@ namespace ProyectoDalton.Interfaz
                 if (datos.icono != null)
                 {
                     _simboloBox.style.backgroundImage = new StyleBackground(datos.icono);
+                    _simboloBox.style.unityBackgroundImageTintColor = colorIdentidad;
                 }
                 else
                 {
                     _simboloBox.style.backgroundImage = null;
+                    _simboloBox.style.unityBackgroundImageTintColor = StyleKeyword.Initial;
                 }
             }
 

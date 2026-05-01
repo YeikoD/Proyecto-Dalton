@@ -126,36 +126,21 @@
 
 .menu-derecho {
     position: absolute;
-    right: 10px;
-    top: 10px;
-    bottom: 10px;
-    width: 360px;
+    right: 20px;
+    top: 15%;
+    height: 70%;
+    width: 276px;
+    padding: 10px;
 }
 
-.menu-handle {
-    position: absolute;
-    right: 0;
-    top: 50%;
-    width: 25px;
-    height: 50px;
-    background-color: var(--color-bg-panel);
-    border-width: var(--border-width-main);
-    border-color: var(--color-border-light);
-    border-right-width: 0;
-    align-items: center;
-    justify-content: center;
-    transition-property: translate, opacity;
-    transition-duration: 0.4s;
+#ListaAtomos #unity-content-container {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    padding: 5px;
 }
 
-.menu-handle:hover {
-    background-color: var(--color-accent-primary);
-}
 
-.menu-handle--hidden {
-    translate: 25px 0;
-    opacity: 0;
-}
 
 .menu-derecho__cabecera {
     flex-direction: row;
@@ -168,25 +153,41 @@
 }
 
 .menu-derecho__titulo {
-    font-size: 14px;
+    font-size: 13px;
+    color: var(--color-text-highlight);
+    -unity-font-style: bold;
+    -unity-font-definition: var(--font-secondary);
+    letter-spacing: 1px;
     margin-bottom: 0;
-    border-bottom-width: 0;
 }
 
 .boton-base {
     background-color: transparent;
-    border-width: 2px;
+    border-width: 1px;
     border-color: var(--color-accent-primary);
     color: var(--color-text-main);
     font-size: var(--size-body);
-    letter-spacing: 2px;
+    letter-spacing: 1px;
     -unity-font-style: normal;
     -unity-font-definition: var(--font-secondary);
     padding: 8px 12px;
     border-radius: var(--radius-main);
     transition-property: background-color, border-color, opacity, scale, translate;
     transition-duration: 0.3s;
-    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+}
+
+.boton-base:hover {
+    background-color: var(--color-border-light);
+    border-color: var(--color-text-highlight);
+    scale: 1.05;
+    translate: 0 -3px;
+}
+
+.boton-base:active {
+    scale: 0.95;
+    background-color: rgba(0, 50, 110, 0.1);
 }
 
 /* Botón cerrar (X) */
@@ -299,8 +300,8 @@
 }
 
 .tooltip__dato-icono {
-    width: 29px;
-    height: 29px;
+    width: 36px;
+    height: 36px;
     margin-right: 12px;
     -unity-background-scale-mode: scale-to-fit;
     -unity-background-image-tint-color: var(--color-accent-primary);
@@ -308,15 +309,15 @@
 }
 
 .icono-balance {
-    background-image: url("project:/Assets/Interfaz/Iconos/decoracion/balance_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.png");
+    background-image: url("project:/Assets/Interfaz/Iconos/decoracion/DetallesAtomo/balance_256dp_E3E3E3_FILL0_wght100_GRAD200_opsz48.png");
 }
 
 .icono-ciencia {
-    background-image: url("project:/Assets/Interfaz/Iconos/decoracion/bubble_chart_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.png");
+    background-image: url("project:/Assets/Interfaz/Iconos/decoracion/DetallesAtomo/bubble_chart_256dp_E3E3E3_FILL0_wght100_GRAD200_opsz48.png");
 }
 
 .icono-composicion {
-    background-image: url("project:/Assets/Interfaz/Iconos/decoracion/science_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.png");
+    background-image: url("project:/Assets/Interfaz/Iconos/decoracion/DetallesAtomo/experiment_256dp_E3E3E3_FILL0_wght100_GRAD200_opsz48.png");
 }
 
 .tooltip__dato-dinamico {
@@ -412,36 +413,70 @@
     scale: 1.15;
 }
 
-.boton-base.boton-atomo {
-    flex-direction: row;
+/* --- DISEÑO DE INVENTARIO DE ÁTOMOS --- */
+.boton-atomo {
+    width: 110px;
+    height: 125px;
+    margin: 6px;
+    background-color: transparent;
+    border-width: 1px;
+    border-color: var(--color-accent-primary);
+    border-radius: var(--radius-main);
+    flex-direction: column;
     align-items: center;
-    background-color: rgba(0, 50, 110, 0.1);
-    padding: 12px;
-    margin-bottom: 6px;
-    border-left-width: 2px;
-    border-left-color: transparent;
-    transition-property: background-color, border-left-color, translate;
+    justify-content: space-around;
+    padding: 8px;
+    transition-property: background-color, border-color, scale, translate;
     transition-duration: 0.3s;
 }
 
-.boton-base.boton-atomo:hover {
-    background-color: rgba(0, 50, 110, 0.25);
-    border-left-color: var(--color-accent-primary);
-    translate: 8px 0;
+.boton-atomo:hover {
+    background-color: transparent;
+    border-color: var(--color-text-highlight);
+    scale: 1.08;
+    translate: 0 -2px;
 }
 
 .boton-atomo__icono {
-    width: 56px;
-    height: 56px;
-    margin-right: 15px;
-    flex-shrink: 0;
+    width: 64px;
+    height: 64px;
+    margin-bottom: 5px;
+    -unity-background-scale-mode: scale-to-fit;
 }
 
 .boton-atomo__texto {
-    flex-grow: 1;
-    font-size: 13px;
+    font-size: 11px;
     letter-spacing: 1px;
-    opacity: 0.8;
+    opacity: 0.9;
+    -unity-text-align: middle-center;
+    white-space: normal;
+    height: 30px;
+}
+
+.boton-atomo__borrar {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 18px;
+    height: 18px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: var(--color-accent-secondary-alt);
+    border-radius: 9px;
+    font-size: 10px;
+    -unity-text-align: middle-center;
+    -unity-font-style: bold;
+    opacity: 0;
+    transition-property: opacity, background-color;
+    transition-duration: 0.2s;
+}
+
+.boton-atomo:hover .boton-atomo__borrar {
+    opacity: 1;
+}
+
+.boton-atomo__borrar:hover {
+    background-color: var(--color-accent-secondary);
+    color: white;
 }
 
 .console-label {
@@ -487,7 +522,7 @@
     background-color: transparent;
     border-width: 0;
     opacity: var(--opacity-common);
-    background-image: url("project:/Assets/Interfaz/Iconos/settings_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.png");
+    background-image: url("project:/Assets/Interfaz/Iconos/decoracion/UI/settings_200dp_E3E3E3_FILL0_wght100_GRAD200_small.png");
     transition-property: opacity, rotate, scale;
     transition-duration: 0.4s;
 }
@@ -546,7 +581,8 @@
 
 .info-label {
     font-size: 11px;
-    color: rgba(255, 255, 255, 0.4);
+    color: var(--color-text-secondary);
+    opacity: var(--opacity-common);
     letter-spacing: 3px;
     margin-bottom: 2px;
     -unity-font-style: bold;
@@ -556,7 +592,7 @@
 .info-label--bold {
     font-size: 18px;
     -unity-font-style: bold;
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--color-text-highlight);
     margin-bottom: 5px;
     transition-property: opacity;
     transition-duration: 0.2s;
@@ -566,54 +602,24 @@
     width: 322px;
     padding-top: 12px;
     padding-bottom: 12px;
-    background-color: transparent;
-    border-width: 2px;
-    border-color: var(--color-accent-primary);
-    color: white;
     font-size: 14px;
     letter-spacing: 3px;
-    transition-property: background-color, border-color, scale, translate, opacity;
-    transition-duration: 0.5s;
-}
-
-.boton-base.boton-iniciar--hidden {
-    opacity: 0;
-    scale: 0.8;
-}
-
-.boton-base.boton-iniciar:hover {
-    background-color: var(--color-border-light);
     border-color: var(--color-accent-primary);
-    scale: 1.05;
-    translate: 0 -5px;
-}
-
-.boton-base.boton-iniciar:active {
-    scale: 0.95;
 }
 
 .boton-base.boton-salir {
     margin-top: 15px;
     border-color: var(--color-accent-secondary);
-    font-size: 11px;
-    letter-spacing: 2px;
-    height: 40px;
 }
 
 .boton-base.boton-salir:hover {
-    background-color: var(--color-accent-secondary);
+    background-color: rgba(125, 28, 52, 0.5);
     border-color: var(--color-accent-secondary-alt);
     color: white;
 }
 
 .boton-base.boton-limpiar {
     margin-top: 10px;
-    border-color: var(--color-accent-tertiary);
-}
-
-.boton-base.boton-limpiar:hover {
-    background-color: var(--color-accent-tertiary);
-    border-color: #ff9800;
 }
 
 .logos-contenedor {
@@ -633,7 +639,7 @@
 .logo-icon {
     width: 100px;
     height: 50px;
-    opacity: 0.5;
+    opacity: var(--opacity-common);
     transition-property: opacity, scale;
     transition-duration: 0.3s;
     -unity-background-scale-mode: scale-to-fit;
@@ -641,7 +647,7 @@
 
 .logo-icon:hover {
     opacity: 1;
-    scale: 1.05;
+    scale: 1.1;
 }
 
 .logo-compania {
@@ -652,8 +658,9 @@
     position: absolute;
     bottom: 20px;
     left: 20px;
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.4);
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    opacity: var(--opacity-common);
     letter-spacing: 3px;
     -unity-font-style: bold;
     -unity-font-definition: url("project:/Assets/Interfaz/Fuentes/Montserrat-VariableFont_wght.ttf");
@@ -673,12 +680,69 @@
     border-left-color: white;
 }
 
+/* --- PANELES CENTRALES (AJUSTES E INFORMACIÓN) --- */
+.ajustes-panel,
+.informacion-panel {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 600px;
+    height: 450px;
+    translate: -50% -50%;
+    padding: 20px;
+}
+
+.ajustes__cabecera,
+.informacion__cabecera {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.ajustes__titulo,
+.informacion__titulo {
+    font-size: 14px;
+    color: var(--color-text-highlight);
+    letter-spacing: 2px;
+}
+
+.ajustes__separador,
+.informacion__separador {
+    height: 1px;
+    background-color: var(--color-border-light);
+    margin-bottom: 15px;
+    opacity: 0.5;
+}
+
+.ajustes__contenido,
+.informacion__contenido {
+    flex-grow: 1;
+}
+
+.ajustes__fila {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.ajustes__label {
+    font-size: 11px;
+    opacity: 0.8;
+    width: 40%;
+}
+
+.ajustes__slider {
+    flex-grow: 1;
+}
+
 /* --- NOTIFICACIÓN LATERAL --- */
 .notificacion-panel {
     position: absolute;
     top: 20px;
     right: 20px;
-    width: 304px;
+    width: 276px;
     flex-direction: row;
     padding: 4px 6px;
     border-width: var(--border-width-main);
@@ -693,7 +757,7 @@
 }
 
 .notificacion__icono-contenedor {
-    width: 56px;
+    width: 64px;
     justify-content: center;
     align-items: center;
     margin-right: 8px;
@@ -701,9 +765,9 @@
 }
 
 .notificacion__icono {
-    width: 44px;
-    height: 44px;
-    background-image: url("project:/Assets/Interfaz/Iconos/decoracion/UI/sensors_krx_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.png");
+    width: 56px;
+    height: 56px;
+    background-image: url("project:/Assets/Interfaz/Iconos/decoracion/UI/sensors_krx_256dp_E3E3E3_FILL0_wght100_GRAD200_opsz48.png");
     -unity-background-scale-mode: scale-to-fit;
     -unity-background-image-tint-color: var(--color-accent-primary);
 }
@@ -738,4 +802,96 @@
     opacity: var(--opacity-common);
     white-space: normal;
     -unity-text-align: middle-left;
+}
+
+/* --- HOTBAR (BARRA DE HERRAMIENTAS) --- */
+.hotbar-contenedor {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    flex-direction: row;
+    padding: 10px;
+    background-color: var(--color-bg-panel);
+    border-radius: var(--radius-main);
+    border-width: var(--border-width-main);
+    border-color: var(--color-border-light);
+    width: 276px;
+    justify-content: space-between;
+    overflow: visible !important;
+    transition-property: background-color, border-color, scale, translate;
+    transition-duration: 0.4s;
+}
+
+.hotbar-contenedor:hover {
+    scale: 1.02;
+}
+
+.hotbar-boton {
+    width: 52px;
+    height: 52px;
+    margin: 2px;
+    padding: 8px;
+    background-color: transparent;
+    border-width: 1px;
+    border-color: var(--color-accent-primary);
+    border-radius: 8px;
+    justify-content: center;
+    align-items: center;
+    transition-property: background-color, border-color, scale, translate;
+    transition-duration: 0.3s;
+}
+
+.hotbar-boton:hover {
+    background-color: transparent;
+    border-color: var(--color-text-highlight);
+    scale: 1.12;
+    translate: 0 -3px;
+}
+
+.hotbar-boton:active {
+    scale: 0.95;
+    background-color: var(--color-accent-primary);
+}
+
+.hotbar__icono {
+    width: 100%;
+    height: 100%;
+    background-image: url("project:/Assets/Interfaz/Iconos/decoracion/LogoSimulador_icono_small.png");
+    -unity-background-scale-mode: scale-to-fit;
+    -unity-background-image-tint-color: var(--color-text-secondary);
+    opacity: var(--opacity-common);
+}
+
+/* Iconos específicos por botón */
+#HotbarBotonSelector .hotbar__icono {
+    -unity-background-image-tint-color: var(--color-text-secondary);
+    opacity: 0.4;
+}
+
+#HotbarBotonLimpiar .hotbar__icono {
+    background-image: url("project:/Assets/Interfaz/Iconos/decoracion/UI/delete_200dp_E3E3E3_FILL0_wght100_GRAD200_opsz48.png");
+    -unity-background-image-tint-color: var(--color-text-secondary);
+    opacity: var(--opacity-common);
+}
+
+#HotbarBotonInfo .hotbar__icono {
+    background-image: url("project:/Assets/Interfaz/Iconos/decoracion/UI/book_5_200dp_E3E3E3_FILL0_wght100_GRAD200_opsz48.png");
+    -unity-background-image-tint-color: var(--color-text-secondary);
+    opacity: var(--opacity-common);
+}
+
+#HotbarBotonAjustes .hotbar__icono {
+    background-image: url("project:/Assets/Interfaz/Iconos/decoracion/UI/settings_200dp_E3E3E3_FILL0_wght100_GRAD200_opsz48.png");
+    -unity-background-image-tint-color: var(--color-text-secondary);
+    opacity: var(--opacity-common);
+}
+
+.hotbar-boton:hover .hotbar__icono {
+    opacity: 1;
+    -unity-background-image-tint-color: var(--color-text-highlight);
+}
+
+.hotbar--hidden {
+    translate: 0 100px;
+    opacity: 0;
 }

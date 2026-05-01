@@ -15,7 +15,7 @@ namespace ProyectoDalton.Interfaz
     {
         #region Constantes Estéticas
         private const string TITULO_PROYECTO = "Proyecto de Química";
-        private const string DESARROLLADOR = "Desarrollado por Anderson Correa";
+        private const string DESARROLLADOR = "Developed by Anderson Correa";
         private readonly string[] INFO_PROYECTO = {
             TITULO_PROYECTO,
             "Liceo Nº 45 - Victor Bersanelli",
@@ -29,7 +29,9 @@ namespace ProyectoDalton.Interfaz
         private VisualElement _logoTitulo;
         private VisualElement _logosContenedor;
         private VisualElement _cuadroInfo;
-        private VisualElement _menuHandle;
+        private VisualElement _hotbarRaiz;
+        private VisualElement _ajustesRaiz;
+        private VisualElement _informacionRaiz;
         private Label _labelCreditos;
         private List<Label> _labelsInfo = new List<Label>();
 
@@ -38,9 +40,17 @@ namespace ProyectoDalton.Interfaz
         private Button _botonLimpiar;
         private Button _botonSalir;
         private Button _botonAjustes;
+        private Button _hotbarBotonLimpiar;
+        private Button _hotbarBotonAjustes;
+        private Button _hotbarBotonInfo;
+        private Button _botonCerrarAjustes;
+        private Button _botonCerrarInfo;
+        private Slider _sliderEscalaTexto;
+        private Slider _sliderEscalaIconos;
         #endregion
 
         private bool _yaIniciado = false;
+        private bool _easterEggActivo = false;
 
         private void OnEnable()
         {
@@ -60,7 +70,9 @@ namespace ProyectoDalton.Interfaz
             _logoTitulo = root.Q<VisualElement>(className: "titulo-logo");
             _logosContenedor = root.Q<VisualElement>(className: "logos-contenedor");
             _cuadroInfo = root.Q<VisualElement>(className: "cuadro-informacion");
-            _menuHandle = root.Q<VisualElement>("MenuHandle");
+            _hotbarRaiz = root.Q<VisualElement>("HotbarRaiz");
+            _ajustesRaiz = root.Q<VisualElement>("AjustesRaiz");
+            _informacionRaiz = root.Q<VisualElement>("InformacionRaiz");
             
             // Textos
             _labelCreditos = root.Q<Label>(className: "texto-creditos");
@@ -82,6 +94,40 @@ namespace ProyectoDalton.Interfaz
             if (_botonVolver != null)  _botonVolver.clicked += IniciarSimulacion;
             if (_botonLimpiar != null) _botonLimpiar.clicked += LimpiarEscena;
             if (_botonSalir != null)   _botonSalir.clicked += SalirDelSimulador;
+            if (_botonAjustes != null) _botonAjustes.clicked += ToggleAjustes;
+
+            _hotbarBotonLimpiar = root.Q<Button>("HotbarBotonLimpiar");
+            if (_hotbarBotonLimpiar != null) _hotbarBotonLimpiar.clicked += () => { LimpiarEscena(); _hotbarBotonLimpiar.Blur(); };
+
+            _hotbarBotonAjustes = root.Q<Button>("HotbarBotonAjustes");
+            if (_hotbarBotonAjustes != null) _hotbarBotonAjustes.clicked += ToggleAjustes;
+
+            _hotbarBotonInfo = root.Q<Button>("HotbarBotonInfo");
+            if (_hotbarBotonInfo != null) _hotbarBotonInfo.clicked += ToggleInformacion;
+
+            _botonCerrarAjustes = root.Q<Button>("BotonCerrarAjustes");
+            if (_botonCerrarAjustes != null) _botonCerrarAjustes.clicked += CerrarAjustes;
+
+            _botonCerrarInfo = root.Q<Button>("BotonCerrarInfo");
+            if (_botonCerrarInfo != null) _botonCerrarInfo.clicked += CerrarInformacion;
+
+            _ajustesRaiz?.RegisterCallback<TransitionEndEvent>(OnTransitionEndAjustes);
+            _informacionRaiz?.RegisterCallback<TransitionEndEvent>(OnTransitionEndInfo);
+
+            _sliderEscalaTexto = root.Q<Slider>("SliderEscalaTexto");
+            if (_sliderEscalaTexto != null)
+            {
+                _sliderEscalaTexto.RegisterValueChangedCallback(evt => ActualizarEscalaTexto(evt.newValue));
+            }
+
+            _sliderEscalaIconos = root.Q<Slider>("SliderEscalaIconos");
+            if (_sliderEscalaIconos != null)
+            {
+                _sliderEscalaIconos.RegisterValueChangedCallback(evt => ActualizarEscalaIconos(evt.newValue));
+            }
+
+            var logo = root.Q<VisualElement>("LogoCompania");
+            logo?.RegisterCallback<ClickEvent>(evt => ActivarEasterEgg());
 
             if (_raiz != null) _raiz.RegisterCallback<TransitionEndEvent>(OnTransitionEnd);
         }
@@ -94,6 +140,9 @@ namespace ProyectoDalton.Interfaz
 
             // Estado inicial de botones (todo oculto físicamente)
             ActualizarVisibilidadBotones(false, instantaneo: true);
+            _hotbarRaiz?.AddToClassList("hotbar--hidden");
+            if (_ajustesRaiz != null) _ajustesRaiz.style.display = DisplayStyle.None;
+            if (_informacionRaiz != null) _informacionRaiz.style.display = DisplayStyle.None;
         }
 
         private void Update()
@@ -169,7 +218,7 @@ namespace ProyectoDalton.Interfaz
             GameManager.Instancia?.SetEstadoBloqueoMenu(true);
             MenuAtomosUI.Instancia?.CerrarMenu();
             ProyectoDalton.Atomos.BillboardAtomo.DeseleccionarTodo();
-            _menuHandle?.AddToClassList("menu-handle--hidden");
+            _hotbarRaiz?.AddToClassList("hotbar--hidden");
 
             if (_raiz != null)
             {
@@ -207,6 +256,34 @@ namespace ProyectoDalton.Interfaz
             if (_labelsInfo.Count > 0) StartCoroutine(LifeLoop(_labelsInfo[0], TITULO_PROYECTO));
         }
 
+        private void ActivarEasterEgg()
+        {
+            if (_easterEggActivo) return;
+            StartCoroutine(SecuenciaEasterEggYeiko());
+        }
+
+        private IEnumerator SecuenciaEasterEggYeiko()
+        {
+            _easterEggActivo = true;
+            
+            // Borrado elegante
+            yield return StartCoroutine(BackspaceEffect(_labelCreditos, 0.02f));
+            yield return new WaitForSeconds(0.2f);
+            
+            // Nombre de Yeiko
+            yield return StartCoroutine(TypewriterEffect(_labelCreditos, "Developed by Yeiko", 0.05f));
+            
+            // Espera de 30 segundos
+            yield return new WaitForSecondsRealtime(30f);
+            
+            // Regreso al original
+            yield return StartCoroutine(BackspaceEffect(_labelCreditos, 0.02f));
+            yield return new WaitForSeconds(0.2f);
+            yield return StartCoroutine(TypewriterEffect(_labelCreditos, DESARROLLADOR, 0.05f));
+            
+            _easterEggActivo = false;
+        }
+
         #endregion
 
         #region Lógica de Negocio
@@ -230,7 +307,7 @@ namespace ProyectoDalton.Interfaz
             _raiz?.AddToClassList("menu-principal--hidden");
             GameManager.Instancia?.SetEstadoBloqueoMenu(false);
             ActualizarVisibilidadBotones(false, instantaneo: true);
-            _menuHandle?.RemoveFromClassList("menu-handle--hidden");
+            _hotbarRaiz?.RemoveFromClassList("hotbar--hidden");
             
             ConsolaUI.Mostrar();
             LogN.Info("SYS: Simulación reanudada");
@@ -264,7 +341,7 @@ namespace ProyectoDalton.Interfaz
             yield return new WaitForSecondsRealtime(0.2f);
 
             GameManager.Instancia?.SetEstadoBloqueoMenu(false);
-            _menuHandle?.RemoveFromClassList("menu-handle--hidden");
+            _hotbarRaiz?.RemoveFromClassList("hotbar--hidden");
         }
 
         private void LimpiarEscena()
@@ -283,6 +360,61 @@ namespace ProyectoDalton.Interfaz
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
 #endif
+        }
+
+        private void ToggleAjustes()
+        {
+            if (_ajustesRaiz == null) return;
+            
+            _hotbarBotonAjustes?.Blur();
+            _botonAjustes?.Blur();
+
+            bool estaOculto = _ajustesRaiz.ClassListContains("panel--hidden");
+            
+            if (estaOculto)
+            {
+                _ajustesRaiz.RemoveFromClassList("panel--hidden");
+                _ajustesRaiz.style.display = DisplayStyle.Flex;
+                LogN.Info("SYS: Abriendo panel de ajustes");
+            }
+            else
+            {
+                CerrarAjustes();
+            }
+        }
+
+        private void CerrarAjustes()
+        {
+            if (_ajustesRaiz == null) return;
+            _ajustesRaiz.AddToClassList("panel--hidden");
+            LogN.Info("SYS: Cerrando panel de ajustes");
+        }
+
+        private void ToggleInformacion()
+        {
+            if (_informacionRaiz == null) return;
+
+            _hotbarBotonInfo?.Blur();
+
+            bool estaOculto = _informacionRaiz.ClassListContains("panel--hidden");
+
+            if (estaOculto)
+            {
+                _informacionRaiz.RemoveFromClassList("panel--hidden");
+                _informacionRaiz.style.display = DisplayStyle.Flex;
+                LogN.Info("SYS: Abriendo panel de información");
+            }
+            else
+            {
+                CerrarInformacion();
+            }
+        }
+
+        private void CerrarInformacion()
+        {
+            if (_informacionRaiz == null) return;
+            _informacionRaiz.AddToClassList("panel--hidden");
+            LogN.Info("SYS: Cerrando panel de información");
         }
 
         #endregion
@@ -357,6 +489,76 @@ namespace ProyectoDalton.Interfaz
             {
                 _raiz.style.display = DisplayStyle.None;
             }
+        }
+        private void OnTransitionEndAjustes(TransitionEndEvent evt)
+        {
+            if (_ajustesRaiz != null && _ajustesRaiz.ClassListContains("panel--hidden"))
+            {
+                _ajustesRaiz.style.display = DisplayStyle.None;
+            }
+        }
+        private void OnTransitionEndInfo(TransitionEndEvent evt)
+        {
+            if (_informacionRaiz != null && _informacionRaiz.ClassListContains("panel--hidden"))
+            {
+                _informacionRaiz.style.display = DisplayStyle.None;
+            }
+        }
+
+        private void ActualizarEscalaTexto(float escala)
+        {
+            if (_raiz == null) return;
+            VisualElement root = _raiz.panel.visualTree;
+
+            // Al no soportar variables dinámicas ni 'em' en esta versión,
+            // iteramos sobre los elementos de texto y ajustamos su tamaño directamente.
+            root.Query<TextElement>().ForEach(e => 
+            {
+                if (e.ClassListContains("texto-creditos")) 
+                {
+                    e.style.fontSize = 12f * escala;
+                }
+                else if (e.ClassListContains("ajustes__label")) 
+                {
+                    e.style.fontSize = 11f * escala;
+                }
+                else 
+                {
+                    // Por defecto (text-base, títulos de paneles, notificaciones, etc.)
+                    e.style.fontSize = 14f * escala;
+                }
+            });
+        }
+
+        private void ActualizarEscalaIconos(float escala)
+        {
+            if (_raiz == null) return;
+            VisualElement root = _raiz.panel.visualTree;
+
+            // Ajustamos el tamaño de los iconos directamente
+            root.Query<VisualElement>(className: "hotbar-boton").ForEach(e => 
+            {
+                e.style.width = 52f * escala;
+                e.style.height = 52f * escala;
+            });
+
+            root.Query<VisualElement>(className: "tooltip__dato-icono").ForEach(e => 
+            {
+                e.style.width = 36f * escala;
+                e.style.height = 36f * escala;
+            });
+
+            root.Query<VisualElement>(className: "notificacion__icono").ForEach(e => 
+            {
+                e.style.width = 56f * escala;
+                e.style.height = 56f * escala;
+            });
+
+            root.Query<VisualElement>(className: "boton-atomo__icono").ForEach(e => 
+            {
+                e.style.width = 64f * escala;
+                e.style.height = 64f * escala;
+            });
         }
         #endregion
     }
