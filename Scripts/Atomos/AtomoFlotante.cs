@@ -79,8 +79,8 @@ namespace ProyectoDalton.Atomos
             
             // Calculamos el tamaño basado en la escala (aplicada por el Configurador)
             float tamanoEsfera = transform.localScale.x;
-            _audioCentral.minDistance = tamanoEsfera * 1.8f; // Volumen máximo hasta un 80% más allá del átomo
-            _audioCentral.maxDistance = tamanoEsfera * 4.3f; // Rango de atenuación expandido un 20% extra
+            _audioCentral.minDistance = tamanoEsfera * 4.05f; // Volumen máximo muy expandido
+            _audioCentral.maxDistance = tamanoEsfera * 9.67f; // Rango de atenuación muy expandido
             
             _audioCentral.rolloffMode = AudioRolloffMode.Linear;
             _audioCentral.volume = ProyectoDalton.Core.GameManager.VolumenAtomosGlobal;

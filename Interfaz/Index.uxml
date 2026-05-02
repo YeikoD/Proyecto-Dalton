@@ -9,6 +9,10 @@
                 <ui:Label name="MasaBaseElemento" text="Masa: 1.0u" class="text-base tooltip__simbolo-identidad"/>
             </ui:VisualElement>
         </ui:VisualElement>
+        <ui:VisualElement name="FilaCompuestoDalton" class="tooltip__dato-fila" style="display: none; margin-top: 10px; margin-bottom: 5px;">
+            <ui:VisualElement name="IconoCompuestoDalton" class="tooltip__dato-icono icono-dalton"/>
+            <ui:Label name="LabelCompuestoDalton" text="Compuesto: -" class="text-base tooltip__dato-dinamico tooltip__label-dalton"/>
+        </ui:VisualElement>
         <ui:VisualElement class="tooltip__subtitulo-container">
             <ui:Label name="TituloTeoria" text="TEORÍA" class="tooltip__subtitulo"/>
             <ui:VisualElement name="LineTeoria" class="tooltip__subtitulo-linea"/>

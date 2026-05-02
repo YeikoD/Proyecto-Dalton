@@ -295,7 +295,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ProyectoDalton.Interfaz.GestorAudioUI
   sonidoButtonClick: {fileID: 8300000, guid: 5e980fa2966b2ad4b82fd7151390f90c, type: 3}
   sonidoButtonAlt: {fileID: 8300000, guid: 8b5a9a6222c06f545b4d494e9e412961, type: 3}
-  sonidoNotify: {fileID: 8300000, guid: 1f1eddfa71d129949b2419b12bd06cfc, type: 3}
+  sonidoNotify: {fileID: 8300000, guid: 65494d3e9fffa42488fa7f07d0a533aa, type: 3}
 --- !u!82 &23836213
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1175,6 +1175,7 @@ GameObject:
   - component: {fileID: 2068227573}
   - component: {fileID: 2068227575}
   - component: {fileID: 2068227574}
+  - component: {fileID: 2068227576}
   m_Layer: 0
   m_Name: --- Config ---------------
   m_TagString: Untagged
@@ -1213,6 +1214,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ProyectoDalton.Entorno.ControlEntorno
   limiteFisico: {fileID: 1422713002}
   duracionEfecto: 2
+  compuestosEspeciales: []
 --- !u!114 &2068227575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1230,6 +1232,20 @@ MonoBehaviour:
   _volumenAtomosGlobal: 0.4
   SonidoBaseAtomos: {fileID: 8300000, guid: 83f38e74133f9d749b24b7b2225c681d, type: 3}
   _volumenUIGlobal: 0.4
+--- !u!114 &2068227576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2068227572}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d656ee58ae74b7b43abdeca6b67c5f8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ProyectoDalton.Entorno.GestorCompuestosDalton
+  compuestosEspeciales:
+  - {fileID: 11400000, guid: 21ad81e155e2ced41b3ff48cf5a407a4, type: 2}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

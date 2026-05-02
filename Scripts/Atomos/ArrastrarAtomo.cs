@@ -13,8 +13,10 @@ namespace ProyectoDalton.Atomos
         {
             public float masaTotal;
             public string formula;
+            public string nombrePersonalizado;
             public string desgloseComposicion; // Ej: "H: 2.0u (11%) | O: 16.0u (89%)"
             public bool esCompuesto;
+            public CompuestoDaltonSO compuestoAsociado;
         }
 
         public static event System.Action OnEstructuraCambiada;
@@ -552,15 +554,21 @@ namespace ProyectoDalton.Atomos
             // 3. Generar Fórmula y Desglose (Matemática de Dalton)
             string formulaGenerada = "";
             string desgloseText = "";
+
+            // Ordenamos alfabéticamente por símbolo para que la fórmula sea consistente (ej: siempre HO, nunca OH)
+            var elementosOrdenados = new System.Collections.Generic.List<string>(conteoElementos.Keys);
+            elementosOrdenados.Sort();
             
-            foreach (var elem in conteoElementos)
+            foreach (var nombreElem in elementosOrdenados)
             {
+                var elem = conteoElementos[nombreElem];
+                
                 // Fórmula: Simbolo + Cantidad (si es > 1)
-                formulaGenerada += elem.Value.simbolo + (elem.Value.count > 1 ? elem.Value.count.ToString() : "");
+                formulaGenerada += elem.simbolo + (elem.count > 1 ? elem.count.ToString() : "");
 
                 // Porcentajes: (Masa Elemento / Masa Total) * 100
-                float porcentaje = (elem.Value.masaTotalElemento / masaAcumulada) * 100f;
-                desgloseText += $"{elem.Value.simbolo}: {porcentaje:F0}% | ";
+                float porcentaje = (elem.masaTotalElemento / masaAcumulada) * 100f;
+                desgloseText += $"{elem.simbolo}: {porcentaje:F0}% | ";
             }
 
             // Limpiamos el último separador del desglose

@@ -41,8 +41,19 @@ namespace ProyectoDalton.Interfaz
         {
             if (_notificacionRaiz == null) return;
 
+            var especial = ProyectoDalton.Entorno.GestorCompuestosDalton.Instancia?.BuscarCompuestoPorFormula(info.formula);
+            
             if (_tituloLabel != null) _tituloLabel.text = "¡NUEVO COMPUESTO!";
-            if (_mensajeLabel != null) _mensajeLabel.text = $"Se ha formado {info.formula} con una masa de {info.masaTotal:F1}u.";
+
+            if (especial != null)
+            {
+                if (_mensajeLabel != null) _mensajeLabel.text = $"Se ha identificado el compuesto: {especial.nombreCompuesto} ({especial.formulaHistorica})";
+            }
+            else
+            {
+                string nombreAMostrar = info.formula;
+                if (_mensajeLabel != null) _mensajeLabel.text = $"Se ha formado {nombreAMostrar} con una masa de {info.masaTotal:F1}u.";
+            }
 
             MostrarPanel("fusion");
         }
@@ -51,8 +62,18 @@ namespace ProyectoDalton.Interfaz
         {
             if (_notificacionRaiz == null) return;
 
+            var especial = ProyectoDalton.Entorno.GestorCompuestosDalton.Instancia?.BuscarCompuestoPorFormula(info.formula);
+
             if (_tituloLabel != null) _tituloLabel.text = "¡COHESIÓN!";
-            if (_mensajeLabel != null) _mensajeLabel.text = $"Las partículas de {info.formula} se mantienen unidas por cohesión ({info.masaTotal:F1}u).";
+
+            if (especial != null)
+            {
+                if (_mensajeLabel != null) _mensajeLabel.text = $"Partículas de {especial.nombreCompuesto} unidas por cohesión.";
+            }
+            else
+            {
+                if (_mensajeLabel != null) _mensajeLabel.text = $"Las partículas de {info.formula} se mantienen unidas por cohesión ({info.masaTotal:F1}u).";
+            }
 
             MostrarPanel("fusion");
         }

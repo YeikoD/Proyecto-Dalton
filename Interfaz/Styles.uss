@@ -140,7 +140,8 @@
     flex-wrap: wrap;
     justify-content: flex-start;
     padding: 5px;
-    height: 1512px; /* Capacidad exacta para 11 átomos por columna (137px c/u + padding) */
+    height: 1512px;
+    /* Capacidad exacta para 11 átomos por columna (137px c/u + padding) */
 }
 
 
@@ -312,15 +313,22 @@
 }
 
 .icono-balance {
-    background-image: url("project:/Assets/Interfaz/Iconos/decoracion/DetallesAtomo/balance_256dp_E3E3E3_FILL0_wght100_GRAD200_opsz48.png");
+    background-image: url("project:/Assets/Interfaz/Logos/decoracion/DetallesAtomo/balance_256dp_E3E3E3_FILL0_wght100_GRAD200_opsz48.png");
 }
 
 .icono-ciencia {
-    background-image: url("project:/Assets/Interfaz/Iconos/decoracion/DetallesAtomo/bubble_chart_256dp_E3E3E3_FILL0_wght100_GRAD200_opsz48.png");
+    background-image: url("project:/Assets/Interfaz/Logos/decoracion/DetallesAtomo/bubble_chart_256dp_E3E3E3_FILL0_wght100_GRAD200_opsz48.png");
 }
 
 .icono-composicion {
-    background-image: url("project:/Assets/Interfaz/Iconos/decoracion/DetallesAtomo/experiment_256dp_E3E3E3_FILL0_wght100_GRAD200_opsz48.png");
+    background-image: url("project:/Assets/Interfaz/Logos/decoracion/DetallesAtomo/experiment_256dp_E3E3E3_FILL0_wght100_GRAD200_opsz48.png");
+}
+
+.tooltip__dato-icono.icono-dalton {
+    background-image: url("project:/Assets/Interfaz/Logos/decoracion/DetallesAtomo/graph_6_512dp_E3E3E3_FILL0_wght400_GRAD0_opsz48.png");
+    width: 36px;
+    height: 36px;
+    opacity: var(--opacity-common);
 }
 
 .tooltip__dato-dinamico {
@@ -365,7 +373,7 @@
     width: 42px;
     height: 42px;
     margin-right: 10px;
-    background-image: url("project:/Assets/Interfaz/Iconos/decoracion/LogoSimulador_icono.png");
+    background-image: url("project:/Assets/Interfaz/Logos/decoracion/LogoSimulador_icono.png");
     -unity-background-scale-mode: scale-to-fit;
     opacity: var(--opacity-common);
 }
@@ -527,7 +535,7 @@
     background-color: transparent;
     border-width: 0;
     opacity: var(--opacity-common);
-    background-image: url("project:/Assets/Interfaz/Iconos/decoracion/UI/settings_200dp_E3E3E3_FILL0_wght100_GRAD200_small.png");
+    background-image: url("project:/Assets/Interfaz/Logos/decoracion/UI/settings_200dp_E3E3E3_FILL0_wght100_GRAD200_small.png");
     transition-property: opacity, rotate, scale;
     transition-duration: 0.4s;
 }
@@ -556,7 +564,7 @@
     width: 1000px;
     height: 333px;
     margin-bottom: 20px;
-    background-image: url("project:/Assets/Interfaz/Iconos/LogoSimulador_medio_grande.png");
+    background-image: url("project:/Assets/Interfaz/Logos/LogoSimulador_medio_grande.png");
     -unity-background-scale-mode: scale-to-fit;
     transition-property: opacity, scale;
     transition-duration: 2s;
@@ -808,7 +816,7 @@
 .notificacion__icono {
     width: 56px;
     height: 56px;
-    background-image: url("project:/Assets/Interfaz/Iconos/decoracion/UI/sensors_krx_256dp_E3E3E3_FILL0_wght100_GRAD200_opsz48.png");
+    background-image: url("project:/Assets/Interfaz/Logos/decoracion/UI/sensors_krx_256dp_E3E3E3_FILL0_wght100_GRAD200_opsz48.png");
     -unity-background-scale-mode: scale-to-fit;
     -unity-background-image-tint-color: var(--color-accent-primary);
 }
@@ -902,7 +910,7 @@
 .hotbar__icono {
     width: 100%;
     height: 100%;
-    background-image: url("project:/Assets/Interfaz/Iconos/decoracion/LogoSimulador_icono_small.png");
+    background-image: url("project:/Assets/Interfaz/Logos/decoracion/LogoSimulador_icono_small.png");
     -unity-background-scale-mode: scale-to-fit;
     -unity-background-image-tint-color: var(--color-text-secondary);
     opacity: var(--opacity-common);
@@ -915,19 +923,19 @@
 }
 
 #HotbarBotonLimpiar .hotbar__icono {
-    background-image: url("project:/Assets/Interfaz/Iconos/decoracion/UI/delete_200dp_E3E3E3_FILL0_wght100_GRAD200_opsz48.png");
+    background-image: url("project:/Assets/Interfaz/Logos/decoracion/UI/delete_200dp_E3E3E3_FILL0_wght100_GRAD200_opsz48.png");
     -unity-background-image-tint-color: var(--color-text-secondary);
     opacity: var(--opacity-common);
 }
 
 #HotbarBotonInfo .hotbar__icono {
-    background-image: url("project:/Assets/Interfaz/Iconos/decoracion/UI/book_5_200dp_E3E3E3_FILL0_wght100_GRAD200_opsz48.png");
+    background-image: url("project:/Assets/Interfaz/Logos/decoracion/UI/book_5_200dp_E3E3E3_FILL0_wght100_GRAD200_opsz48.png");
     -unity-background-image-tint-color: var(--color-text-secondary);
     opacity: var(--opacity-common);
 }
 
 #HotbarBotonAjustes .hotbar__icono {
-    background-image: url("project:/Assets/Interfaz/Iconos/decoracion/UI/settings_200dp_E3E3E3_FILL0_wght100_GRAD200_opsz48.png");
+    background-image: url("project:/Assets/Interfaz/Logos/decoracion/UI/settings_200dp_E3E3E3_FILL0_wght100_GRAD200_opsz48.png");
     -unity-background-image-tint-color: var(--color-text-secondary);
     opacity: var(--opacity-common);
 }

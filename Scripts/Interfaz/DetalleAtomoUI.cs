@@ -29,6 +29,11 @@ namespace ProyectoDalton.Interfaz
         private VisualElement _footerClasificacion;
         private VisualElement _footerIcono;
 
+        [Header("Especial Dalton")]
+        private VisualElement _filaDalton;
+        private Label _labelDalton;
+        private VisualElement _iconoDalton;
+
         private void OnEnable()
         {
             var root = GetComponent<UIDocument>().rootVisualElement;
@@ -52,6 +57,11 @@ namespace ProyectoDalton.Interfaz
             _iconoComposicion = root.Q<VisualElement>(className: "icono-composicion");
             _footerClasificacion = root.Q<VisualElement>("FooterClasificacion");
             _footerIcono = root.Q<VisualElement>(className: "tooltip__footer-icono");
+
+            // Nuevos campos Dalton
+            _filaDalton = root.Q<VisualElement>("FilaCompuestoDalton");
+            _labelDalton = root.Q<Label>("LabelCompuestoDalton");
+            _iconoDalton = root.Q<VisualElement>("IconoCompuestoDalton");
 
             if (_tooltipRaiz == null)
             {
@@ -133,6 +143,9 @@ namespace ProyectoDalton.Interfaz
             if (_labelDescripcion != null) _labelDescripcion.text = datos.descripcionTeorica;
 
             // 3. Observaciones (Datos Dinámicos del Simulador)
+            var inst = ProyectoDalton.Entorno.GestorCompuestosDalton.Instancia;
+            var especial = inst?.BuscarCompuestoPorFormula(info.formula);
+
             if (_labelMasa != null)
             {
                 _labelMasa.text = $"Masa Total: {info.masaTotal:F1}u";
@@ -140,7 +153,16 @@ namespace ProyectoDalton.Interfaz
 
             if (_labelFormula != null)
             {
-                _labelFormula.text = "Fórmula: " + info.formula;
+                if (inst == null) ProyectoDalton.Interfaz.LogN.Info("DetalleAtomoUI: El GestorCompuestosDalton no se encuentra en la escena.");
+                
+                string textoFormula = "Fórmula: " + info.formula;
+                
+                if (especial != null)
+                {
+                    textoFormula += $" ({especial.nombreCompuesto})";
+                }
+
+                _labelFormula.text = textoFormula;
                 _labelFormula.style.display = DisplayStyle.Flex;
             }
 
@@ -150,7 +172,24 @@ namespace ProyectoDalton.Interfaz
                 _labelComposicion.style.display = DisplayStyle.Flex;
             }
 
-            // 4. Colores Dinámicos (Identidad del Átomo)
+            // 4. Compuesto Especial de Dalton
+            if (especial != null && _filaDalton != null && _labelDalton != null)
+            {
+                _labelDalton.text = $"Compuesto: {especial.nombreCompuesto}";
+                _filaDalton.style.display = DisplayStyle.Flex;
+                
+                // Aplicar el color de identidad al icono decorativo definido en CSS
+                if (_iconoDalton != null)
+                {
+                    _iconoDalton.style.unityBackgroundImageTintColor = especial.colorRepresentativo; 
+                }
+            }
+            else if (_filaDalton != null)
+            {
+                _filaDalton.style.display = DisplayStyle.None;
+            }
+
+            // 5. Colores Dinámicos (Identidad del Átomo)
             Color colorIdentidad = datos.colorTextoMenu;
             Color colorSombra = colorIdentidad;
             colorSombra.a = 0.8f; // Sombra vibrante del color del átomo

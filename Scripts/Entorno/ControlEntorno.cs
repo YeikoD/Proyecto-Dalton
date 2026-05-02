@@ -16,6 +16,10 @@ namespace ProyectoDalton.Entorno
 
         [Header("Configuración de Fusión")]
         [SerializeField] private float duracionEfecto = 2.0f;
+        
+        [Header("Base de Datos Histórica")]
+        [Tooltip("Agrega aquí los CompuestoDaltonSO (ej. Agua HO) para que el simulador los reconozca al unir átomos.")]
+        public System.Collections.Generic.List<ProyectoDalton.Atomos.CompuestoDaltonSO> compuestosEspeciales = new System.Collections.Generic.List<ProyectoDalton.Atomos.CompuestoDaltonSO>();
 
         void Awake()
         {
