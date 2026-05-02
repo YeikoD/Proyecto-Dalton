@@ -135,6 +135,8 @@ GameObject:
   - component: {fileID: 23836209}
   - component: {fileID: 23836210}
   - component: {fileID: 23836211}
+  - component: {fileID: 23836213}
+  - component: {fileID: 23836212}
   m_Layer: 0
   m_Name: UIDocument
   m_TagString: Untagged
@@ -193,7 +195,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProyectoDalton.Interfaz.ConsolaUI
   maxMensajes: 10
-  caracteresPorSegundo: 30
+  caracteresPorSegundo: 60
 --- !u!114 &23836207
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -210,7 +212,23 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a9ec7f94c02d1c04c9624956daae73f3, type: 2}
   - {fileID: 11400000, guid: 15333045955543f41803fe64217a3b57, type: 2}
   - {fileID: 11400000, guid: 68971500bcf9cfe4a84998ce034a36d3, type: 2}
-  - {fileID: 11400000, guid: 9356062737035d8438bdf68c57f427a4, type: 2}
+  - {fileID: 11400000, guid: 37c331115aa599a43baeab019ddca36d, type: 2}
+  - {fileID: 11400000, guid: bffcce21051c04e4096c1fea431e13c0, type: 2}
+  - {fileID: 11400000, guid: 81a85eaf85212524f85719715c9ba8a5, type: 2}
+  - {fileID: 11400000, guid: edc5a9968e1fd074da8ccf76eb2eef73, type: 2}
+  - {fileID: 11400000, guid: f1ab33cfa5d9f3a4eb4d2c2986fbd29e, type: 2}
+  - {fileID: 11400000, guid: 078784f802096fe4b9c45a3c3f93092c, type: 2}
+  - {fileID: 11400000, guid: b8c67e2183c1ae643a9790754c17e8be, type: 2}
+  - {fileID: 11400000, guid: 8147d45b28086704c988e87d5157f0c9, type: 2}
+  - {fileID: 11400000, guid: c8fc44d79c14fcb44a4fa2aafdc89104, type: 2}
+  - {fileID: 11400000, guid: f02027be23d3d974aafd160e2e6ecc17, type: 2}
+  - {fileID: 11400000, guid: 1ccfbc2501c39dd4cb12b03a13fc127c, type: 2}
+  - {fileID: 11400000, guid: c925c42807c85df4bba1a13dadcd1e73, type: 2}
+  - {fileID: 11400000, guid: a5e543d37f1972d4bb3a6fdeef0da336, type: 2}
+  - {fileID: 11400000, guid: 7e69e7c2a81fc9947bfd1c0d167bce86, type: 2}
+  - {fileID: 11400000, guid: 0e1100b39f0a96a45bc7587557a89d27, type: 2}
+  - {fileID: 11400000, guid: c8ce5d13a6942cc48814631face027da, type: 2}
+  - {fileID: 11400000, guid: 820aaccc85e35cf42b969c56df346749, type: 2}
 --- !u!114 &23836208
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -263,6 +281,118 @@ MonoBehaviour:
   _duracionCiclo: 1.5
   _claseAnimacion: panel-base--pulse
   _claseObjetivo: panel-base
+--- !u!114 &23836212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 23836203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71a54ea02093d00488ed9e84d62c549f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ProyectoDalton.Interfaz.GestorAudioUI
+  sonidoButtonClick: {fileID: 8300000, guid: 5e980fa2966b2ad4b82fd7151390f90c, type: 3}
+  sonidoButtonAlt: {fileID: 8300000, guid: 8b5a9a6222c06f545b4d494e9e412961, type: 3}
+  sonidoNotify: {fileID: 8300000, guid: 1f1eddfa71d129949b2419b12bd06cfc, type: 3}
+--- !u!82 &23836213
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 23836203}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -1097,6 +1227,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ProyectoDalton.Core.GameManager
   bloquearInput: 0
   bloquearCamara: 0
+  _volumenAtomosGlobal: 0.4
+  SonidoBaseAtomos: {fileID: 8300000, guid: 83f38e74133f9d749b24b7b2225c681d, type: 3}
+  _volumenUIGlobal: 0.4
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

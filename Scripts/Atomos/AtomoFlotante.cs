@@ -57,14 +57,59 @@ namespace ProyectoDalton.Atomos
 
             // Elegimos un eje de rotación al azar en 3D
             ejeDeRotacion = Random.onUnitSphere;
+
+            // --- AUDIO DINÁMICO ---
+            ConfigurarAudioDinámico();
+        }
+
+        private AudioSource _audioCentral;
+
+        private void ConfigurarAudioDinámico()
+        {
+            if (ProyectoDalton.Core.GameManager.Instancia == null) return;
+
+            AudioClip clipCentral = ProyectoDalton.Core.GameManager.Instancia.SonidoBaseAtomos;
+            if (clipCentral == null) return;
+
+            _audioCentral = gameObject.AddComponent<AudioSource>();
+            _audioCentral.clip = clipCentral;
+            _audioCentral.playOnAwake = true;
+            _audioCentral.loop = true;
+            _audioCentral.spatialBlend = 1f; // 100% 3D
+            
+            // Calculamos el tamaño basado en la escala (aplicada por el Configurador)
+            float tamanoEsfera = transform.localScale.x;
+            _audioCentral.minDistance = tamanoEsfera * 1.8f; // Volumen máximo hasta un 80% más allá del átomo
+            _audioCentral.maxDistance = tamanoEsfera * 4.3f; // Rango de atenuación expandido un 20% extra
+            
+            _audioCentral.rolloffMode = AudioRolloffMode.Linear;
+            _audioCentral.volume = ProyectoDalton.Core.GameManager.VolumenAtomosGlobal;
+            
+            _audioCentral.Play();
+
+            // Suscribirse a cambios de volumen
+            ProyectoDalton.Core.GameManager.OnVolumenAtomosCambiado += ActualizarVolumen;
+        }
+
+        private void OnDestroy()
+        {
+            ProyectoDalton.Core.GameManager.OnVolumenAtomosCambiado -= ActualizarVolumen;
+        }
+
+        private void ActualizarVolumen(float vol)
+        {
+            if (_audioCentral != null) _audioCentral.volume = vol;
         }
 
         void Update()
         {
-            // 1. Sincronización de masa (SO + Compuestos)
+            // 1. Sincronización desde el ScriptableObject (Single Source of Truth)
             if (_billboardCache != null && !_billboardCache.modoDebug && _billboardCache.datos != null)
             {
                 masaAtomica = _billboardCache.datos.masaAtomica;
+                amplitudMovimiento = _billboardCache.datos.amplitudMovimiento;
+                velocidadMovimiento = _billboardCache.datos.velocidadMovimiento;
+                velocidadRotacion = _billboardCache.datos.velocidadRotacion;
             }
 
             // Usamos la masa TOTAL del compuesto para la vibración térmica

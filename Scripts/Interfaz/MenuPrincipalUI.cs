@@ -47,6 +47,9 @@ namespace ProyectoDalton.Interfaz
         private Button _botonCerrarInfo;
         private Slider _sliderEscalaTexto;
         private Slider _sliderEscalaIconos;
+        private Slider _sliderEscalaPaneles;
+        private Slider _sliderVolumenAtomos;
+        private Slider _sliderVolumenUI;
         #endregion
 
         private bool _yaIniciado = false;
@@ -89,27 +92,33 @@ namespace ProyectoDalton.Interfaz
             _botonSalir = root.Q<Button>("BotonSalir");
             _botonAjustes = root.Q<Button>("BotonAjustes");
 
-            // Eventos
-            if (_botonIniciar != null) _botonIniciar.clicked += IniciarSimulacion;
-            if (_botonVolver != null)  _botonVolver.clicked += IniciarSimulacion;
-            if (_botonLimpiar != null) _botonLimpiar.clicked += LimpiarEscena;
-            if (_botonSalir != null)   _botonSalir.clicked += SalirDelSimulador;
-            if (_botonAjustes != null) _botonAjustes.clicked += ToggleAjustes;
+            // Eventos de click y sonido
+            if (_botonIniciar != null) { _botonIniciar.clicked += IniciarSimulacion; _botonIniciar.clicked += GestorAudioUI.ReproducirClick; }
+            if (_botonVolver != null)  { _botonVolver.clicked += IniciarSimulacion; _botonVolver.clicked += GestorAudioUI.ReproducirClick; }
+            if (_botonLimpiar != null) { _botonLimpiar.clicked += LimpiarEscena; _botonLimpiar.clicked += GestorAudioUI.ReproducirClick; }
+            if (_botonSalir != null)   { _botonSalir.clicked += SalirDelSimulador; _botonSalir.clicked += GestorAudioUI.ReproducirClick; }
+            if (_botonAjustes != null) { _botonAjustes.clicked += ToggleAjustes; _botonAjustes.clicked += GestorAudioUI.ReproducirClick; }
 
             _hotbarBotonLimpiar = root.Q<Button>("HotbarBotonLimpiar");
-            if (_hotbarBotonLimpiar != null) _hotbarBotonLimpiar.clicked += () => { LimpiarEscena(); _hotbarBotonLimpiar.Blur(); };
+            if (_hotbarBotonLimpiar != null) { _hotbarBotonLimpiar.clicked += () => { LimpiarEscena(); _hotbarBotonLimpiar.Blur(); }; _hotbarBotonLimpiar.clicked += GestorAudioUI.ReproducirClick; }
 
             _hotbarBotonAjustes = root.Q<Button>("HotbarBotonAjustes");
-            if (_hotbarBotonAjustes != null) _hotbarBotonAjustes.clicked += ToggleAjustes;
+            if (_hotbarBotonAjustes != null) { _hotbarBotonAjustes.clicked += ToggleAjustes; _hotbarBotonAjustes.clicked += GestorAudioUI.ReproducirClick; }
 
             _hotbarBotonInfo = root.Q<Button>("HotbarBotonInfo");
-            if (_hotbarBotonInfo != null) _hotbarBotonInfo.clicked += ToggleInformacion;
+            if (_hotbarBotonInfo != null) { _hotbarBotonInfo.clicked += ToggleInformacion; _hotbarBotonInfo.clicked += GestorAudioUI.ReproducirClick; }
 
             _botonCerrarAjustes = root.Q<Button>("BotonCerrarAjustes");
-            if (_botonCerrarAjustes != null) _botonCerrarAjustes.clicked += CerrarAjustes;
+            if (_botonCerrarAjustes != null) { _botonCerrarAjustes.clicked += CerrarAjustes; _botonCerrarAjustes.clicked += GestorAudioUI.ReproducirClick; }
 
             _botonCerrarInfo = root.Q<Button>("BotonCerrarInfo");
-            if (_botonCerrarInfo != null) _botonCerrarInfo.clicked += CerrarInformacion;
+            if (_botonCerrarInfo != null) { _botonCerrarInfo.clicked += CerrarInformacion; _botonCerrarInfo.clicked += GestorAudioUI.ReproducirClick; }
+
+            // Sonido Hover para TODOS los botones
+            root.Query<Button>().ForEach(btn => 
+            {
+                btn.RegisterCallback<PointerEnterEvent>(evt => GestorAudioUI.ReproducirAlt());
+            });
 
             _ajustesRaiz?.RegisterCallback<TransitionEndEvent>(OnTransitionEndAjustes);
             _informacionRaiz?.RegisterCallback<TransitionEndEvent>(OnTransitionEndInfo);
@@ -126,6 +135,28 @@ namespace ProyectoDalton.Interfaz
                 _sliderEscalaIconos.RegisterValueChangedCallback(evt => ActualizarEscalaIconos(evt.newValue));
             }
 
+            _sliderEscalaPaneles = root.Q<Slider>("SliderEscalaPaneles");
+            if (_sliderEscalaPaneles != null)
+            {
+                _sliderEscalaPaneles.RegisterValueChangedCallback(evt => ActualizarEscalaPaneles(evt.newValue));
+            }
+
+            // Slider de Volumen de Átomos
+            _sliderVolumenAtomos = root.Q<Slider>("SliderVolumenAtomos");
+            if (_sliderVolumenAtomos != null)
+            {
+                _sliderVolumenAtomos.value = GameManager.VolumenAtomosGlobal;
+                _sliderVolumenAtomos.RegisterValueChangedCallback(evt => GameManager.VolumenAtomosGlobal = evt.newValue);
+            }
+
+            // Slider de Volumen de UI
+            _sliderVolumenUI = root.Q<Slider>("SliderVolumenUI");
+            if (_sliderVolumenUI != null)
+            {
+                _sliderVolumenUI.value = GameManager.VolumenUIGlobal;
+                _sliderVolumenUI.RegisterValueChangedCallback(evt => GameManager.VolumenUIGlobal = evt.newValue);
+            }
+
             var logo = root.Q<VisualElement>("LogoCompania");
             logo?.RegisterCallback<ClickEvent>(evt => ActivarEasterEgg());
 
@@ -140,7 +171,11 @@ namespace ProyectoDalton.Interfaz
 
             // Estado inicial de botones (todo oculto físicamente)
             ActualizarVisibilidadBotones(false, instantaneo: true);
-            _hotbarRaiz?.AddToClassList("hotbar--hidden");
+            if (_hotbarRaiz != null)
+            {
+                _hotbarRaiz.AddToClassList("hotbar--hidden");
+                _hotbarRaiz.style.display = DisplayStyle.None;
+            }
             if (_ajustesRaiz != null) _ajustesRaiz.style.display = DisplayStyle.None;
             if (_informacionRaiz != null) _informacionRaiz.style.display = DisplayStyle.None;
         }
@@ -157,6 +192,34 @@ namespace ProyectoDalton.Interfaz
             {
                 if (!_yaIniciado) return;
 
+                // 1. Jerarquía de cierre: Si hay paneles abiertos, cerramos el último y salimos
+                bool algunPanelCerrado = false;
+
+                // Ajustes
+                if (_ajustesRaiz != null && !_ajustesRaiz.ClassListContains("panel--hidden"))
+                {
+                    CerrarAjustes();
+                    algunPanelCerrado = true;
+                }
+
+                // Información
+                if (_informacionRaiz != null && !_informacionRaiz.ClassListContains("panel--hidden"))
+                {
+                    CerrarInformacion();
+                    algunPanelCerrado = true;
+                }
+
+                // Menú de Átomos
+                if (MenuAtomosUI.EstaAbierto)
+                {
+                    MenuAtomosUI.CerrarSiAbierto();
+                    algunPanelCerrado = true;
+                }
+
+                // 2. Si cerramos algo, no abrimos el menú principal en este frame
+                if (algunPanelCerrado) return;
+
+                // 3. Si no hay nada abierto, alternamos el menú principal
                 if (GameManager.Instancia != null)
                 {
                     if (GameManager.Instancia.BloquearInput) IniciarSimulacion();
@@ -173,6 +236,7 @@ namespace ProyectoDalton.Interfaz
             if (_logoTitulo != null)
             {
                 yield return new WaitForSeconds(0.3f);
+                _logoTitulo.style.display = DisplayStyle.Flex;
                 _logoTitulo.RemoveFromClassList("titulo-logo--hidden");
             }
 
@@ -181,6 +245,7 @@ namespace ProyectoDalton.Interfaz
             // 2. Cuadro de Información
             if (_cuadroInfo != null)
             {
+                _cuadroInfo.style.display = DisplayStyle.Flex;
                 _cuadroInfo.RemoveFromClassList("cuadro-informacion--hidden");
                 for (int i = 0; i < Mathf.Min(_labelsInfo.Count, INFO_PROYECTO.Length); i++)
                 {
@@ -190,12 +255,17 @@ namespace ProyectoDalton.Interfaz
             }
 
             // 3. Logos de Compañía
-            if (_logosContenedor != null) _logosContenedor.RemoveFromClassList("logos-contenedor--hidden");
+            if (_logosContenedor != null) 
+            {
+                _logosContenedor.style.display = DisplayStyle.Flex;
+                _logosContenedor.RemoveFromClassList("logos-contenedor--hidden");
+            }
             yield return new WaitForSeconds(0.4f);
 
             // 4. Créditos
             if (_labelCreditos != null)
             {
+                _labelCreditos.style.display = DisplayStyle.Flex;
                 _labelCreditos.RemoveFromClassList("texto-creditos--hidden");
                 yield return StartCoroutine(TypewriterEffect(_labelCreditos, DESARROLLADOR, 0.04f));
             }
@@ -206,6 +276,7 @@ namespace ProyectoDalton.Interfaz
             if (_botonAjustes != null)
             {
                 yield return new WaitForSeconds(0.2f);
+                _botonAjustes.style.display = DisplayStyle.Flex;
                 _botonAjustes.RemoveFromClassList("boton-ajustes--hidden");
             }
 
@@ -239,11 +310,11 @@ namespace ProyectoDalton.Interfaz
             _raiz.RemoveFromClassList("menu-principal--hidden");
 
             // Visibilidad instantánea de todos los elementos
-            _logoTitulo?.RemoveFromClassList("titulo-logo--hidden");
-            _cuadroInfo?.RemoveFromClassList("cuadro-informacion--hidden");
-            _logosContenedor?.RemoveFromClassList("logos-contenedor--hidden");
-            _labelCreditos?.RemoveFromClassList("texto-creditos--hidden");
-            _botonAjustes?.RemoveFromClassList("boton-ajustes--hidden");
+            if (_logoTitulo != null) { _logoTitulo.style.display = DisplayStyle.Flex; _logoTitulo.RemoveFromClassList("titulo-logo--hidden"); }
+            if (_cuadroInfo != null) { _cuadroInfo.style.display = DisplayStyle.Flex; _cuadroInfo.RemoveFromClassList("cuadro-informacion--hidden"); }
+            if (_logosContenedor != null) { _logosContenedor.style.display = DisplayStyle.Flex; _logosContenedor.RemoveFromClassList("logos-contenedor--hidden"); }
+            if (_labelCreditos != null) { _labelCreditos.style.display = DisplayStyle.Flex; _labelCreditos.RemoveFromClassList("texto-creditos--hidden"); }
+            if (_botonAjustes != null) { _botonAjustes.style.display = DisplayStyle.Flex; _botonAjustes.RemoveFromClassList("boton-ajustes--hidden"); }
 
             // Restaurar textos instantáneamente
             for (int i = 0; i < Mathf.Min(_labelsInfo.Count, INFO_PROYECTO.Length); i++)
@@ -307,7 +378,11 @@ namespace ProyectoDalton.Interfaz
             _raiz?.AddToClassList("menu-principal--hidden");
             GameManager.Instancia?.SetEstadoBloqueoMenu(false);
             ActualizarVisibilidadBotones(false, instantaneo: true);
-            _hotbarRaiz?.RemoveFromClassList("hotbar--hidden");
+            if (_hotbarRaiz != null)
+            {
+                _hotbarRaiz.style.display = DisplayStyle.Flex;
+                _hotbarRaiz.RemoveFromClassList("hotbar--hidden");
+            }
             
             ConsolaUI.Mostrar();
             LogN.Info("SYS: Simulación reanudada");
@@ -341,7 +416,11 @@ namespace ProyectoDalton.Interfaz
             yield return new WaitForSecondsRealtime(0.2f);
 
             GameManager.Instancia?.SetEstadoBloqueoMenu(false);
-            _hotbarRaiz?.RemoveFromClassList("hotbar--hidden");
+            if (_hotbarRaiz != null)
+            {
+                _hotbarRaiz.style.display = DisplayStyle.Flex;
+                _hotbarRaiz.RemoveFromClassList("hotbar--hidden");
+            }
         }
 
         private void LimpiarEscena()
@@ -376,6 +455,12 @@ namespace ProyectoDalton.Interfaz
                 _ajustesRaiz.RemoveFromClassList("panel--hidden");
                 _ajustesRaiz.style.display = DisplayStyle.Flex;
                 LogN.Info("SYS: Abriendo panel de ajustes");
+
+                if (GameManager.Instancia != null)
+                {
+                    GameManager.Instancia.BloquearCamara = true;
+                    GameManager.Instancia.BloquearInput = true; // Bloquea interacción con átomos
+                }
             }
             else
             {
@@ -495,6 +580,15 @@ namespace ProyectoDalton.Interfaz
             if (_ajustesRaiz != null && _ajustesRaiz.ClassListContains("panel--hidden"))
             {
                 _ajustesRaiz.style.display = DisplayStyle.None;
+
+                if (GameManager.Instancia != null)
+                {
+                    // Si el menú principal está oculto, significa que estamos en simulación y debemos liberar el input
+                    bool enSimulacion = _raiz != null && _raiz.ClassListContains("menu-principal--hidden");
+                    
+                    GameManager.Instancia.BloquearCamara = !enSimulacion;
+                    GameManager.Instancia.BloquearInput = !enSimulacion;
+                }
             }
         }
         private void OnTransitionEndInfo(TransitionEndEvent evt)
@@ -560,6 +654,25 @@ namespace ProyectoDalton.Interfaz
                 e.style.height = 64f * escala;
             });
         }
+        private void ActualizarEscalaPaneles(float escala)
+        {
+            if (_raiz == null) return;
+            VisualElement root = _raiz.panel.visualTree;
+
+            const float ANCHO_DERECHO_BASE = 276f;
+            const float ANCHO_TOOLTIP_BASE = 325f;
+            const float ANCHO_CONSOLA_BASE = 400f;
+
+            // Paneles Derechos (Crecen hacia la izquierda/centro)
+            root.Query<VisualElement>(className: "menu-derecho").ForEach(e => e.style.width = ANCHO_DERECHO_BASE * escala);
+            root.Query<VisualElement>(className: "notificacion-panel").ForEach(e => e.style.width = ANCHO_DERECHO_BASE * escala);
+            root.Query<VisualElement>(className: "hotbar-contenedor").ForEach(e => e.style.width = ANCHO_DERECHO_BASE * escala);
+
+            // Paneles Izquierdos (Crecen hacia la derecha/centro)
+            root.Query<VisualElement>(className: "tooltip-panel").ForEach(e => e.style.width = ANCHO_TOOLTIP_BASE * escala);
+            root.Query<VisualElement>(className: "console-container").ForEach(e => e.style.width = ANCHO_CONSOLA_BASE * escala);
+        }
+
         #endregion
     }
 }

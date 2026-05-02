@@ -112,6 +112,7 @@ namespace ProyectoDalton.Interfaz
             if (UnityEngine.InputSystem.Keyboard.current != null && 
                 UnityEngine.InputSystem.Keyboard.current.backquoteKey.wasPressedThisFrame)
             {
+                if (ProyectoDalton.Core.GameManager.Instancia != null && ProyectoDalton.Core.GameManager.Instancia.BloquearInput) return;
                 AlternarVisibilidad();
             }
         }

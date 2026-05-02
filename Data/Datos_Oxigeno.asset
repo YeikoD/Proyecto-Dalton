@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec4f3c61fa633164ba1a70969d63c856, type: 3}
+  m_Name: Datos_Oxigeno
+  m_EditorClassIdentifier: Assembly-CSharp::ProyectoDalton.Atomos.DatosAtomoSO
+  nombreElemento: "Ox\xEDgeno"
+  simbolo: O
+  masaAtomica: 7
+  icono: {fileID: 35715950, guid: dbe47b63593146542ba984c510cf71c8, type: 3}
+  descripcionTeorica: "El agente del fuego. Para Dalton, era el \xE1tomo que permit\xEDa
+    la existencia del agua y la combusti\xF3n al unirse con otros."
+  prefabAtomo: {fileID: 4817360050470934538, guid: 4a693177d5d2cde41b17a561e2e8763b, type: 3}
+  colorTextoMenu: {r: 0.13216448, g: 0.6299276, b: 0.8490566, a: 1}
+  colorLinea: {r: 1, g: 1, b: 1, a: 1}
+  largoSubrayado: 0.1
+  offsetVerticalCodo: -0.16
+  alturaLineaVertical: -0.03
+  anchoLinea: 0.015
+  inerciaBillboard: 0.85
+  distanciaMaxima: 20

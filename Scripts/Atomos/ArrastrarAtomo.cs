@@ -98,6 +98,13 @@ namespace ProyectoDalton.Atomos
 
         void Update()
         {
+            // Sincronización desde el ScriptableObject (Single Source of Truth)
+            if (billboardScript != null && !billboardScript.modoDebug && billboardScript.datos != null)
+            {
+                usarInercia = billboardScript.datos.usarInercia;
+                agilidadBase = billboardScript.datos.agilidadBase;
+            }
+
             if (Mouse.current == null) return;
 
             // Si el input está bloqueado por el GameManager, no procesamos arrastres

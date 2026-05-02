@@ -26,6 +26,9 @@ namespace ProyectoDalton.Interfaz
         private Dictionary<string, (int count, VisualElement button)> _registroAtomos = new Dictionary<string, (int count, VisualElement button)>();
         private const int MAX_ATOMOS_POR_TIPO = 20;
 
+        public static bool EstaAbierto => _instancia != null && _instancia._estaVisible;
+        public static void CerrarSiAbierto() { if (EstaAbierto) _instancia?.AlternarMenu(); }
+
         private void Awake()
         {
             _instancia = this;
@@ -50,13 +53,25 @@ namespace ProyectoDalton.Interfaz
             _botonHotbarSelector = root.Q<Button>("HotbarBotonSelector");
             if (_botonHotbarSelector != null)
             {
-                _botonHotbarSelector.RegisterCallback<ClickEvent>(evt => ManejarClickMenu());
+                _botonHotbarSelector.RegisterCallback<ClickEvent>(evt => { ManejarClickMenu(); GestorAudioUI.ReproducirClick(); });
             }
 
             _botonCerrar = root.Q<Button>("BotonCerrarMenu");
             if (_botonCerrar != null)
             {
                 _botonCerrar.clicked += CerrarMenu;
+                _botonCerrar.clicked += GestorAudioUI.ReproducirClick;
+            }
+
+            // Sonido Hover para botones fijos
+            root.Query<Button>().ForEach(btn => 
+            {
+                btn.RegisterCallback<PointerEnterEvent>(evt => GestorAudioUI.ReproducirAlt());
+            });
+
+            if (_menuRaiz != null)
+            {
+                _menuRaiz.RegisterCallback<TransitionEndEvent>(OnTransitionEnd);
             }
 
             PoblarMenu();
@@ -112,13 +127,31 @@ namespace ProyectoDalton.Interfaz
 
         private void Update()
         {
-            if (UnityEngine.InputSystem.Keyboard.current != null && 
-                UnityEngine.InputSystem.Keyboard.current.tabKey.wasPressedThisFrame)
+            var kb = UnityEngine.InputSystem.Keyboard.current;
+            if (kb == null) return;
+
+            // 1. Tecla TAB (Alternar)
+            if (kb.tabKey.wasPressedThisFrame)
             {
-                // Solo permitimos abrir el menú si el input no está bloqueado (ej. por un menú principal superior)
-                if (ProyectoDalton.Core.GameManager.Instancia != null && ProyectoDalton.Core.GameManager.Instancia.BloquearInput) return;
+                // Permitimos abrir si NO está bloqueado por el sistema general (ej. Menú Principal),
+                // pero permitimos CERRAR si ya está visible independientemente del bloqueo.
+                bool puedeInteractuar = ProyectoDalton.Core.GameManager.Instancia == null || !ProyectoDalton.Core.GameManager.Instancia.BloquearInput;
                 
-                AlternarMenu();
+                if (puedeInteractuar || _estaVisible)
+                {
+                    AlternarMenu();
+                }
+            }
+
+            // 2. WASD (Cerrar si está abierto)
+            // Si el usuario intenta moverse, asumimos que quiere salir del menú rápidamente
+            if (_estaVisible)
+            {
+                if (kb.wKey.wasPressedThisFrame || kb.aKey.wasPressedThisFrame || 
+                    kb.sKey.wasPressedThisFrame || kb.dKey.wasPressedThisFrame)
+                {
+                    AlternarMenu();
+                }
             }
         }
 
@@ -136,13 +169,34 @@ namespace ProyectoDalton.Interfaz
 
             _estaVisible = !_estaVisible;
             
+            // Bloqueamos la cámara cuando el menú está abierto para evitar movernos mientras elegimos
+            if (ProyectoDalton.Core.GameManager.Instancia != null)
+            {
+                ProyectoDalton.Core.GameManager.Instancia.BloquearCamara = _estaVisible;
+            }
+            
             if (_estaVisible)
             {
+                _menuRaiz.style.display = DisplayStyle.Flex;
                 _menuRaiz.RemoveFromClassList("panel--hidden-right");
             }
             else
             {
                 _menuRaiz.AddToClassList("panel--hidden-right");
+            }
+        }
+
+        private void OnTransitionEnd(TransitionEndEvent evt)
+        {
+            if (_menuRaiz != null && _menuRaiz.ClassListContains("panel--hidden-right"))
+            {
+                _menuRaiz.style.display = DisplayStyle.None;
+                
+                // Si se termina la transición de ocultar, nos aseguramos de liberar la cámara
+                if (ProyectoDalton.Core.GameManager.Instancia != null && !_estaVisible)
+                {
+                    ProyectoDalton.Core.GameManager.Instancia.BloquearCamara = false;
+                }
             }
         }
 
@@ -183,7 +237,6 @@ namespace ProyectoDalton.Interfaz
             if (datos.icono != null)
             {
                 icono.style.backgroundImage = new StyleBackground(datos.icono);
-                icono.style.unityBackgroundImageTintColor = datos.colorTextoMenu;
             }
             
             // Texto (Nombre del elemento simplificado)
@@ -191,7 +244,6 @@ namespace ProyectoDalton.Interfaz
             nombre.AddToClassList("boton-atomo__texto");
             nombre.AddToClassList("text-base");
             nombre.AddToClassList("text-bold");
-            nombre.style.color = datos.colorTextoMenu;
 
             // --- Botón de Borrado (X) Absoluto ---
             Label btnBorrar = new Label("✕");
@@ -200,8 +252,11 @@ namespace ProyectoDalton.Interfaz
             
             btnBorrar.RegisterCallback<ClickEvent>(evt => {
                 evt.StopPropagation();
+                GestorAudioUI.ReproducirClick();
                 BorrarTodosLosAtomos(datos);
             });
+            
+            btnBorrar.RegisterCallback<PointerEnterEvent>(evt => GestorAudioUI.ReproducirAlt());
             
             boton.Add(btnBorrar); // La X primero para que esté al frente (z-index)
             boton.Add(icono);
@@ -218,9 +273,41 @@ namespace ProyectoDalton.Interfaz
                 // Verificación de límite antes de instanciar
                 if (_registroAtomos.TryGetValue(datos.nombreElemento, out var registro) && registro.count >= MAX_ATOMOS_POR_TIPO)
                 {
+                    GestorAudioUI.ReproducirAlt(); // Sonido de error/bloqueo si llegó al límite
                     return;
                 }
+                GestorAudioUI.ReproducirClick();
                 InstanciarAtomoEnEscena(datos);
+            });
+
+            // --- Lógica de Hover Dinámico ---
+            // Sonido de Hover
+            boton.RegisterCallback<PointerEnterEvent>(evt => GestorAudioUI.ReproducirAlt());
+
+            // Guardamos el color global para restaurarlo (blanco 90%)
+            Color colorGlobal = new Color(1f, 1f, 1f, 0.9f);
+
+            boton.RegisterCallback<PointerOverEvent>(evt => {
+                icono.style.unityBackgroundImageTintColor = datos.colorTextoMenu;
+                nombre.style.color = datos.colorTextoMenu;
+                
+                // Cambiar color de los 4 bordes (Sustituto de borderColor por compatibilidad)
+                boton.style.borderTopColor = datos.colorTextoMenu;
+                boton.style.borderBottomColor = datos.colorTextoMenu;
+                boton.style.borderLeftColor = datos.colorTextoMenu;
+                boton.style.borderRightColor = datos.colorTextoMenu;
+            });
+
+            boton.RegisterCallback<PointerOutEvent>(evt => {
+                icono.style.unityBackgroundImageTintColor = colorGlobal;
+                nombre.style.color = colorGlobal;
+
+                // Restaurar color de bordes original
+                Color colorBordeOriginal = new Color(0f, 50f/255f, 110f/255f, 0.5f);
+                boton.style.borderTopColor = colorBordeOriginal;
+                boton.style.borderBottomColor = colorBordeOriginal;
+                boton.style.borderLeftColor = colorBordeOriginal;
+                boton.style.borderRightColor = colorBordeOriginal;
             });
 
             _listaContenedor.Add(boton);
@@ -333,9 +420,6 @@ namespace ProyectoDalton.Interfaz
             }
 
             LogN.Info($"SIM: {datos.nombreElemento} ({datos.simbolo}) instanciado");
-            
-            // Cerramos el menú para apreciar la simulación
-            AlternarMenu();
         }
 
         public static void AgregarAtomoAlMenu(DatosAtomoSO datos)

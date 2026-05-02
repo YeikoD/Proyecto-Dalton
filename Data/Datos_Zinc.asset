@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec4f3c61fa633164ba1a70969d63c856, type: 3}
+  m_Name: Datos_Zinc
+  m_EditorClassIdentifier: Assembly-CSharp::ProyectoDalton.Atomos.DatosAtomoSO
+  nombreElemento: Zinc
+  simbolo: Zn
+  masaAtomica: 56
+  icono: {fileID: -2005589443, guid: b50d65e86f77ed840962dac04c9149ad, type: 3}
+  descripcionTeorica: "El protector silencioso. Aunque Dalton le asign\xF3 el mismo
+    peso que al cobre, el Zinc es \xFAnico por su capacidad de proteger a otros metales
+    de la corrosi\xF3n. Es un metal vers\xE1til y resistente."
+  prefabAtomo: {fileID: 366677422246372751, guid: eb4b14ce6e39bfa409e40eadf0feb67e, type: 3}
+  colorTextoMenu: {r: 0.8679245, g: 0.8679245, b: 0.8679245, a: 1}
+  colorLinea: {r: 1, g: 1, b: 1, a: 1}
+  largoSubrayado: 0.1
+  offsetVerticalCodo: -0.16
+  alturaLineaVertical: -0.03
+  anchoLinea: 0.015
+  inerciaBillboard: 0.85
+  distanciaMaxima: 20

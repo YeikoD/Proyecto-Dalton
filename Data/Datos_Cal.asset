@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec4f3c61fa633164ba1a70969d63c856, type: 3}
+  m_Name: Datos_Cal
+  m_EditorClassIdentifier: Assembly-CSharp::ProyectoDalton.Atomos.DatosAtomoSO
+  nombreElemento: Cal
+  simbolo: Ca
+  masaAtomica: 24
+  icono: {fileID: -1374023607, guid: fdc61fc4a33b3ab49a5c7a26c44ce43a, type: 3}
+  descripcionTeorica: "El cemento de la naturaleza. Conocida como \"Lime\", es una
+    de las bases m\xE1s s\xF3lidas y pesadas en la qu\xEDmica del siglo XIX."
+  prefabAtomo: {fileID: 7791646199655968954, guid: e32629279b08ed949accd8387080b4f7, type: 3}
+  colorTextoMenu: {r: 0.8867924, g: 0.8867924, b: 0.8867924, a: 1}
+  colorLinea: {r: 1, g: 1, b: 1, a: 1}
+  largoSubrayado: 0.1
+  offsetVerticalCodo: -0.16
+  alturaLineaVertical: -0.03
+  anchoLinea: 0.015
+  inerciaBillboard: 0.85
+  distanciaMaxima: 20

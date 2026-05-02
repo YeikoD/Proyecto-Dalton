@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec4f3c61fa633164ba1a70969d63c856, type: 3}
+  m_Name: "Datos_F\xF3sforo"
+  m_EditorClassIdentifier: Assembly-CSharp::ProyectoDalton.Atomos.DatosAtomoSO
+  nombreElemento: "F\xF3sforo"
+  simbolo: P
+  masaAtomica: 9
+  icono: {fileID: 1694157687, guid: 780f4c01384c956449c3a0f08fb137c0, type: 3}
+  descripcionTeorica: "Un elemento que brilla en la oscuridad. Su glifo de tres l\xEDneas
+    sugiere una estructura interna m\xE1s compleja que la de los gases simples."
+  prefabAtomo: {fileID: 6462940809334829310, guid: 6ab7b55669982af4a8b155a756995373, type: 3}
+  colorTextoMenu: {r: 0.9528302, g: 0.6038051, b: 0.18427375, a: 1}
+  colorLinea: {r: 1, g: 1, b: 1, a: 1}
+  largoSubrayado: 0.1
+  offsetVerticalCodo: -0.16
+  alturaLineaVertical: -0.03
+  anchoLinea: 0.015
+  inerciaBillboard: 0.85
+  distanciaMaxima: 20

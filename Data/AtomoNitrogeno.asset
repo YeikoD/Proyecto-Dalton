@@ -13,22 +13,18 @@ MonoBehaviour:
   m_Name: AtomoNitrogeno
   m_EditorClassIdentifier: Assembly-CSharp::ProyectoDalton.Atomos.DatosAtomoSO
   nombreElemento: "Nitr\xF3geno"
-  esElemento: 0
+  simbolo: N
+  masaAtomica: 5
+  icono: {fileID: 648202898, guid: 6fa88c833e312074e935f13f79a4a932, type: 3}
   descripcionTeorica: "Dalton lo identific\xF3 como un componente esencial de la
     atm\xF3sfera (lo llamaba \"gas azote\"). Es un \xE1tomo que tiende a formar uniones
     muy fuertes y es clave para entender c\xF3mo se organizan los gases en el aire."
-  nota: "Dalton le asign\xF3 un peso de 4.2u (aunque hoy usamos 14u). Fue fundamental
-    para sus estudios sobre la presi\xF3n de los gases, lo que lo llev\xF3 a su famosa
-    \"Ley de las Presiones Parciales\"."
-  simbolo: N
-  icono: {fileID: -1453408323, guid: 32d0efeb71824b04cbdecc4ed7d3c433, type: 3}
-  masaAtomica: 5
   prefabAtomo: {fileID: 7643025866824191290, guid: 54a96339009ef9f4d9fca49e3c749fb7, type: 3}
+  colorTextoMenu: {r: 0.5725786, g: 0.36209506, b: 0.745283, a: 1}
+  colorLinea: {r: 1, g: 1, b: 1, a: 1}
   largoSubrayado: 0.1
   offsetVerticalCodo: -0.16
   alturaLineaVertical: -0.03
   anchoLinea: 0.015
-  colorLinea: {r: 1, g: 1, b: 1, a: 1}
-  colorTextoMenu: {r: 0.18431373, g: 0.6784314, b: 0.90588236, a: 1}
   inerciaBillboard: 0.85
   distanciaMaxima: 20

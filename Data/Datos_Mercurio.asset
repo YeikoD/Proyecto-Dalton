@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec4f3c61fa633164ba1a70969d63c856, type: 3}
+  m_Name: Datos_Mercurio
+  m_EditorClassIdentifier: Assembly-CSharp::ProyectoDalton.Atomos.DatosAtomoSO
+  nombreElemento: Mercurio
+  simbolo: Hg
+  masaAtomica: 167
+  icono: {fileID: 1656479401, guid: a498a8aece99d1641a92afc218795d2d, type: 3}
+  descripcionTeorica: "El misterio l\xEDquido. Es el \xFAnico metal que fluye como
+    el agua pero golpea con la fuerza de un gigante. Su dise\xF1o punteado refleja
+    esa naturaleza extra\xF1a que fascin\xF3 a los cient\xEDficos por siglos."
+  prefabAtomo: {fileID: 5872685107497632194, guid: c87414b51ea52f240a1e826066027d19, type: 3}
+  colorTextoMenu: {r: 0.18867922, g: 0.18867922, b: 0.18867922, a: 1}
+  colorLinea: {r: 1, g: 1, b: 1, a: 1}
+  largoSubrayado: 0.1
+  offsetVerticalCodo: -0.16
+  alturaLineaVertical: -0.03
+  anchoLinea: 0.015
+  inerciaBillboard: 0.85
+  distanciaMaxima: 20

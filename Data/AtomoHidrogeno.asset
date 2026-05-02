@@ -13,17 +13,12 @@ MonoBehaviour:
   m_Name: AtomoHidrogeno
   m_EditorClassIdentifier: Assembly-CSharp::ProyectoDalton.Atomos.DatosAtomoSO
   nombreElemento: "Hidr\xF3geno"
-  esElemento: 0
   descripcionTeorica: "El elemento m\xE1s liviano y simple en la lista de Dalton.
     Sirve como la unidad base para el sistema de pesos at\xF3micos relativos. Es
     una sustancia fundamental que Dalton consideraba el \"ladrillo\" m\xE1s peque\xF1o
     de la materia."
-  nota: "Dalton utiliz\xF3 el hidr\xF3geno como el est\xE1ndar de su teor\xEDa: le
-    asign\xF3 arbitrariamente el valor de $1u$. En sus experimentos, observ\xF3 que
-    siempre se combinaba en proporciones peque\xF1as y fijas, lo que lo llev\xF3
-    a concluir que todos los \xE1tomos de hidr\xF3geno son id\xE9nticos entre s\xED."
   simbolo: H
-  icono: {fileID: -1453408323, guid: 32d0efeb71824b04cbdecc4ed7d3c433, type: 3}
+  icono: {fileID: 702203295, guid: 9fe92e7fdd0c6084f86e2a008a0ae9d8, type: 3}
   masaAtomica: 1
   prefabAtomo: {fileID: 3868101738974255312, guid: dce2020bbd86409449030e0fa524eb44, type: 3}
   largoSubrayado: 0.1

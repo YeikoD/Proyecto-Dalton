@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Oro
+  m_Name: Azufre
   m_Shader: {fileID: 4800000, guid: 89aa036ee4277e245b3114cf8d356959, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -39,7 +39,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: fedfefb38129cf94ba0fd0f123d58c26, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -99,7 +99,7 @@ Material:
     - _AddPrecomputedVelocity: 0
     - _AlphaClip: 0
     - _AlphaToMask: 0
-    - _AmbientLight: 0.255
+    - _AmbientLight: 0.17
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BlendOp: 0
@@ -121,7 +121,7 @@ Material:
     - _Parallax: 0.005
     - _QueueOffset: -2
     - _ReceiveShadows: 0
-    - _RimPower: 0.86
+    - _RimPower: 1.72
     - _RimSpeed: 5
     - _SampleGI: 0
     - _Smoothness: 0.977
@@ -134,12 +134,12 @@ Material:
     - _XRMotionVectorsPass: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BaseColor: {r: 0.990566, g: 0.790453, b: 0.13550198, a: 1}
     - _Color: {r: 1, g: 0.7535237, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _LightDir: {r: 0.5, g: 1, b: -0.5, a: 0}
-    - _RimColor: {r: 0.8962264, g: 0.6846622, b: 0.34242615, a: 1}
-    - _RimColor2: {r: 0.8962264, g: 0.49250177, b: 0.08877714, a: 1}
+    - _RimColor: {r: 0.9245283, g: 0.672539, b: 0.33579564, a: 1}
+    - _RimColor2: {r: 0.254717, g: 0.21711525, b: 0.1021271, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

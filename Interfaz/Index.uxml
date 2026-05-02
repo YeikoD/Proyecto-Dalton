@@ -48,7 +48,7 @@
         <ui:VisualElement class="console__separador"/>
         <ui:ScrollView name="ContenedorMensajes" class="console-scroll"/>
     </ui:VisualElement>
-    <ui:VisualElement name="MenuRaiz" class="menu-derecho panel-base panel--hidden-right">
+    <ui:VisualElement name="MenuRaiz" class="menu-derecho panel-base panel--hidden-right" style="display: none;">
         <ui:VisualElement class="menu-derecho__cabecera">
             <ui:Label text="SELECCIÓN DE ELEMENTOS" class="text-base text-bold menu-derecho__titulo" style="-unity-font-definition: url(&quot;project://database/Assets/Interfaz/Fuentes/Roboto-VariableFont_wdth,wght.ttf?fileID=12800000&amp;guid=6cb56dc8fcb4ab9469665128883f9b26&amp;type=3#Roboto-VariableFont_wdth,wght&quot;);"/>
             <ui:Button name="BotonCerrarMenu" text="X" class="boton-base boton-cerrar"/>
@@ -57,22 +57,22 @@
     </ui:VisualElement>
 
     <ui:VisualElement name="MenuPrincipalRaiz" class="menu-principal-pantalla">
-        <ui:Button name="BotonAjustes" class="boton-base boton-ajustes boton-ajustes--hidden"/>
+        <ui:Button name="BotonAjustes" class="boton-base boton-ajustes boton-ajustes--hidden" style="display: none;"/>
         <ui:VisualElement class="menu-principal__contenedor">
-            <ui:VisualElement class="titulo-logo titulo-logo--hidden"/>
-            <ui:Button name="BotonIniciar" text="INICIAR SIMULACIÓN" class="boton-base boton-iniciar boton-iniciar--hidden"/>
-            <ui:Button name="BotonVolver" text="VOLVER A LA SIMULACIÓN" class="boton-base boton-iniciar boton-iniciar--hidden"/>
-            <ui:Button name="BotonLimpiar" text="LIMPIAR ESCENA" class="boton-base boton-iniciar boton-iniciar--hidden boton-limpiar"/>
-            <ui:Button name="BotonSalir" text="SALIR DEL SIMULADOR" class="boton-base boton-iniciar boton-iniciar--hidden boton-salir"/>
+            <ui:VisualElement class="titulo-logo titulo-logo--hidden" style="display: none;"/>
+            <ui:Button name="BotonIniciar" text="INICIAR SIMULACIÓN" class="boton-base boton-iniciar boton-iniciar--hidden" style="display: none;"/>
+            <ui:Button name="BotonVolver" text="VOLVER A LA SIMULACIÓN" class="boton-base boton-iniciar boton-iniciar--hidden" style="display: none;"/>
+            <ui:Button name="BotonLimpiar" text="LIMPIAR ESCENA" class="boton-base boton-iniciar boton-iniciar--hidden boton-limpiar" style="display: none;"/>
+            <ui:Button name="BotonSalir" text="SALIR DEL SIMULADOR" class="boton-base boton-iniciar boton-iniciar--hidden boton-salir" style="display: none;"/>
         </ui:VisualElement>
-        <ui:Label text="Developed by Anderson Correa" class="texto-creditos texto-creditos--hidden"/>
-        <ui:VisualElement class="cuadro-informacion cuadro-informacion--hidden">
+        <ui:Label text="Developed by Anderson Correa" class="texto-creditos texto-creditos--hidden" style="display: none;"/>
+        <ui:VisualElement class="cuadro-informacion cuadro-informacion--hidden" style="display: none;">
             <ui:Label text="Proyecto de Química" class="info-label info-label--bold"/>
             <ui:Label text="Liceo Nº 45 - Victor Bersanelli" class="info-label"/>
             <ui:Label text="MODULO 3-3 - Plan 2009" class="info-label"/>
             <ui:Label text="Prof: Federico Rodrigues" class="info-label"/>
         </ui:VisualElement>
-        <ui:VisualElement class="logos-contenedor logos-contenedor--hidden">
+        <ui:VisualElement class="logos-contenedor logos-contenedor--hidden" style="display: none;">
             <ui:VisualElement name="LogoCompania" class="logo-icon logo-compania"/>
         </ui:VisualElement>
     </ui:VisualElement>
@@ -91,7 +91,11 @@
             <ui:Label text="CONFIGURACIÓN DEL SISTEMA" class="text-base text-bold ajustes__titulo"/>
             <ui:Button name="BotonCerrarAjustes" text="X" class="boton-base boton-cerrar"/>
         </ui:VisualElement>
-        <ui:VisualElement class="ajustes__separador"/>
+        <ui:VisualElement class="ajustes__fila">
+            <ui:Label text="ESCALA DE INTERFAZ (PANELES)" class="text-base ajustes__label"/>
+            <ui:Slider name="SliderEscalaPaneles" low-value="1" high-value="1.8" value="1" class="ajustes__slider"/>
+        </ui:VisualElement>
+        <!--<ui:VisualElement class="ajustes__separador"/>-->
         <ui:VisualElement name="ContenedorAjustes" class="ajustes__contenido">
             <ui:VisualElement class="ajustes__fila">
                 <ui:Label text="ESCALA DE INTERFAZ (TEXTO)" class="text-base ajustes__label"/>
@@ -100,6 +104,14 @@
             <ui:VisualElement class="ajustes__fila">
                 <ui:Label text="ESCALA DE INTERFAZ (ICONOS)" class="text-base ajustes__label"/>
                 <ui:Slider name="SliderEscalaIconos" low-value="1" high-value="1.8" value="1" class="ajustes__slider"/>
+            </ui:VisualElement>
+            <ui:VisualElement class="ajustes__fila">
+                <ui:Label text="VOLUMEN DE ÁTOMOS" class="text-base ajustes__label"/>
+                <ui:Slider name="SliderVolumenAtomos" low-value="0" high-value="1" value="0.5" class="ajustes__slider"/>
+            </ui:VisualElement>
+            <ui:VisualElement class="ajustes__fila">
+                <ui:Label text="VOLUMEN DE INTERFAZ" class="text-base ajustes__label"/>
+                <ui:Slider name="SliderVolumenUI" low-value="0" high-value="1" value="0.8" class="ajustes__slider"/>
             </ui:VisualElement>
             <!-- Más ajustes aquí en el futuro -->
         </ui:VisualElement>
@@ -116,7 +128,7 @@
         </ui:VisualElement>
     </ui:VisualElement>
 
-    <ui:VisualElement name="HotbarRaiz" class="hotbar-contenedor panel-base">
+    <ui:VisualElement name="HotbarRaiz" class="hotbar-contenedor panel-base hotbar--hidden" style="display: none;">
         <ui:Button name="HotbarBotonSelector" tooltip="Selector de Átomos" class="hotbar-boton">
             <ui:VisualElement class="hotbar__icono icono-selector"/>
         </ui:Button>

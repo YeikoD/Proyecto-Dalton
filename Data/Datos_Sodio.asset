@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec4f3c61fa633164ba1a70969d63c856, type: 3}
+  m_Name: Datos_Sodio
+  m_EditorClassIdentifier: Assembly-CSharp::ProyectoDalton.Atomos.DatosAtomoSO
+  nombreElemento: Sodio
+  simbolo: Na
+  masaAtomica: 28
+  icono: {fileID: -1906577296, guid: fdd7ec86bd112d64c9fab066929447bb, type: 3}
+  descripcionTeorica: "Un \xE1lcali reactivo. En el simulador, representa una de
+    las sustancias clave para la creaci\xF3n de sales y compuestos industriales."
+  prefabAtomo: {fileID: 8225258962950791880, guid: 418d9c0623601194e8908d79052c9c06, type: 3}
+  colorTextoMenu: {r: 0.19842473, g: 0.21161662, b: 0.46226418, a: 1}
+  colorLinea: {r: 1, g: 1, b: 1, a: 1}
+  largoSubrayado: 0.1
+  offsetVerticalCodo: -0.16
+  alturaLineaVertical: -0.03
+  anchoLinea: 0.015
+  inerciaBillboard: 0.85
+  distanciaMaxima: 20

@@ -26,6 +26,43 @@ namespace ProyectoDalton.Core
             set => bloquearCamara = value; 
         }
 
+        [Header("Configuración Global")]
+        [SerializeField, Range(0f, 1f)] private float _volumenAtomosGlobal = 0.5f;
+        [Tooltip("Sonido base que usarán todos los átomos de forma automática.")]
+        public AudioClip SonidoBaseAtomos;
+        
+        public static float VolumenAtomosGlobal 
+        {
+            get => Instancia != null ? Instancia._volumenAtomosGlobal : 0.5f;
+            set 
+            {
+                if (Instancia != null)
+                {
+                    Instancia._volumenAtomosGlobal = value;
+                    LogN.Info($"SYS: Volumen Global de Átomos: {Mathf.RoundToInt(value * 100)}%");
+                    OnVolumenAtomosCambiado?.Invoke(value);
+                }
+            }
+        }
+        
+        [SerializeField, Range(0f, 1f)] private float _volumenUIGlobal = 0.8f;
+        
+        public static float VolumenUIGlobal 
+        {
+            get => Instancia != null ? Instancia._volumenUIGlobal : 0.8f;
+            set 
+            {
+                if (Instancia != null)
+                {
+                    Instancia._volumenUIGlobal = value;
+                    OnVolumenUICambiado?.Invoke(value);
+                }
+            }
+        }
+
+        public static event System.Action<float> OnVolumenAtomosCambiado;
+        public static event System.Action<float> OnVolumenUICambiado;
+
         private void Awake()
         {
             if (Instancia == null)

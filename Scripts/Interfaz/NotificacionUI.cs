@@ -84,6 +84,9 @@ namespace ProyectoDalton.Interfaz
             _notificacionRaiz.AddToClassList($"panel-base--{tipoEfecto}");
             if (_tituloLabel != null) _tituloLabel.AddToClassList($"notificacion__titulo--{tipoEfecto}");
 
+            // Reproducimos el sonido de notificación
+            GestorAudioUI.ReproducirNotificacion();
+
             // Si ya hay una rutina esperando para ocultar, la detenemos
             if (_rutinaOcultar != null) StopCoroutine(_rutinaOcultar);
 
