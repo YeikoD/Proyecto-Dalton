@@ -55,7 +55,7 @@
     <ui:VisualElement name="MenuRaiz" class="menu-derecho panel-base panel--hidden-right" style="display: none;">
         <ui:VisualElement class="menu-derecho__cabecera">
             <ui:Label text="SELECCIÓN DE ELEMENTOS" class="text-base text-bold menu-derecho__titulo" style="-unity-font-definition: url(&quot;project://database/Assets/Interfaz/Fuentes/Roboto-VariableFont_wdth,wght.ttf?fileID=12800000&amp;guid=6cb56dc8fcb4ab9469665128883f9b26&amp;type=3#Roboto-VariableFont_wdth,wght&quot;);"/>
-            <ui:Button name="BotonCerrarMenu" text="X" class="boton-base boton-cerrar"/>
+            <ui:Button name="BotonCerrarMenu" class="boton-base boton-cerrar"/>
         </ui:VisualElement>
         <ui:ScrollView name="ListaAtomos" class="console-scroll"/>
     </ui:VisualElement>
@@ -93,14 +93,17 @@
     <ui:VisualElement name="AjustesRaiz" class="ajustes-panel panel-base panel--hidden" style="display: none;">
         <ui:VisualElement class="ajustes__cabecera">
             <ui:Label text="CONFIGURACIÓN DEL SISTEMA" class="text-base text-bold ajustes__titulo"/>
-            <ui:Button name="BotonCerrarAjustes" text="X" class="boton-base boton-cerrar"/>
+            <ui:Button name="BotonCerrarAjustes" class="boton-base boton-cerrar"/>
         </ui:VisualElement>
-        <ui:VisualElement class="ajustes__fila">
-            <ui:Label text="ESCALA DE INTERFAZ (PANELES)" class="text-base ajustes__label"/>
-            <ui:Slider name="SliderEscalaPaneles" low-value="1" high-value="1.8" value="1" class="ajustes__slider"/>
-        </ui:VisualElement>
-        <!--<ui:VisualElement class="ajustes__separador"/>-->
-        <ui:VisualElement name="ContenedorAjustes" class="ajustes__contenido">
+        <ui:ScrollView name="ContenedorAjustes" class="ajustes__contenido">
+            <ui:VisualElement class="ajustes__seccion-header">
+                <ui:Label text="INTERFAZ" class="ajustes__subtitulo"/>
+                <ui:VisualElement class="ajustes__subtitulo-linea"/>
+            </ui:VisualElement>
+            <ui:VisualElement class="ajustes__fila">
+                <ui:Label text="ESCALA DE INTERFAZ (PANELES)" class="text-base ajustes__label"/>
+                <ui:Slider name="SliderEscalaPaneles" low-value="1" high-value="1.8" value="1" class="ajustes__slider"/>
+            </ui:VisualElement>
             <ui:VisualElement class="ajustes__fila">
                 <ui:Label text="ESCALA DE INTERFAZ (TEXTO)" class="text-base ajustes__label"/>
                 <ui:Slider name="SliderEscalaTexto" low-value="1" high-value="1.8" value="1" class="ajustes__slider"/>
@@ -108,6 +111,11 @@
             <ui:VisualElement class="ajustes__fila">
                 <ui:Label text="ESCALA DE INTERFAZ (ICONOS)" class="text-base ajustes__label"/>
                 <ui:Slider name="SliderEscalaIconos" low-value="1" high-value="1.8" value="1" class="ajustes__slider"/>
+            </ui:VisualElement>
+
+            <ui:VisualElement class="ajustes__seccion-header" style="margin-top: 15px;">
+                <ui:Label text="AUDIO" class="ajustes__subtitulo"/>
+                <ui:VisualElement class="ajustes__subtitulo-linea"/>
             </ui:VisualElement>
             <ui:VisualElement class="ajustes__fila">
                 <ui:Label text="VOLUMEN DE ÁTOMOS" class="text-base ajustes__label"/>
@@ -118,18 +126,18 @@
                 <ui:Slider name="SliderVolumenUI" low-value="0" high-value="1" value="0.8" class="ajustes__slider"/>
             </ui:VisualElement>
             <!-- Más ajustes aquí en el futuro -->
-        </ui:VisualElement>
+        </ui:ScrollView>
     </ui:VisualElement>
 
     <ui:VisualElement name="InformacionRaiz" class="informacion-panel panel-base panel--hidden" style="display: none;">
         <ui:VisualElement class="informacion__cabecera">
             <ui:Label text="INFORMACIÓN DEL PROYECTO" class="text-base text-bold informacion__titulo"/>
-            <ui:Button name="BotonCerrarInfo" text="X" class="boton-base boton-cerrar"/>
+            <ui:Button name="BotonCerrarInfo" class="boton-base boton-cerrar"/>
         </ui:VisualElement>
         <ui:VisualElement class="informacion__separador"/>
-        <ui:VisualElement name="ContenedorInfo" class="informacion__contenido">
-            <!-- El contenido se agregará después -->
-        </ui:VisualElement>
+        <ui:ScrollView name="ContenedorInfo" class="informacion__contenido">
+            <ui:VisualElement name="ContenedorGridCompuestos" class="informacion__grid"/>
+        </ui:ScrollView>
     </ui:VisualElement>
 
     <ui:VisualElement name="HotbarRaiz" class="hotbar-contenedor panel-base hotbar--hidden" style="display: none;">

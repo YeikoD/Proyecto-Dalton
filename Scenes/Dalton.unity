@@ -1246,6 +1246,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ProyectoDalton.Entorno.GestorCompuestosDalton
   compuestosEspeciales:
   - {fileID: 11400000, guid: 21ad81e155e2ced41b3ff48cf5a407a4, type: 2}
+  - {fileID: 11400000, guid: 70ccbc72aa0ba644c80ceadbfb465019, type: 2}
+  - {fileID: 11400000, guid: 3284ee65592087845872dc4372c93dc6, type: 2}
+  - {fileID: 11400000, guid: edc4cbcc7b81e274ebf2380845b7e735, type: 2}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

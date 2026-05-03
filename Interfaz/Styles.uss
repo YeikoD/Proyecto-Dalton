@@ -194,18 +194,22 @@
     background-color: rgba(0, 50, 110, 0.1);
 }
 
-/* Botón cerrar (X) */
+/* Botón cerrar con icono premium */
 .boton-base.boton-cerrar {
     background-color: transparent;
     border-width: 0;
-    color: var(--color-text-main);
-    font-size: 16px;
-    -unity-font-style: bold;
-    padding: 5px;
+    width: 24px;
+    height: 24px;
+    background-image: url("project:/Assets/Interfaz/Logos/decoracion/UI/close_512dp_E3E3E3_FILL0_wght400_GRAD0_opsz48.png");
+    -unity-background-scale-mode: scale-to-fit;
+    -unity-background-image-tint-color: var(--color-text-main);
+    padding: 0;
+    margin: 0;
 }
 
 .boton-base.boton-cerrar:hover {
-    color: var(--color-accent-secondary);
+    -unity-background-image-tint-color: var(--color-accent-secondary);
+    scale: 1.15;
 }
 
 .tooltip-panel {
@@ -728,10 +732,151 @@
     opacity: 0.5;
 }
 
+.ajustes__seccion-header {
+    flex-direction: row;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 12px;
+    padding-left: 5px;
+}
+
+.ajustes__subtitulo {
+    font-size: 11px;
+    -unity-font-style: bold;
+    color: var(--color-accent-primary);
+    letter-spacing: 2px;
+    opacity: 0.8;
+}
+
+.ajustes__subtitulo-linea {
+    flex-grow: 1;
+    height: 1px;
+    background-color: var(--color-accent-primary);
+    margin-left: 10px;
+    opacity: 0.3;
+}
+
+
+.ajustes__contenido,
 .ajustes__contenido,
 .informacion__contenido {
     flex-grow: 1;
+    overflow: hidden;
 }
+
+/* Ocultar scroller horizontal */
+.ajustes__contenido #unity-content-viewport,
+.informacion__contenido #unity-content-viewport {
+    overflow: hidden;
+}
+
+.ajustes__contenido .unity-scroller--horizontal,
+.informacion__contenido .unity-scroller--horizontal {
+    display: none;
+    opacity: 0;
+}
+
+/* Estilo del scroller vertical */
+.ajustes__contenido .unity-scroller--vertical,
+.informacion__contenido .unity-scroller--vertical {
+    width: 6px;
+    background-color: transparent;
+}
+
+.ajustes__contenido .unity-scroller--vertical #unity-tracker,
+.informacion__contenido .unity-scroller--vertical #unity-tracker {
+    background-color: rgba(0, 50, 110, 0.1);
+    border-radius: 3px;
+    border-width: 0;
+}
+
+.ajustes__contenido .unity-scroller--vertical #unity-dragger,
+.informacion__contenido .unity-scroller--vertical #unity-dragger {
+    background-color: var(--color-accent-primary);
+    border-radius: 3px;
+    border-width: 0;
+    opacity: 0.5;
+    width: 4px;
+    margin-left: 1px;
+}
+
+.informacion__grid {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 10px;
+}
+
+.boton-compuesto {
+    width: 45%;
+    height: 155px;
+    margin: 8px;
+    background-color: transparent;
+    border-width: 1px;
+    border-color: var(--color-accent-primary);
+    border-radius: var(--radius-main);
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px;
+    transition-property: background-color, border-color, scale, translate;
+    transition-duration: 0.3s;
+}
+
+.boton-compuesto:hover {
+    background-color: rgba(0, 50, 110, 0.05);
+    border-color: var(--color-text-highlight);
+    scale: 1.05;
+    translate: 0 -3px;
+}
+
+.boton-compuesto__icono {
+    width: 90px;
+    height: 90px;
+    margin-bottom: 5px;
+    -unity-background-scale-mode: scale-to-fit;
+    background-color: transparent;
+    border-width: 0;
+}
+
+
+.boton-compuesto__info {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.boton-compuesto__nombre {
+    font-size: 12px;
+    -unity-font-style: bold;
+    color: var(--color-text-highlight);
+    -unity-text-align: middle-center;
+    white-space: normal;
+    margin-bottom: 2px;
+}
+
+.boton-compuesto__formula {
+    font-size: 10px;
+    color: var(--color-accent-primary);
+    opacity: 0.8;
+    -unity-text-align: middle-center;
+    letter-spacing: 2px;
+}
+
+
+/* Ocultar botones de flecha blancos del scroller */
+.ajustes__contenido .unity-scroller--vertical #unity-low-button,
+.ajustes__contenido .unity-scroller--vertical #unity-high-button,
+.informacion__contenido .unity-scroller--vertical #unity-low-button,
+.informacion__contenido .unity-scroller--vertical #unity-high-button {
+    display: none;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+
 
 .ajustes__fila {
     flex-direction: column;
@@ -757,6 +902,19 @@
     width: 100%;
     margin: 0;
     padding: 0;
+}
+
+/* Ocultar posibles barras blancas (botones o campos de texto) en los extremos */
+.ajustes__slider #unity-low-button,
+.ajustes__slider #unity-high-button,
+.ajustes__slider .unity-base-slider__text-field,
+.ajustes__slider .unity-base-slider__input #unity-low-button,
+.ajustes__slider .unity-base-slider__input #unity-high-button {
+    display: none;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    visibility: hidden;
 }
 
 /* Personalización del Slider (Track y Dragger) */
@@ -899,7 +1057,6 @@
 
 .hotbar--hidden {
     display: none;
-    picking-mode: ignore;
 }
 
 .hotbar-boton:active {

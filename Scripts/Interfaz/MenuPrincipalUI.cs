@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using ProyectoDalton.Core;
 using ProyectoDalton.Entorno;
+using ProyectoDalton.Atomos;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -34,6 +35,7 @@ namespace ProyectoDalton.Interfaz
         private VisualElement _informacionRaiz;
         private Label _labelCreditos;
         private List<Label> _labelsInfo = new List<Label>();
+        private VisualElement _contenedorGridCompuestos;
 
         private Button _botonIniciar;
         private Button _botonVolver;
@@ -156,6 +158,9 @@ namespace ProyectoDalton.Interfaz
                 _sliderVolumenUI.value = GameManager.VolumenUIGlobal;
                 _sliderVolumenUI.RegisterValueChangedCallback(evt => GameManager.VolumenUIGlobal = evt.newValue);
             }
+
+            _contenedorGridCompuestos = root.Q<VisualElement>("ContenedorGridCompuestos");
+            PoblarMenuCompuestos();
 
             var logo = root.Q<VisualElement>("LogoCompania");
             logo?.RegisterCallback<ClickEvent>(evt => ActivarEasterEgg());
@@ -452,6 +457,7 @@ namespace ProyectoDalton.Interfaz
             
             if (estaOculto)
             {
+                CerrarInformacion(); // Cerrar el otro panel del hotbar si está abierto
                 _ajustesRaiz.RemoveFromClassList("panel--hidden");
                 _ajustesRaiz.style.display = DisplayStyle.Flex;
                 LogN.Info("SYS: Abriendo panel de ajustes");
@@ -485,6 +491,8 @@ namespace ProyectoDalton.Interfaz
 
             if (estaOculto)
             {
+                CerrarAjustes(); // Cerrar el otro panel del hotbar si está abierto
+                PoblarMenuCompuestos();
                 _informacionRaiz.RemoveFromClassList("panel--hidden");
                 _informacionRaiz.style.display = DisplayStyle.Flex;
                 LogN.Info("SYS: Abriendo panel de información");
@@ -671,6 +679,62 @@ namespace ProyectoDalton.Interfaz
             // Paneles Izquierdos (Crecen hacia la derecha/centro)
             root.Query<VisualElement>(className: "tooltip-panel").ForEach(e => e.style.width = ANCHO_TOOLTIP_BASE * escala);
             root.Query<VisualElement>(className: "console-container").ForEach(e => e.style.width = ANCHO_CONSOLA_BASE * escala);
+        }
+
+        private void PoblarMenuCompuestos()
+        {
+            if (_contenedorGridCompuestos == null) return;
+            _contenedorGridCompuestos.Clear();
+
+            var gestor = GestorCompuestosDalton.Instancia;
+            if (gestor == null) 
+            {
+                LogN.Info("SYS: Gestor de compuestos no disponible para poblar el menú.");
+                return;
+            }
+
+            int count = 0;
+            foreach (var compuesto in gestor.compuestosEspeciales)
+            {
+                if (compuesto == null) continue;
+                _contenedorGridCompuestos.Add(CrearBotonCompuesto(compuesto));
+                count++;
+            }
+
+            LogN.Info($"SYS: Panel de información actualizado con {count} compuestos.");
+        }
+
+        private VisualElement CrearBotonCompuesto(CompuestoDaltonSO datos)
+        {
+            VisualElement boton = new VisualElement();
+            boton.AddToClassList("boton-compuesto");
+
+            VisualElement icono = new VisualElement();
+            icono.AddToClassList("boton-compuesto__icono");
+            if (datos.icono != null) icono.style.backgroundImage = new StyleBackground(datos.icono);
+            
+            // Estilo visual unificado (se gestiona por CSS)
+            icono.style.backgroundColor = new StyleColor(StyleKeyword.Null);
+
+            VisualElement info = new VisualElement();
+            info.AddToClassList("boton-compuesto__info");
+
+            Label nombre = new Label(datos.nombreCompuesto.ToUpper());
+            nombre.AddToClassList("boton-compuesto__nombre");
+
+            Label formula = new Label(datos.formulaHistorica);
+            formula.AddToClassList("boton-compuesto__formula");
+
+            info.Add(nombre);
+            info.Add(formula);
+
+            boton.Add(icono);
+            boton.Add(info);
+
+            // Tooltip simple al pasar el mouse (opcional, usando el title o simplemente la descripción si quieres)
+            boton.tooltip = datos.descripcion;
+
+            return boton;
         }
 
         #endregion
