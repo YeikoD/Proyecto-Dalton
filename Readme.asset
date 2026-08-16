@@ -1,34 +1,41 @@
-%YAML 1.1
-%TAG !u! tag:unity3d.com,2011:
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fcf7219bab7fe46a1ad266029b2fee19, type: 3}
-  m_Name: Readme
-  m_EditorClassIdentifier: 
-  icon: {fileID: 2800000, guid: 727a75301c3d24613a3ebcec4a24c2c8, type: 3}
-  title: URP Empty Template
-  sections:
-  - heading: Welcome to the Universal Render Pipeline
-    text: This template includes the settings and assets you need to start creating with the Universal Render Pipeline.
-    linkText: 
-    url:
-  - heading: URP Documentation
-    text:
-    linkText: Read more about URP
-    url: https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@latest
-  - heading: Forums
-    text:
-    linkText: Get answers and support
-    url: https://forum.unity.com/forums/universal-render-pipeline.383/
-  - heading: Report bugs
-    text:
-    linkText: Submit a report
-    url: https://unity3d.com/unity/qa/bug-reporting
-  loadedLayout: 1
+# DALTON Visualizer
+
+**DALTON Visualizer** es un simulador 3D interactivo desarrollado en Unity orientado a la visualización, instanciación y combinación de elementos químicos según modelos atómicos históricos e información de compuestos.
+
+---
+
+## 🎯 Descripción y Propósito
+
+El simulador permite interactuar con elementos de la tabla periódica (Hidrógeno, Carbono, Oxígeno, Cobre, Zinc, Oro, Mercurio, entre otros) en un espacio virtual con grilla física. Permite instanciar átomos, analizar su masa atómica, agruparlos para formar compuestos y evaluar rupturas o enlaces moleculares en tiempo real.
+
+---
+
+## 🛠️ Tecnologías Utilizadas
+
+* **Engine:** Unity (C#)
+* **Desarrollo:** Yeiko / Anderson Correa
+* **Área / Proyecto:** Química (Liceo N° 46 - Víctor Bauzá / MÓDULO 3 - Plan 2019)
+
+---
+
+## 🔑 Características Principales
+
+* **Instanciación de Elementos:** Panel lateral desplegable con selección interactiva de átomos (H, C, O, Cu, Zn, Au, Hg, etc.).
+* **Generación de Compuestos:** Lógica de unión entre elementos con cálculo dinámico de la masa total y fórmulas resultantes.
+* **Panel Informativo:** Muestra la teoría, observaciones, masa relativa y clasificación histórica (Dalton, 1803) del elemento o compuesto seleccionado.
+* **Registro de Eventos (Log):** Terminal en tiempo real que notifica la creación, selección, vinculación y desvinculación de estructuras moleculares.
+* **Gestor de Controles:** Cámara 3D libre con controles de zoom, rotación, desplazamiento y limpieza de escena.
+
+---
+
+## 📂 Estructura del Proyecto
+
+```text
+├── Assets/
+│   ├── Scripts/
+│   │   ├── Elements/        # Lógica de átomos, masas y fórmulas
+│   │   ├── Simulation/      # Motor de simulación y grilla física
+│   │   └── UI/              # Registro de eventos y paneles laterales
+│   ├── Prefabs/             # Modelos 3D de elementos y partículas
+│   └── Scenes/              # Escena principal (MainSimulation)
+├── README.md
